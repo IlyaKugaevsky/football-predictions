@@ -9,5 +9,13 @@ namespace Predictions.Models
     {
         public int ExpertId { get; set; }
         public string Nickname { get; set; }
+
+        public int Outcomes { get; set; }
+        public int Differences { get; set; }
+        public int Scores { get; set; }
+        public int Sum { get; set; }
+
+
+        public virtual List<Prediction> Predictions { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-namespace Predictions.Migrations
+﻿namespace Predictions.Migrations
 {
     using System;
     using System.Data.Entity;
@@ -35,6 +35,14 @@ namespace Predictions.Migrations
                 new Expert { Nickname = "fuliver" }
             };
             experts.ForEach(x => context.Experts.AddOrUpdate(z => z.Nickname, x));
+
+            var teams = new List<Team>
+            {
+                new Team { Title = "Спартак" },
+                new Team { Title = "Цска" }
+            };
+            teams.ForEach(x => context.Teams.AddOrUpdate(z => z.Title, x));
+
             context.SaveChanges();
 
         }
