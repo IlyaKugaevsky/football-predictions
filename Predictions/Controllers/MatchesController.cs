@@ -13,6 +13,9 @@ namespace Predictions.Controllers
         // GET: Matches
         public ActionResult Index()
         {
+            // NEED SOME REFACTORING!!!
+            // Repository pattern, services, etc
+
             PredictionsContext context = new PredictionsContext();
 
             var teamlist = context.Teams.ToList();

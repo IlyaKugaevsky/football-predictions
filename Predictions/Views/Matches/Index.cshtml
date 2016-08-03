@@ -8,19 +8,20 @@
 <h2>Матчи</h2>
 
 
-<input type="text" , placeholder="Дата" />
-<select>
+<input type="date" class="form-control" />
+
+<select class="form-control">
     @foreach(var item in Model.Teamlist)
     {
         <option title="Домашняя команда">@item.Title</option>
     }
-
 </select>
+
 против
-<select>
+
+<select class="form-control">
     @foreach (var item in Model.Teamlist)
     {
         <option>@item.Title</option>
     }
-
 </select>
