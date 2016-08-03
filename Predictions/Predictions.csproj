@@ -199,6 +199,7 @@
     <Compile Include="Controllers\ExpertsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\TeamsController.cs" />
     <Compile Include="DAL\PredictionsContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -207,11 +208,26 @@
     <Compile Include="Migrations\201608021336353_Initial.Designer.cs">
       <DependentUpon>201608021336353_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608021518001_Added_teams.cs" />
+    <Compile Include="Migrations\201608021518001_Added_teams.Designer.cs">
+      <DependentUpon>201608021518001_Added_teams.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608021521210_Added_teams_really.cs" />
+    <Compile Include="Migrations\201608021521210_Added_teams_really.Designer.cs">
+      <DependentUpon>201608021521210_Added_teams_really.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608021604404_First_complete_schema.cs" />
+    <Compile Include="Migrations\201608021604404_First_complete_schema.Designer.cs">
+      <DependentUpon>201608021604404_First_complete_schema.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Expert.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Match.cs" />
+    <Compile Include="Models\Prediction.cs" />
+    <Compile Include="Models\Team.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -280,6 +296,11 @@
     <Content Include="Views\Experts\Details.cshtml" />
     <Content Include="Views\Experts\Edit.cshtml" />
     <Content Include="Views\Experts\Index.cshtml" />
+    <Content Include="Views\Teams\Create.cshtml" />
+    <Content Include="Views\Teams\Delete.cshtml" />
+    <Content Include="Views\Teams\Details.cshtml" />
+    <Content Include="Views\Teams\Edit.cshtml" />
+    <Content Include="Views\Teams\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -295,6 +316,15 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201608021336353_Initial.resx">
       <DependentUpon>201608021336353_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608021518001_Added_teams.resx">
+      <DependentUpon>201608021518001_Added_teams.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608021521210_Added_teams_really.resx">
+      <DependentUpon>201608021521210_Added_teams_really.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608021604404_First_complete_schema.resx">
+      <DependentUpon>201608021604404_First_complete_schema.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
