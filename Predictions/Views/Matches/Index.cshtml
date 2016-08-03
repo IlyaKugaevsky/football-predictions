@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Predictions.Models.Match>
+﻿@model Predictions.ViewModels.MatchesViewModel
 
 @{
     ViewBag.Title = "Index";
@@ -7,33 +7,20 @@
 
 <h2>Матчи</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Score)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Tour)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Date)
-        </th>
-    </tr>
-</table>
 
 <input type="text" , placeholder="Дата" />
-<select name="select">
-    @*@foreach(var item in Model)
+<select>
+    @foreach(var item in Model.Teamlist)
     {
-        <option value="@item."> </option>
-    }*@
-    <option value="T1">Команда 1</option>
-    <option value="T2" selected>Команда 2</option>
-    <option value="T3">Команда 3</option>
+        <option title="Домашняя команда">@item.Title</option>
+    }
+
+</select>
+против
+<select>
+    @foreach (var item in Model.Teamlist)
+    {
+        <option>@item.Title</option>
+    }
+
 </select>
