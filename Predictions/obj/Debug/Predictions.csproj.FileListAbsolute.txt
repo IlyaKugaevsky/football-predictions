@@ -206,3 +206,6 @@ D:\GitProjects\Predictions\Predictions\obj\Debug\Predictions.pdb
 D:\GitProjects\Predictions\Predictions\obj\Debug\Predictions.Migrations.Added_teams.resources
 D:\GitProjects\Predictions\Predictions\obj\Debug\Predictions.Migrations.Added_teams_really.resources
 D:\GitProjects\Predictions\Predictions\obj\Debug\Predictions.Migrations.First_complete_schema.resources
+C:\Git-projects\Predictions\Predictions\obj\Debug\Predictions.Migrations.Added_teams.resources
+C:\Git-projects\Predictions\Predictions\obj\Debug\Predictions.Migrations.Added_teams_really.resources
+C:\Git-projects\Predictions\Predictions\obj\Debug\Predictions.Migrations.First_complete_schema.resources
