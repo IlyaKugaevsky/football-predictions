@@ -7,20 +7,32 @@
 
 <h2>Матчи</h2>
 
-    <input type="date" class="form-control" />
+<div class="row">
+    
+    <div class="col-md-2">
+        <input type="date" class="form-control" />
+    </div>
+    
+    <div class="col-md-2">
+        <select class="form-control">
+            @foreach(var item in Model.Teamlist)
+            {
+                <option title="Домашняя команда">@item.Title</option>
+            }
+        </select>
+    </div>
 
-<select class="form-control">
-    @foreach(var item in Model.Teamlist)
-    {
-        <option title="Домашняя команда">@item.Title</option>
-    }
-</select>
+    <div class="col-md-2">
+        <select class="form-control">
+            @foreach (var item in Model.Teamlist)
+            {
+                <option>@item.Title</option>
+            }
+         </select>
+    </div>
+        
+    <div class="col-md-2">
+        <input type="submit" class="btn btn-info" value="Добавить матч">
+    </div>
 
-против
-
-<select class="form-control">
-    @foreach (var item in Model.Teamlist)
-    {
-        <option>@item.Title</option>
-    }
-</select>
+</div>
