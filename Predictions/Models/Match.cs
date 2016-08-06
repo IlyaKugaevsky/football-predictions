@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Predictions.Models
 {
@@ -12,6 +13,7 @@ namespace Predictions.Models
         public string Title { get; set; }
         public string Score { get; set; }
         public int Tour { get; set; }
+        [Column(TypeName = "DateTime2")]
         public DateTime Date { get; set; }
 
         public Team HomeTeam { get; set; }
