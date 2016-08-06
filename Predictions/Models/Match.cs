@@ -9,6 +9,8 @@ namespace Predictions.Models
 {
     public class Match
     {
+        //this comment is just for fun
+
         public int MatchId { get; set; }
         public string Title { get; set; }
         public string Score { get; set; }
