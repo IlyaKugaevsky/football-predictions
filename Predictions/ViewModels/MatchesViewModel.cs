@@ -12,7 +12,8 @@ namespace Predictions.ViewModels
         public List<Team> Teamlist { get; set; }
         public List<Match> Matchlist { get; set; }
 
-        public Match NewMatch { get; set; }
-
+        public int HomeTeamId { get; set;  }
+        public int AwayTeamId { get; set; }
+        public DateTime Date { get; set; }
     }
 }

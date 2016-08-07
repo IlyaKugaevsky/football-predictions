@@ -7,30 +7,38 @@
 
 <h2>Матчи</h2>
 
-<div class="form-horizontal">
-    <div class="row">
-        <div class="col-md-2"><span class="label label-default">Дата</span></div>
-        <div class="col-md-2"><span class="label label-default">Дома</span></div>
-        <div class="col-md-2"><span class="label label-default">В гостях</span></div>
-    </div>
-    <div class="row">
-        <div class="col-md-2">
-            @Html.TextBoxFor(model => model.NewMatch.Date, new { @class = "form-control datepicker", @type = "date" })
-        </div>
-        <div class="col-md-2">
-            @Html.DropDownListFor(model => model.NewMatch.HomeTeam, new SelectList(Model.Teamlist, "Title", "Title"), new { @class = "form-control", placeholder = "Дома" })
-        </div>
-        <div class="col-md-2">
-            @Html.DropDownListFor(model => model.NewMatch.AwayTeam, new SelectList(Model.Teamlist, "Title", "Title"), new { @class = "form-control", placeholder = "В гостях" })
-        </div>
-        <div class="col-md-2">
-            <input type="submit" class="btn btn-info" value="Добавить матч">
-        </div>
-    </div>
-</div>
 
-<script type="text/javascript">
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <div class="row">
+            <div class="col-md-2"><span class="label label-default">Дата</span></div>
+            <div class="col-md-2"><span class="label label-default">Дома</span></div>
+            <div class="col-md-2"><span class="label label-default">В гостях</span></div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                @Html.TextBoxFor(model => model.Date, new { @class = "form-control datepicker", @type = "date" })
+            </div>
+            <div class="col-md-2">
+                @Html.DropDownListFor(model => model.HomeTeamId, new SelectList(Model.Teamlist, "TeamId", "Title"), new { @class = "form-control", placeholder = "Дома" })
+            </div>
+            <div class="col-md-2">
+                @Html.DropDownListFor(model => model.AwayTeamId, new SelectList(Model.Teamlist, "TeamId", "Title"), new { @class = "form-control", placeholder = "В гостях" })
+            </div>
+            <div class="col-md-2">
+                <input type="submit" class="btn btn-info" value="Добавить матч">
+            </div>
+        </div>
+    </div>
+}
+
+
+@*<script type="text/javascript">
     $(function () { // will trigger when the document is ready
        $('.datepicker').datepicker(); //Initialise any date pickers
     });
-</script>
+</script>*@

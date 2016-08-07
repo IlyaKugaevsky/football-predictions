@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Predictions.ViewModels;
 using Predictions.DAL;
+using Predictions.Models;
 
 namespace Predictions.Controllers
 {
@@ -20,32 +21,48 @@ namespace Predictions.Controllers
                 var teamlist = context.Teams.ToList();
                 var matchlist = context.Matches.ToList();
 
-                MatchesViewModel model = new MatchesViewModel()
+                MatchesViewModel viewModel = new MatchesViewModel()
                 {
                     Teamlist = teamlist,
-                    Matchlist = matchlist
+                    Matchlist = matchlist,
                 };
 
-                return View(model);
+                return View(viewModel);
             }
         }
 
         [HttpPost]
-        public ActionResult Index(MatchesViewModel data)
+        public ActionResult Index(MatchesViewModel model)
         {
+            //[Bind(Include = "MatchId,AwayTeam,HomeTeam")]
             if (ModelState.IsValid)
             {
                 using (var context = new PredictionsContext())
                 {
 
-                    context.Matches.Add(data.NewMatch);
+                    //NEED SERVICES!!!!
+                    //find by Id, add by...
+                    var test3 = model.Date;
+                    var test = model.HomeTeamId;
+                    var test2 = model.AwayTeamId;
+
+                    Team homeTeam = context.Teams.Find(model.HomeTeamId);
+                    Team awayTeam = context.Teams.Find(model.AwayTeamId);
+
+                    Match match = new Match()
+                    {
+                        HomeTeam = homeTeam,
+                        AwayTeam = awayTeam,
+                        Date = model.Date
+                    };
+
+                    context.Matches.Add(match);
                     context.SaveChanges();
                     return RedirectToAction("Index");
-
                 }
             }
 
-            return View(data);
+            return View(model);
         }
 
     }
