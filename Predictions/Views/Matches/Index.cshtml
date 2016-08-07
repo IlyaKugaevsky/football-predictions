@@ -14,6 +14,19 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
+        <table class="table table-hover">
+            <tbody>
+                @foreach (var match in Model.Matchlist)
+                {
+                    <tr>
+                        <td>@match.Date</td>
+                        <td>@match.HomeTeam.Title</td>
+                        <td>@match.AwayTeam.Title</td>
+                    </tr>
+                }
+            </tbody>
+    </table>
+
         <div class="row">
             <div class="col-md-2"><span class="label label-default">Дата</span></div>
             <div class="col-md-2"><span class="label label-default">Дома</span></div>
