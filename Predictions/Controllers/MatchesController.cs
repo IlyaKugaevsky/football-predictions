@@ -20,12 +20,33 @@ namespace Predictions.Controllers
                 var teamlist = context.Teams.ToList();
                 var matchlist = context.Matches.ToList();
 
-                MatchesViewModel model = new MatchesViewModel(teamlist, matchlist);
+                MatchesViewModel model = new MatchesViewModel()
+                {
+                    Teamlist = teamlist,
+                    Matchlist = matchlist
+                };
 
                 return View(model);
             }
         }
 
+        [HttpPost]
+        public ActionResult Index(MatchesViewModel data)
+        {
+            if (ModelState.IsValid)
+            {
+                using (var context = new PredictionsContext())
+                {
+
+                    context.Matches.Add(data.NewMatch);
+                    context.SaveChanges();
+                    return RedirectToAction("Index");
+
+                }
+            }
+
+            return View(data);
+        }
 
     }
 }
