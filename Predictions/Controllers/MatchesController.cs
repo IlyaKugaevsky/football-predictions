@@ -20,26 +20,25 @@ namespace Predictions.Controllers
                 //refactor later
                 //in ideal world - only services
                 var teamlist = context.Teams.ToList();
-
                 var matchlist = context.Matches.ToList();
 
-                foreach(var m in matchlist)
-                {
-                    if (m.HomeTeam == null)
-                    {
-                        m.HomeTeam = new Team()
-                        {
-                            Title = "Noname"
-                        };
-                    }
-                    if (m.AwayTeam == null)
-                    {
-                        m.AwayTeam = new Team()
-                        {
-                            Title = "Noname"
-                        };
-                    }
-                }
+                //foreach(var m in matchlist)
+                //{
+                //    if (m.HomeTeam == null)
+                //    {
+                //        m.HomeTeam = new Team()
+                //        {
+                //            Title = "Noname"
+                //        };
+                //    }
+                //    if (m.AwayTeam == null)
+                //    {
+                //        m.AwayTeam = new Team()
+                //        {
+                //            Title = "Noname"
+                //        };
+                //    }
+                //}
 
                 MatchesViewModel viewModel = new MatchesViewModel()
                 {

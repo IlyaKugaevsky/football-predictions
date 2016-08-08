@@ -201,6 +201,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MatchesController.cs" />
     <Compile Include="Controllers\TeamsController.cs" />
+    <Compile Include="Controllers\ToursController.cs" />
     <Compile Include="DAL\PredictionsContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -220,6 +221,10 @@
     <Compile Include="Migrations\201608021604404_First_complete_schema.cs" />
     <Compile Include="Migrations\201608021604404_First_complete_schema.Designer.cs">
       <DependentUpon>201608021604404_First_complete_schema.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608081301125_Tour-Schema.cs" />
+    <Compile Include="Migrations\201608081301125_Tour-Schema.Designer.cs">
+      <DependentUpon>201608081301125_Tour-Schema.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -305,6 +310,7 @@
     <Content Include="Views\Teams\Edit.cshtml" />
     <Content Include="Views\Teams\Index.cshtml" />
     <Content Include="Views\Matches\Index.cshtml" />
+    <Content Include="Views\Tours\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -330,6 +336,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608021604404_First_complete_schema.resx">
       <DependentUpon>201608021604404_First_complete_schema.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608081301125_Tour-Schema.resx">
+      <DependentUpon>201608081301125_Tour-Schema.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
