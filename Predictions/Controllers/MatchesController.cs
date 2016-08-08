@@ -45,6 +45,7 @@ namespace Predictions.Controllers
                 {
                     Teamlist = teamlist,
                     Matchlist = matchlist,
+                    Tour = 1
                 };
 
                 return View(viewModel);
@@ -69,7 +70,8 @@ namespace Predictions.Controllers
                     {
                         HomeTeam = homeTeam,
                         AwayTeam = awayTeam,
-                        Date = model.Date
+                        Date = model.Date,
+                        Tour = model.Tour
                     };
 
                     context.Matches.Add(match);
