@@ -16,12 +16,13 @@
     <div class="form-horizontal">
         <table class="table table-hover">
             <tbody>
-                @foreach (var match in Model.Matchlist)
+                @foreach (var item in Model.Matchlist)
                 {
                     <tr>
-                        <td>@match.Date</td>
-                        <td>@match.HomeTeam.Title</td>
-                        <td>@match.AwayTeam.Title</td>
+                        <td>@item.Date</td>
+                        <td>@item.HomeTeam.Title</td>
+                        <td>@item.AwayTeam.Title</td>
+                        <td>@Html.ActionLink("Delete", "Delete", new { id = item.MatchId })</td>
                     </tr>
                 }
             </tbody>

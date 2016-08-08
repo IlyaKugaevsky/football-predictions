@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Predictions.ViewModels;
 using Predictions.DAL;
 using Predictions.Models;
+using System.Net;
 
 namespace Predictions.Controllers
 {
@@ -38,8 +39,6 @@ namespace Predictions.Controllers
                             Title = "Noname"
                         };
                     }
-
-
                 }
 
                 MatchesViewModel viewModel = new MatchesViewModel()
@@ -62,11 +61,7 @@ namespace Predictions.Controllers
                 {
 
                     //NEED SERVICES!!!!
-                    //find by Id, add by...
-                    var test3 = model.Date;
-                    var test = model.HomeTeamId;
-                    var test2 = model.AwayTeamId;
-
+                    //find by Id, add 
                     Team homeTeam = context.Teams.Find(model.HomeTeamId);
                     Team awayTeam = context.Teams.Find(model.AwayTeamId);
 
@@ -85,6 +80,23 @@ namespace Predictions.Controllers
 
             return View(model);
         }
+
+        public ActionResult Delete(int? id)
+        {
+            if(id == null) 
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            using (var context = new PredictionsContext())
+            {
+                Match match = context.Matches.Find(id);
+                context.Matches.Remove(match);
+                context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+        }
+
 
     }
 }
