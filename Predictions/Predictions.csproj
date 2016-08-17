@@ -311,6 +311,7 @@
     <Content Include="Views\Teams\Index.cshtml" />
     <Content Include="Views\Matches\Index.cshtml" />
     <Content Include="Views\Tours\Index.cshtml" />
+    <Content Include="Views\Tours\EditTour.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

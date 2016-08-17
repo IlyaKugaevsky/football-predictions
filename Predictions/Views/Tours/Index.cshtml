@@ -5,19 +5,46 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Расписание по турам</h2>
+<h1>Расписание по турам</h1>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        @*<div class="row">
-            <div class="col-md-1"><span class="label label-default">Тур</span></div>
-            <div class="col-md-2"><span class="label label-default">Дата</span></div>
-            <div class="col-md-2"><span class="label label-default">Дома</span></div>
-            <div class="col-md-2"><span class="label label-default">В гостях</span></div>
-        </div>*@
+        
+            @for (var i = 0; i <= Model.Count() - 1; i++)
+            {
+                <div class="container">
+                    <h2>@Model.ElementAt(i).TourId Тур</h2>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">@Model.ElementAt(i).StartDate - @Model.ElementAt(i).EndDate</div>
+                        <div class="panel-body">
+                            <div class="col-md-7">
+                                <table class="table table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <th>Дата</th>
+                                            <th>Дома</th>
+                                            <th>В гостях</th>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-5">
+                                @Html.ActionLink("Редактировать тур", "EditTour", 
+                               new { id = Model.ElementAt(i).TourId },
+                               new { @class = "btn btn-sm btn-info" }) 
+                                <button type="button" class="btn btn-primary btn-sm">Добавить прогноз</button>
+                                <button type="button" class="btn btn-primary btn-sm">Добавить результаты</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
         @*<div class="row">
             <div class="col-md-1">
                 @Html.TextBoxFor(model => Model., new { @class = "form-control", @value = "1" })
