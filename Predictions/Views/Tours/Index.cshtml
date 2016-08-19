@@ -27,6 +27,7 @@
                                             <th>Дата</th>
                                             <th>Дома</th>
                                             <th>В гостях</th>
+                                            <th>Счет</th>
                                         </tr>
                                         @foreach (var item in Model.ElementAt(i).Matchlist)
                                         {
@@ -34,6 +35,8 @@
                                                 <td>@item.Date</td>
                                                 <td>@item.HomeTeam.Title</td>
                                                 <td>@item.AwayTeam.Title</td>
+                                                <th>@item.Score</th>
+
                                                 <td>@Html.ActionLink("Delete", "Delete", new { id = item.MatchId })</td>
                                             </tr>
                                         }
@@ -51,25 +54,5 @@
                     </div>
                 </div>
             }
-
-        @*<div class="row">
-            <div class="col-md-1">
-                @Html.TextBoxFor(model => Model., new { @class = "form-control", @value = "1" })
-            </div>
-            <div class="col-md-2">
-                @Html.TextBoxFor(model => model.Date, new { @class = "form-control datepicker", @type = "date" })
-            </div>
-            <div class="col-md-2">
-                @Html.DropDownListFor(model => model.HomeTeamId, new SelectList(Model.Teamlist, "TeamId", "Title"), 
-            new { @class = "form-control", placeholder = "Дома" })
-            </div>
-            <div class="col-md-2">
-                @Html.DropDownListFor(model => model.AwayTeamId, new SelectList(Model.Teamlist, "TeamId", "Title"), 
-            new { @class = "form-control", placeholder = "В гостях" })
-            </div>
-            <div class="col-md-2">
-                <input type="submit" class="btn btn-info" value="Добавить тур">
-            </div>
-        </div>*@
     </div>
 }
