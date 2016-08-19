@@ -8,7 +8,7 @@ namespace Predictions.Migrations
         public override void Up()
         {
             CreateTable(
-                "dbo.Tour",
+                "dbo.TourId",
                 c => new
                     {
                         TourId = c.Int(nullable: false),
@@ -19,15 +19,15 @@ namespace Predictions.Migrations
             
             AddColumn("dbo.Match", "Tour_TourId", c => c.Int());
             CreateIndex("dbo.Match", "Tour_TourId");
-            AddForeignKey("dbo.Match", "Tour_TourId", "dbo.Tour", "TourId");
+            AddForeignKey("dbo.Match", "Tour_TourId", "dbo.TourId", "TourId");
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.Match", "Tour_TourId", "dbo.Tour");
+            DropForeignKey("dbo.Match", "Tour_TourId", "dbo.TourId");
             DropIndex("dbo.Match", new[] { "Tour_TourId" });
             DropColumn("dbo.Match", "Tour_TourId");
-            DropTable("dbo.Tour");
+            DropTable("dbo.TourId");
         }
     }
 }

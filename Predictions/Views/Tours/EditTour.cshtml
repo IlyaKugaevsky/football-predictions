@@ -1,4 +1,4 @@
-﻿@model Predictions.Models.Tour
+﻿@model Predictions.ViewModels.EditTourViewModel
 
 @{
     ViewBag.Title = "EditTour";
@@ -15,32 +15,69 @@
         <h4>Tour</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.TourId)
+        @*@Html.HiddenFor(model => model.)*@
 
         <div class="form-group">
-            @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Tour.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Tour.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Tour.StartDate, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Tour.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Tour.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Tour.EndDate, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
+        @*<div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
+        </div>*@
+    </div>
+
+    <table class="table table-hover">
+        <tbody>
+            <tr>
+                <th>Тур</th>
+                <th>Дата</th>
+                <th>Дома</th>
+                <th>В гостях</th>
+            </tr>
+            @foreach (var item in Model.Tour.Matchlist)
+                {
+                <tr>
+                    <td>@item.TourId</td>
+                    <td>@item.Date</td>
+                    <td>@item.HomeTeam.Title</td>
+                    <td>@item.AwayTeam.Title</td>
+                    <td>@Html.ActionLink("Delete", "Delete", new { id = item.MatchId })</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="row">
+        <div class="col-md-2">
+            @Html.TextBoxFor(model => model.Date, new { @class = "form-control datepicker", @type = "date" })
+        </div>
+        <div class="col-md-2">
+            @Html.DropDownListFor(model => model.HomeTeamId, new SelectList(Model.Teamlist, "TeamId", "Title"), new { @class = "form-control", placeholder = "Дома" })
+        </div>
+        <div class="col-md-2">
+            @Html.DropDownListFor(model => model.AwayTeamId, new SelectList(Model.Teamlist, "TeamId", "Title"), new { @class = "form-control", placeholder = "В гостях" })
+        </div>
+        <div class="col-md-2">
+            <input type="submit" class="btn btn-info" value="Добавить матч">
         </div>
     </div>
 }
 
 <div>
+    <hr />
     @Html.ActionLink("Back to List", "Index")
 </div>

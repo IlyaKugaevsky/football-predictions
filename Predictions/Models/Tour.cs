@@ -23,7 +23,5 @@ namespace Predictions.Models
         public DateTime EndDate { get; set; }
 
         public virtual List<Match> Matchlist { get; set; }
-
-
     }
 }

@@ -226,6 +226,10 @@
     <Compile Include="Migrations\201608081301125_Tour-Schema.Designer.cs">
       <DependentUpon>201608081301125_Tour-Schema.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608190609220_Proper one-to-many relationship.cs" />
+    <Compile Include="Migrations\201608190609220_Proper one-to-many relationship.Designer.cs">
+      <DependentUpon>201608190609220_Proper one-to-many relationship.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Expert.cs" />
@@ -237,6 +241,7 @@
     <Compile Include="Models\Tour.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\EditTourViewModel.cs" />
     <Compile Include="ViewModels\MatchesViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -340,6 +345,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608081301125_Tour-Schema.resx">
       <DependentUpon>201608081301125_Tour-Schema.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608190609220_Proper one-to-many relationship.resx">
+      <DependentUpon>201608190609220_Proper one-to-many relationship.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

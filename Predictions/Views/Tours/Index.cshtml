@@ -28,7 +28,15 @@
                                             <th>Дома</th>
                                             <th>В гостях</th>
                                         </tr>
-
+                                        @foreach (var item in Model.ElementAt(i).Matchlist)
+                                        {
+                                            <tr>
+                                                <td>@item.Date</td>
+                                                <td>@item.HomeTeam.Title</td>
+                                                <td>@item.AwayTeam.Title</td>
+                                                <td>@Html.ActionLink("Delete", "Delete", new { id = item.MatchId })</td>
+                                            </tr>
+                                        }
                                     </tbody>
                                 </table>
                             </div>
@@ -38,7 +46,6 @@
                                new { @class = "btn btn-sm btn-info" }) 
                                 <button type="button" class="btn btn-primary btn-sm">Добавить прогноз</button>
                                 <button type="button" class="btn btn-primary btn-sm">Добавить результаты</button>
-
                             </div>
                         </div>
                     </div>
@@ -53,10 +60,12 @@
                 @Html.TextBoxFor(model => model.Date, new { @class = "form-control datepicker", @type = "date" })
             </div>
             <div class="col-md-2">
-                @Html.DropDownListFor(model => model.HomeTeamId, new SelectList(Model.Teamlist, "TeamId", "Title"), new { @class = "form-control", placeholder = "Дома" })
+                @Html.DropDownListFor(model => model.HomeTeamId, new SelectList(Model.Teamlist, "TeamId", "Title"), 
+            new { @class = "form-control", placeholder = "Дома" })
             </div>
             <div class="col-md-2">
-                @Html.DropDownListFor(model => model.AwayTeamId, new SelectList(Model.Teamlist, "TeamId", "Title"), new { @class = "form-control", placeholder = "В гостях" })
+                @Html.DropDownListFor(model => model.AwayTeamId, new SelectList(Model.Teamlist, "TeamId", "Title"), 
+            new { @class = "form-control", placeholder = "В гостях" })
             </div>
             <div class="col-md-2">
                 <input type="submit" class="btn btn-info" value="Добавить тур">

@@ -12,7 +12,6 @@ namespace Predictions.Models
         public int MatchId { get; set; }
         public string Title { get; set; }
         public string Score { get; set; }
-        public int Tour { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Column(TypeName = "DateTime2")]
@@ -20,5 +19,8 @@ namespace Predictions.Models
 
         public Team HomeTeam { get; set; }
         public Team AwayTeam { get; set; }
+
+        public int TourId { get; set; }
+        public Tour Tour { get; set;  }
     }
 }

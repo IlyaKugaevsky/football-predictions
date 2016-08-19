@@ -44,7 +44,7 @@ namespace Predictions.Controllers
                 {
                     Teamlist = teamlist,
                     Matchlist = matchlist,
-                    Tour = 1
+                    TourId = 1
                 };
 
                 return View(viewModel);
@@ -65,12 +65,14 @@ namespace Predictions.Controllers
                     Team homeTeam = context.Teams.Find(model.HomeTeamId);
                     Team awayTeam = context.Teams.Find(model.AwayTeamId);
 
+                    var tour = context.Tours.Find(model.TourId);
+
                     Match match = new Match()
                     {
                         HomeTeam = homeTeam,
                         AwayTeam = awayTeam,
                         Date = model.Date,
-                        Tour = model.Tour
+                        Tour = tour
                     };
 
                     context.Matches.Add(match);

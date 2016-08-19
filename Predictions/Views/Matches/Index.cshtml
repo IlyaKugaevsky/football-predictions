@@ -23,7 +23,7 @@
                 @foreach (var item in Model.Matchlist)
                 {
                     <tr>
-                        <td>@item.Tour</td>
+                        <td>@item.TourId</td>
                         <td>@item.Date</td>
                         <td>@item.HomeTeam.Title</td>
                         <td>@item.AwayTeam.Title</td>
@@ -31,7 +31,7 @@
                     </tr>
                 }
             </tbody>
-    </table>
+        </table>
 
         <div class="row">
             <div class="col-md-1"><span class="label label-default">Тур</span></div>
@@ -41,7 +41,7 @@
         </div>
         <div class="row">
             <div class="col-md-1">
-                @Html.TextBoxFor(model => model.Tour, new { @class = "form-control", @value = "1"})
+                @Html.TextBoxFor(model => model.TourId, new { @class = "form-control", @value = "1"})
             </div>
             <div class="col-md-2">
                 @Html.TextBoxFor(model => model.Date, new { @class = "form-control datepicker", @type = "date" })
