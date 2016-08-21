@@ -15,7 +15,10 @@ namespace Predictions.Models
         public bool? Score { get; set; }
         public int? Sum { get; set; }
 
+        public int MatchId { get; set; }
         public Match Match { get; set; }
+
+        public int ExpertId { get; set; }
         public Expert Expert { get; set; }
 
 

@@ -35,8 +35,7 @@
                                                 <td>@item.Date</td>
                                                 <td>@item.HomeTeam.Title</td>
                                                 <td>@item.AwayTeam.Title</td>
-                                                <th>@item.Score</th>
-
+                                                <td>@item.Score</td>
                                                 <td>@Html.ActionLink("Delete", "Delete", new { id = item.MatchId })</td>
                                             </tr>
                                         }
@@ -45,9 +44,11 @@
                             </div>
                             <div class="col-md-5">
                                 @Html.ActionLink("Редактировать тур", "EditTour", 
-                               new { id = Model.ElementAt(i).TourId },
-                               new { @class = "btn btn-sm btn-info" }) 
-                                <button type="button" class="btn btn-primary btn-sm">Добавить прогноз</button>
+                                    new { id = Model.ElementAt(i).TourId },
+                                    new { @class = "btn btn-sm btn-info" }) 
+                                @Html.ActionLink("Добавить прогноз", "AddPrediction",
+                                    new { id = Model.ElementAt(i).TourId },
+                                    new { @class = "btn btn-sm btn-info" })
                                 <button type="button" class="btn btn-primary btn-sm">Добавить результаты</button>
                             </div>
                         </div>

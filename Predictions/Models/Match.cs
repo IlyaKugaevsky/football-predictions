@@ -22,5 +22,7 @@ namespace Predictions.Models
 
         public int TourId { get; set; }
         public Tour Tour { get; set;  }
+
+        public virtual List<Prediction> Predictions { get; set; }
     }
 }

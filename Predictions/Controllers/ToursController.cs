@@ -18,19 +18,6 @@ namespace Predictions.Controllers
         {
             using (var context = new PredictionsContext())
             {
-                //inicialization
-
-                //for (int i = 1; i <= 8; i++)
-                //{
-                //    TourId tour = new TourId()
-                //    {
-                //        TourId = i,
-                //        StartDate = new DateTime()
-                //    };
-                //    context.Tours.Add(tour);
-                //}
-                //context.SaveChanges();
-
                 var tours = context.Tours
                     .Include(t => t.Matchlist
                         .Select(m => m.HomeTeam))
@@ -57,7 +44,7 @@ namespace Predictions.Controllers
                 }
 
                 var teamlist = context.Teams.ToList();
-                var matchlist = tour.Matchlist;
+                var matchlist = tour.Matchlist.ToList();
 
                 EditTourViewModel viewModel = new EditTourViewModel()
                 {
@@ -77,7 +64,6 @@ namespace Predictions.Controllers
             {
                 using (var context = new PredictionsContext())
                 {
-
                     //NEED SERVICES!!!!
                     //find by Id, add 
                     Team homeTeam = context.Teams.Find(model.HomeTeamId);
@@ -88,12 +74,10 @@ namespace Predictions.Controllers
                         HomeTeam = homeTeam,
                         AwayTeam = awayTeam,
                         Date = model.Date,
-                        //Tour = model.Tour.TourId //TO FIX 
+                        TourId = model.Tour.TourId //TO FIX 
                     };
 
-
-
-                    //context.Tours.Add(match);
+                    context.Matches.Add(match);
                     context.SaveChanges();
                     return RedirectToAction("Index");
                 }
@@ -101,5 +85,66 @@ namespace Predictions.Controllers
 
             return View(model);
         } 
+
+        public ActionResult AddPrediction(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            using (var context = new PredictionsContext())
+            {
+                Tour tour = context.Tours
+                    .Include(t => t.Matchlist
+                        .Select(m => m.HomeTeam))
+                    .Include(t => t.Matchlist
+                        .Select(m => m.AwayTeam))
+                    .SingleOrDefault(t => t.TourId == id);
+                if (tour == null)
+                {
+                    return HttpNotFound();
+                }
+
+                var matchlist = tour.Matchlist.ToList(); //really need?
+                var expertlist = context.Experts.ToList();
+
+                AddPredictionViewModel viewModel = new AddPredictionViewModel()
+                {
+                    Tour = tour,
+                    Matchlist = matchlist,
+                    Expertlist = expertlist
+                };
+                return View(viewModel);
+            };
+        } 
+
+        [HttpPost]
+        public ActionResult AddPrediction (AddPredictionViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                using (var context = new PredictionsContext())
+                {
+                    var predictionlist = new List<Prediction>();
+                    for(var i = 0; i <= model.Matchlist.Count - 1; i++)
+                    {
+                        predictionlist.Add
+                        (
+                            new Prediction()
+                            {
+                                Value = model.PredictionValuelist.ElementAt(i),
+                                MatchId = model.Matchlist.ElementAt(i).MatchId,
+                                ExpertId = model.SelectedExpertId
+                            }
+                        );
+                    }
+                    predictionlist.ForEach(n => context.Predictions.Add(n));
+                    context.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            return Content(ModelState.Values.ElementAt(0).Errors.ElementAt(0).Exception.ToString());
+        }
     }
 }

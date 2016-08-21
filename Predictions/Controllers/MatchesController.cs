@@ -22,29 +22,10 @@ namespace Predictions.Controllers
                 var teamlist = context.Teams.ToList();
                 var matchlist = context.Matches.ToList();
 
-                //foreach(var m in matchlist)
-                //{
-                //    if (m.HomeTeam == null)
-                //    {
-                //        m.HomeTeam = new Team()
-                //        {
-                //            Title = "Noname"
-                //        };
-                //    }
-                //    if (m.AwayTeam == null)
-                //    {
-                //        m.AwayTeam = new Team()
-                //        {
-                //            Title = "Noname"
-                //        };
-                //    }
-                //}
-
                 MatchesViewModel viewModel = new MatchesViewModel()
                 {
                     Teamlist = teamlist,
                     Matchlist = matchlist,
-                    TourId = 1
                 };
 
                 return View(viewModel);
@@ -72,7 +53,7 @@ namespace Predictions.Controllers
                         HomeTeam = homeTeam,
                         AwayTeam = awayTeam,
                         Date = model.Date,
-                        Tour = tour
+                        TourId = model.TourId
                     };
 
                     context.Matches.Add(match);
@@ -80,7 +61,6 @@ namespace Predictions.Controllers
                     return RedirectToAction("Index");
                 }
             }
-
             return View(model);
         }
 
