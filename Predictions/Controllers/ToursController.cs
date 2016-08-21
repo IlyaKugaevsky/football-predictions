@@ -13,33 +13,18 @@ namespace Predictions.Controllers
 {
     public class ToursController : Controller
     {
-        // GET: TourId
         public ActionResult Index()
         {
             using (var context = new PredictionsContext())
             {
-                //inicialization
-
-                //for (int i = 1; i <= 8; i++)
-                //{
-                //    TourId tour = new TourId()
-                //    {
-                //        TourId = i,
-                //        StartDate = new DateTime()
-                //    };
-                //    context.Tours.Add(tour);
-                //}
-                //context.SaveChanges();
-
                 var tours = context.Tours
-                    .Include(t => t.Matchlist
+                    .Include(t => t.Matches
                         .Select(m => m.HomeTeam))
-                    .Include(t => t.Matchlist
+                    .Include(t => t.Matches
                         .Select(m => m.AwayTeam))
                     .ToList();
                 return View(tours);
             }
-
         }
 
         public ActionResult EditTour(int? id)
@@ -50,56 +35,121 @@ namespace Predictions.Controllers
             }
             using (var context = new PredictionsContext())
             {
-                Tour tour = context.Tours.Find(id);
+                Tour tour = context.Tours
+                   .Include(t => t.Matches
+                       .Select(m => m.HomeTeam))
+                   .Include(t => t.Matches
+                       .Select(m => m.AwayTeam))
+                   .SingleOrDefault(t => t.TourId == id);
+
                 if (tour == null)
                 {
                     return HttpNotFound();
                 }
-
                 var teamlist = context.Teams.ToList();
-                var matchlist = tour.Matchlist;
 
                 EditTourViewModel viewModel = new EditTourViewModel()
                 {
                     Teamlist = teamlist,
-                    Matchlist = matchlist,
                     Tour = tour
                 };
-
                 return View(viewModel);
             }
         }
 
+        //TODO: real tour update
         [HttpPost]
-        public ActionResult EditTour(EditTourViewModel model)
+        public ActionResult EditTour(EditTourViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
                 using (var context = new PredictionsContext())
                 {
-
                     //NEED SERVICES!!!!
                     //find by Id, add 
-                    Team homeTeam = context.Teams.Find(model.HomeTeamId);
-                    Team awayTeam = context.Teams.Find(model.AwayTeamId);
+                    var homeTeam = context.Teams.Find(viewModel.SelectedHomeTeamId);
+                    var awayTeam = context.Teams.Find(viewModel.SelectedAwayTeamId);
 
                     Match match = new Match()
                     {
                         HomeTeam = homeTeam,
                         AwayTeam = awayTeam,
-                        Date = model.Date,
-                        //Tour = model.Tour.TourId //TO FIX 
+                        Date = viewModel.InputDate,
+                        TourId = viewModel.Tour.TourId //TO FIX 
                     };
-
-
-
-                    //context.Tours.Add(match);
+                    context.Matches.Add(match);
                     context.SaveChanges();
                     return RedirectToAction("Index");
                 }
             }
-
-            return View(model);
+            return View(viewModel);
         } 
+
+        //a lot of work here!
+        //validation
+        public ActionResult AddPrediction(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            using (var context = new PredictionsContext())
+            {
+                Tour tour = context.Tours
+                    .Include(t => t.Matches
+                        .Select(m => m.HomeTeam))
+                    .Include(t => t.Matches
+                        .Select(m => m.AwayTeam))
+                    .Include(t => t.Matches
+                        .Select(m => m.Predictions))
+                    .SingleOrDefault(t => t.TourId == id);
+                if (tour == null)
+                {
+                    return HttpNotFound();
+                }
+
+                //if predicion already exist? TODO
+
+                //var matchlist = tour.Matches.ToList(); //really need?
+                var expertlist = context.Experts.ToList();
+
+                AddPredictionViewModel viewModel = new AddPredictionViewModel()
+                {
+                    Tour = tour,
+                    //Matchlist = matchlist,
+                    Expertlist = expertlist
+                };
+                return View(viewModel);
+            };
+        } 
+
+        [HttpPost]
+        public ActionResult AddPrediction (AddPredictionViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                using (var context = new PredictionsContext())
+                {
+                    var predictionlist = new List<Prediction>();
+                    for(var i = 0; i <= viewModel.Tour.Matches.Count - 1; i++)
+                    {
+                        predictionlist.Add
+                        (
+                            new Prediction()
+                            {
+                                Value = viewModel.PredictionValuelist.ElementAt(i),
+                                MatchId = viewModel.Tour.Matches.ElementAt(i).MatchId,
+                                ExpertId = viewModel.SelectedExpertId
+                            }
+                        );
+                    }
+                    predictionlist.ForEach(n => context.Predictions.Add(n));
+                    context.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            return Content(ModelState.Values.ElementAt(0).Errors.ElementAt(0).Exception.ToString()); //change later
+        }
     }
 }

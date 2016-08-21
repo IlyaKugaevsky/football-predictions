@@ -37,7 +37,7 @@
                                 <th>В гостях</th>
                                 <th>Счет</th>
                             </tr>
-                            @foreach (var item in Model.Tour.Matchlist)
+                            @foreach (var item in Model.Tour.Matches)
                             {
                                 <tr>
                                     <td>@item.Date</td>
@@ -53,13 +53,14 @@
                 <hr />
                 <div class="row">
                     <div class="col-md-2">
-                        @Html.TextBoxFor(model => model.Date, new { @class = "form-control datepicker", @type = "date" })
+                        @Html.HiddenFor(model => model.Tour.TourId, Model.Tour.TourId)
+                        @Html.TextBoxFor(model => model.InputDate, new { @class = "form-control datepicker", @type = "date" })
                     </div>
                     <div class="col-md-2">
-                        @Html.DropDownListFor(model => model.HomeTeamId, new SelectList(Model.Teamlist, "TeamId", "Title"), new { @class = "form-control", placeholder = "Дома" })
+                        @Html.DropDownListFor(model => model.SelectedHomeTeamId, new SelectList(Model.Teamlist, "TeamId", "Title"), new { @class = "form-control", placeholder = "Дома" })
                     </div>
                     <div class="col-md-2">
-                        @Html.DropDownListFor(model => model.AwayTeamId, new SelectList(Model.Teamlist, "TeamId", "Title"), new { @class = "form-control", placeholder = "В гостях" })
+                        @Html.DropDownListFor(model => model.SelectedAwayTeamId, new SelectList(Model.Teamlist, "TeamId", "Title"), new { @class = "form-control", placeholder = "В гостях" })
                     </div>
                     <div class="col-md-2">
                         <input type="submit" class="btn btn-info" value="Добавить матч">

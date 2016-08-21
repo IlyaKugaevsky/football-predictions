@@ -104,7 +104,6 @@ D:\GitProjects\Predictions\Predictions\obj\Debug\Predictions.Migrations.Added_te
 D:\GitProjects\Predictions\Predictions\obj\Debug\Predictions.Migrations.Added_teams_really.resources
 D:\GitProjects\Predictions\Predictions\obj\Debug\Predictions.Migrations.First_complete_schema.resources
 D:\GitProjects\Predictions\Predictions\obj\Debug\Predictions.Migrations.TourSchema.resources
-D:\GitProjects\Predictions\Predictions\obj\Debug\Predictions.csprojResolveAssemblyReference.cache
 C:\Git-projects\Predictions\Predictions\bin\ApplicationInsights.config
 C:\Git-projects\Predictions\Predictions\bin\roslyn\csc.exe
 C:\Git-projects\Predictions\Predictions\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
@@ -212,3 +211,8 @@ C:\Git-projects\Predictions\Predictions\obj\Debug\Predictions.csproj.GenerateRes
 C:\Git-projects\Predictions\Predictions\obj\Debug\Predictions.dll
 C:\Git-projects\Predictions\Predictions\obj\Debug\Predictions.pdb
 C:\Git-projects\Predictions\Predictions\obj\Debug\Predictions.Migrations.Properonetomanyrelationship.resources
+D:\GitProjects\Predictions\Predictions\obj\Debug\Predictions.Migrations.Properonetomanyrelationship.resources
+D:\GitProjects\Predictions\Predictions\obj\Debug\Predictions.Migrations.Predictionreferences.resources
+D:\GitProjects\Predictions\Predictions\obj\Debug\Predictions.csprojResolveAssemblyReference.cache
+C:\Git-projects\Predictions\Predictions\obj\Debug\Predictions.Migrations.Predictionreferences.resources
+C:\Git-projects\Predictions\Predictions\obj\Debug\Predictions.Migrations.Frommatchlisttomatches.resources

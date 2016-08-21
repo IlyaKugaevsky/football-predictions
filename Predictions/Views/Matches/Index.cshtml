@@ -41,16 +41,16 @@
         </div>
         <div class="row">
             <div class="col-md-1">
-                @Html.TextBoxFor(model => model.TourId, new { @class = "form-control", @value = "1"})
+                @Html.TextBoxFor(model => model.SelectedTourId, new { @class = "form-control", @Value = "1"})
             </div>
             <div class="col-md-2">
-                @Html.TextBoxFor(model => model.Date, new { @class = "form-control datepicker", @type = "date" })
+                @Html.TextBoxFor(model => model.InputDate, new { @class = "form-control datepicker", @type = "date" })
             </div>
             <div class="col-md-2">
-                @Html.DropDownListFor(model => model.HomeTeamId, new SelectList(Model.Teamlist, "TeamId", "Title"), new { @class = "form-control", placeholder = "Дома" })
+                @Html.DropDownListFor(model => model.SelectedHomeTeamId, new SelectList(Model.Teamlist, "TeamId", "Title"), new { @class = "form-control", placeholder = "Дома" })
             </div>
             <div class="col-md-2">
-                @Html.DropDownListFor(model => model.AwayTeamId, new SelectList(Model.Teamlist, "TeamId", "Title"), new { @class = "form-control", placeholder = "В гостях" })
+                @Html.DropDownListFor(model => model.SelectedAwayTeamId, new SelectList(Model.Teamlist, "TeamId", "Title"), new { @class = "form-control", placeholder = "В гостях" })
             </div>
             <div class="col-md-2">
                 <input type="submit" class="btn btn-info" value="Добавить матч">

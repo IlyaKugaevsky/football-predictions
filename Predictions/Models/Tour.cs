@@ -22,6 +22,6 @@ namespace Predictions.Models
         [Column(TypeName = "DateTime2")]
         public DateTime EndDate { get; set; }
 
-        public virtual List<Match> Matchlist { get; set; }
+        public virtual List<Match> Matches { get; set; }
     }
 }

@@ -9,12 +9,14 @@ namespace Predictions.ViewModels
 {
     public class MatchesViewModel
     {
+        //display
         public List<Team> Teamlist { get; set; }
         public List<Match> Matchlist { get; set; }
 
-        public int TourId { get; set; }
-        public int HomeTeamId { get; set;  }
-        public int AwayTeamId { get; set; }
-        public DateTime Date { get; set; }
+        //user input
+        public int SelectedTourId { get; set; }
+        public int SelectedHomeTeamId { get; set;  }
+        public int SelectedAwayTeamId { get; set; }
+        public DateTime InputDate { get; set; }
     }
 }
