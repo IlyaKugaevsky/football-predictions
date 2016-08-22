@@ -38,8 +38,10 @@ namespace Predictions.Controllers
                 //var expert = context.Experts.Find
 
                 //test!
-                viewModel.SelectedExpertId = 1;
+                //viewModel.SelectedExpertId = 1;
                 viewModel.Tourlist = context.Tours.ToList();
+                viewModel.Expertlist = context.Experts.ToList();
+                ///
 
                 var tour = context.Tours
                     .Include(t => t.Matches
