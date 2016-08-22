@@ -32,7 +32,7 @@
                                             <td class="col-md-2">@Model.Tour.Matches.ElementAt(i).Date</td>
                                             <td class="col-md-1">@Model.Tour.Matches.ElementAt(i).HomeTeam.Title</td>
                                             <td class="col-md-1">@Model.Tour.Matches.ElementAt(i).AwayTeam.Title</td>
-                                            <td class="col-md-1">@Html.EditorFor(model => model.PredictionValuelist[i], 
+                                            <td class="col-md-1">@Html.EditorFor(model => model.InputPredictionValuelist[i],
                                                 new { htmlAttributes = new { @class = "form-control" } })</td>
                                         </tr>
                                     }
@@ -44,6 +44,6 @@
                                                 new { @class = "form-control", placeholder = "Дома" })</div>
                     </div>
                 </div>
-            </div>
+        </div>
     </div>
 }

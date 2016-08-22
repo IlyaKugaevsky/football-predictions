@@ -138,7 +138,7 @@ namespace Predictions.Controllers
                         (
                             new Prediction()
                             {
-                                Value = viewModel.PredictionValuelist.ElementAt(i),
+                                Value = viewModel.InputPredictionValuelist.ElementAt(i),
                                 MatchId = viewModel.Tour.Matches.ElementAt(i).MatchId,
                                 ExpertId = viewModel.SelectedExpertId
                             }

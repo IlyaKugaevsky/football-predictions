@@ -27,7 +27,6 @@ namespace Predictions.Controllers
                     Teamlist = teamlist,
                     Matchlist = matchlist,
                 };
-
                 return View(viewModel);
             }
         }

@@ -8,15 +8,15 @@ namespace Predictions.ViewModels
 {
     public class PredictionsDisplayViewModel
     {
+        //display
         public List<Expert> Expertlist { get; set; }
-        public List<Match> Matchlist { get; set; }
+        public List<Tour> Tourlist { get; set; }
 
-        public int SelecetedExpertId { get; set; }
+        public int SelectedExpertId { get; set; }
         public int SelectedTourId { get; set; }
 
         public int HomeTeamId { get; set; }
         public int AwayTeamId { get; set; }
         public DateTime Date { get; set; }
-
     }
 }

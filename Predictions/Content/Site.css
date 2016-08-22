@@ -23,6 +23,19 @@ textarea {
     max-width: 280px;
 }
 
+
+
+
+/********/
+/*My CSS*/
+/********/
+
+/*for space between the rows*/
+/******************************************************************************/
+.top-buffer { margin-top:20px; }
+
+/*external navbar*/
+/******************************************************************************/
 .navbar-custom {
   background-color: #161514;
   border-color: #161514;
@@ -112,3 +125,4 @@ textarea {
     background-color: #161514;
   }
 }
+
