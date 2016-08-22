@@ -17,9 +17,19 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-3">
-                            @Html.DropDownListFor(model => model.SelectedExpertId, 
+                            @*@Html.DropDownListFor(model => model.SelectedExpertId, 
                                                   new SelectList(Model.Expertlist, "ExpertId", "Nickname"),
-                                                  new { @class = "selectpicker"})
+                                                  new { @class = "selectpicker"})*@
+                            <select name="@Html.NameFor(model => model.SelectedTourId)"
+                                    id="@Html.IdFor(model => model.SelectedTourId)"
+                                    class="selectpicker"
+                                    data-width="auto"
+                                    title="Выбрать эксперта">
+                                @foreach (var item in Model.Tourlist)
+                                {
+                                    <option value="@item.TourId.ToString()">@item.TourId</option>
+                                }
+                            </select>
                         </div>        
                         <div class="col-md-2">
                             @*@Html.DropDownListFor(model => model.SelectedTourId, new SelectList(Model.Tourlist, "TourId", "TourId"),
@@ -45,6 +55,22 @@
                                     <th class="col-md-1">В гостях</th>
                                     <th class="col-md-1">Прогноз</th>
                                 </tr>
+
+                                @if (Model.Tour != null)
+                                {
+                                    for (int i = 0; i <= Model.Tour.Matches.Count - 1; i++)
+                                    {
+                                        @Html.HiddenFor(model => Model.Tour.Matches[i].MatchId)
+                                        <tr>
+                                            <td class="col-md-2">@Model.Tour.Matches.ElementAt(i).Date</td>
+                                            <td class="col-md-1">@Model.Tour.Matches.ElementAt(i).HomeTeam.Title</td>
+                                            <td class="col-md-1">@Model.Tour.Matches.ElementAt(i).AwayTeam.Title</td>
+                                            <td class="col-md-1">@Model.Tour.Matches.ElementAt(i).Predictions.FirstOrDefault().Value</td> @* TO FIX!!!!!!!!! *@
+
+                                        </tr>
+                                    }
+                                }
+
                                 <tr><td><input type="submit" class="btn btn-info" value="Показать прогноз"></td></tr>
                             </tbody>
                         </table>
