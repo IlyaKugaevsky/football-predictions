@@ -50,7 +50,7 @@
                 @Html.DropDownListFor(model => model.SelectedHomeTeamId, new SelectList(Model.Teamlist, "TeamId", "Title"), new { @class = "form-control", placeholder = "Дома" })
             </div>
             <div class="col-md-2">
-                @Html.DropDownListFor(model => model.SelectedAwayTeamId, new SelectList(Model.Teamlist, "TeamId", "Title"), new { @class = "form-control", placeholder = "В гостях" })
+                @Html.DropDownListFor(model => model.SelectedAwayTeamId, new SelectList(Model.Teamlist, "TeamId", "Title"), new { @class = "selectpicker", Style = "data-width:auto;" })
             </div>
             <div class="col-md-2">
                 <input type="submit" class="btn btn-info" value="Добавить матч">

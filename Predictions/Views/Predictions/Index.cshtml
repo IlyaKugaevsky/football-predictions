@@ -32,9 +32,9 @@
 
                             <select name="@Html.NameFor(model => model.SelectedTourId)"
                                     id="@Html.IdFor(model => model.SelectedTourId)"
-                                    class="form-control"
-                                    @*data-width="auto"
-                                    title="Выбрать тур"*@>
+                                    class="selectpicker"
+                                    data-width="auto"
+                                    title="Выбрать тур">
                                 @foreach (var item in Model.Tourlist)
                                 {
                                     <option value="@item.TourId.ToString()">@item.TourId</option>
@@ -52,16 +52,16 @@
                                     <th class="col-md-1">Прогноз</th>
                                 </tr>
 
-                                @if (Model.Tour != null)
+                                @if (Model.Matchlist != null)
                                 {
-                                    for (int i = 0; i <= Model.Tour.Matches.Count - 1; i++)
+                                    for (int i = 0; i <= Model.Matchlist.Count() - 1; i++)
                                     {
-                                        @Html.HiddenFor(model => Model.Tour.Matches[i].MatchId)
+                                        @*@Html.HiddenFor(model => Model.Tour.Matches[i].MatchId)*@
                                         <tr>
-                                            <td class="col-md-2">@Model.Tour.Matches.ElementAt(i).Date</td>
-                                            <td class="col-md-1">@Model.Tour.Matches.ElementAt(i).HomeTeam.Title</td>
-                                            <td class="col-md-1">@Model.Tour.Matches.ElementAt(i).AwayTeam.Title</td>
-                                            <td class="col-md-1">@Model.Tour.Matches.ElementAt(i).Predictions.ElementAt(0).Value</td> @* TO FIX!!!!!!!!! *@
+                                            <td class="col-md-2">@Model.Matchlist[i].Date</td>
+                                            <td class="col-md-1">@Model.Matchlist[i].HomeTeamTitle</td>
+                                            <td class="col-md-1">@Model.Matchlist[i].AwayTeamTitle</td>
+                                            <td class="col-md-1">@Model.Matchlist[i].PredictionValue</td> @* TO FIX!!!!!!!!! *@
 
                                         </tr>
                                     }

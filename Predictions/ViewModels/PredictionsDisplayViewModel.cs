@@ -1,8 +1,10 @@
 ﻿using Predictions.Models;
+using Predictions.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace Predictions.ViewModels
 {
@@ -12,7 +14,7 @@ namespace Predictions.ViewModels
         public List<Expert> Expertlist { get; set; }
         public List<Tour> Tourlist { get; set; }
 
-        public Tour Tour { get; set; } //tour + matches + teams + predictions
+        public List<MatchInfo> Matchlist { get; set; }
 
         public int SelectedExpertId { get; set; }
         public int SelectedTourId { get; set; }

@@ -253,6 +253,7 @@
     <Compile Include="ViewModels\AddPredictionViewModel.cs" />
     <Compile Include="ViewModels\EditTourViewModel.cs" />
     <Compile Include="ViewModels\MatchesViewModel.cs" />
+    <Compile Include="ViewModels\Basis\MatchInfo.cs" />
     <Compile Include="ViewModels\PredictionsDisplayViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
