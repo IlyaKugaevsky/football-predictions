@@ -206,6 +206,8 @@ namespace Predictions.Controllers
             {
                 using (var context = new PredictionsContext())
                 {
+                    //quite ugly
+
                     var scorelist = new List<String>();
                     for (var i = 0; i < viewModel.Matchlist.Count(); i++)
                     {
@@ -220,7 +222,6 @@ namespace Predictions.Controllers
                     {
                         tour.Matches[i].Score = viewModel.InputScorelist[i];
                     }
-
                     context.SaveChanges();
                     return RedirectToAction("Index");
                 }
