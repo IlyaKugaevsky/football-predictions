@@ -14,10 +14,4 @@ namespace Predictions.ViewModels
         public string PredictionValue { get; set; }
         public string Score { get; set; }
     }
-
-    public class TourInfo
-    {
-        public List<MatchInfo> Matchlist { get; set; }
-        public int TourId { get; set; }
-    }
 }

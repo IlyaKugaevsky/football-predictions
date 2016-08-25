@@ -10,6 +10,16 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
+
+    for(var i = 0; i < Model.Expertlist.Count(); i++)
+    {
+        @Html.HiddenFor(@model => Model.Expertlist[i].ExpertId)
+    }
+    for(var i = 0; i < Model.Tourlist.Count(); i++)
+    {
+        @Html.HiddenFor(@model => Model.Tourlist[i].TourId)
+    }
+
     <div class="form-horizontal">
         <div class="container">
             <div class="panel panel-default">
@@ -22,9 +32,9 @@
                                     class="selectpicker"
                                     data-width="auto"
                                     title="Выбрать эксперта">
-                                @foreach (var item in Model.Expertlist)
+                                @for(var i = 0; i < Model.Expertlist.Count(); i++)
                                 {
-                                    <option value="@item.ExpertId.ToString()">@item.Nickname</option>
+                                    <option value="@Model.Expertlist[i].ExpertId">@Model.Expertlist[i].Nickname</option>
                                 }
                             </select>
                         </div>        
@@ -35,9 +45,9 @@
                                     class="selectpicker"
                                     data-width="auto"
                                     title="Выбрать тур">
-                                @foreach (var item in Model.Tourlist)
+                                @for(var i = 0; i < Model.Tourlist.Count(); i++)
                                 {
-                                    <option value="@item.TourId.ToString()">@item.TourId</option>
+                                    <option value="@Model.Tourlist[i].TourId">@Model.Tourlist[i].TourId</option>
                                 }
                             </select>
                         </div>
@@ -54,19 +64,16 @@
 
                                 @if (Model.Matchlist != null)
                                 {
-                                    for (int i = 0; i <= Model.Matchlist.Count() - 1; i++)
+                                    for(int i = 0; i <= Model.Matchlist.Count() - 1; i++)
                                     {
-                                        @*@Html.HiddenFor(model => Model.Tour.Matches[i].MatchId)*@
                                         <tr>
                                             <td class="col-md-2">@Model.Matchlist[i].Date</td>
                                             <td class="col-md-1">@Model.Matchlist[i].HomeTeamTitle</td>
                                             <td class="col-md-1">@Model.Matchlist[i].AwayTeamTitle</td>
-                                            <td class="col-md-1">@Model.Matchlist[i].PredictionValue</td> @* TO FIX!!!!!!!!! *@
-
+                                            <td class="col-md-1">@Model.Matchlist[i].PredictionValue</td>
                                         </tr>
                                     }
                                 }
-
                                 <tr><td><input type="submit" class="btn btn-info" value="Показать прогноз"></td></tr>
                             </tbody>
                         </table>
