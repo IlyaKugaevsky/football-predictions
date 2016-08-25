@@ -8,6 +8,7 @@ namespace Predictions.ViewModels
 {
     public class MatchInfo
     {
+        public int Id { get; set; }
         public DateTime Date { get; set; }
         public string HomeTeamTitle { get; set; }
         public string AwayTeamTitle { get; set; }

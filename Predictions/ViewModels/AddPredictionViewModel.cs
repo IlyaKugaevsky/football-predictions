@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Predictions.ViewModels
 {
-    public class AddPredictionViewModel
+    public class AddPredictionsViewModel
     {
         //display
         public List<Expert> Expertlist { get; set; }

@@ -251,6 +251,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AddPredictionViewModel.cs" />
+    <Compile Include="ViewModels\AddScoreViewModel.cs" />
     <Compile Include="ViewModels\EditTourViewModel.cs" />
     <Compile Include="ViewModels\MatchesViewModel.cs" />
     <Compile Include="ViewModels\Basis\MatchInfo.cs" />
@@ -399,6 +400,7 @@
     <Content Include="Views\Tours\EditTour.cshtml" />
     <Content Include="Views\Tours\AddPrediction.cshtml" />
     <Content Include="Views\Predictions\Index.cshtml" />
+    <Content Include="Views\Tours\AddScores.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

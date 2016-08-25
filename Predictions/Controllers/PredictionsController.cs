@@ -52,10 +52,18 @@ namespace Predictions.Controllers
                 viewModel.Matchlist = new List<MatchInfo>();
                 for (var i = 0; i <= tour.Matches.Count() - 1; i++)
                 {
-                    viewModel.Matchlist.Add(new MatchInfo());
-                    viewModel.Matchlist[i].HomeTeamTitle = tour.Matches[i].HomeTeam.Title;
-                    viewModel.Matchlist[i].AwayTeamTitle = tour.Matches[i].AwayTeam.Title;
-                    viewModel.Matchlist[i].Date = tour.Matches[i].Date;
+                    //viewModel.Matchlist.Add(new MatchInfo());
+                    //viewModel.Matchlist[i].HomeTeamTitle = tour.Matches[i].HomeTeam.Title;
+                    //viewModel.Matchlist[i].AwayTeamTitle = tour.Matches[i].AwayTeam.Title;
+                    //viewModel.Matchlist[i].Date = tour.Matches[i].Date;
+
+                    viewModel.Matchlist.Add(
+                        new MatchInfo()
+                        {
+                            Date = tour.Matches[i].Date,
+                            HomeTeamTitle = tour.Matches[i].HomeTeam.Title,
+                            AwayTeamTitle = tour.Matches[i].AwayTeam.Title
+                        });
 
                     var filteredPredictions = tour.Matches[i].Predictions
                         .Where(p => p.ExpertId == viewModel.SelectedExpertId).ToList();

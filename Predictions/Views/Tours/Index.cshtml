@@ -13,7 +13,7 @@
 
     <div class="form-horizontal">
         
-            @for (var i = 0; i <= Model.Count() - 1; i++)
+            @for(var i = 0; i < Model.Count(); i++)
             {
                 <div class="container">
                     <h2>@Model.ElementAt(i).TourId Тур</h2>
@@ -29,7 +29,7 @@
                                             <th>В гостях</th>
                                             <th>Счет</th>
                                         </tr>
-                                        @foreach (var item in Model.ElementAt(i).Matches)
+                                        @foreach(var item in Model.ElementAt(i).Matches)
                                         {
                                             <tr>
                                                 <td>@item.Date</td>
@@ -46,10 +46,12 @@
                                 @Html.ActionLink("Редактировать тур", "EditTour", 
                                     new { id = Model.ElementAt(i).TourId },
                                     new { @class = "btn btn-sm btn-info" }) 
-                                @Html.ActionLink("Добавить прогноз", "AddPrediction",
+                                @Html.ActionLink("Добавить прогноз", "AddPredictions",
                                     new { id = Model.ElementAt(i).TourId },
                                     new { @class = "btn btn-sm btn-info" })
-                                <button type="button" class="btn btn-primary btn-sm">Добавить результаты</button>
+                                @Html.ActionLink("Ввести результаты", "AddScores",
+                                    new { id = Model.ElementAt(i).TourId },
+                                    new { @class = "btn btn-sm btn-info" })
                             </div>
                         </div>
                     </div>

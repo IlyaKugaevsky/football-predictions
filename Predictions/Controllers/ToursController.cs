@@ -87,7 +87,7 @@ namespace Predictions.Controllers
 
         //a lot of work here!
         //validation
-        public ActionResult AddPrediction(int? id)
+        public ActionResult AddPredictions(int? id)
         {
             if (id == null)
             {
@@ -96,7 +96,7 @@ namespace Predictions.Controllers
 
             using (var context = new PredictionsContext())
             {
-                Tour tour = context.Tours
+                var tour = context.Tours
                     .Include(t => t.Matches
                         .Select(m => m.HomeTeam))
                     .Include(t => t.Matches
@@ -114,7 +114,7 @@ namespace Predictions.Controllers
                 //var matchlist = tour.Matches.ToList(); //really need?
                 var expertlist = context.Experts.ToList();
 
-                AddPredictionViewModel viewModel = new AddPredictionViewModel()
+                AddPredictionsViewModel viewModel = new AddPredictionsViewModel()
                 {
                     Tour = tour,
                     //Matchlist = matchlist,
@@ -125,7 +125,7 @@ namespace Predictions.Controllers
         } 
 
         [HttpPost]
-        public ActionResult AddPrediction (AddPredictionViewModel viewModel)
+        public ActionResult AddPredictions (AddPredictionsViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
@@ -151,5 +151,82 @@ namespace Predictions.Controllers
             }
             return Content(ModelState.Values.ElementAt(0).Errors.ElementAt(0).Exception.ToString()); //change later
         }
+
+        public ActionResult AddScores(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            using (var context = new PredictionsContext())
+            {
+                var tour = context.Tours
+                    .Include(t => t.Matches
+                        .Select(m => m.HomeTeam))
+                    .Include(t => t.Matches
+                        .Select(m => m.AwayTeam))
+                    .SingleOrDefault(t => t.TourId == id);
+                if (tour == null)
+                {
+                    return HttpNotFound();
+                }
+
+                //if score already exist? TODO
+
+                var matchlist = new List<MatchInfo>();
+
+                for(var i = 0; i < tour.Matches.Count; i++)
+                {
+                    matchlist.Add(
+                        new MatchInfo()
+                        {
+                            Date = tour.Matches[i].Date,
+                            HomeTeamTitle = tour.Matches[i].HomeTeam.Title,
+                            AwayTeamTitle = tour.Matches[i].AwayTeam.Title
+                        });
+
+                }
+                AddScoresViewModel viewModel = new AddScoresViewModel()
+                {
+                    CurrentTourId = tour.TourId,
+                    Matchlist = matchlist
+                };
+
+                return View(viewModel);
+            }
+
+
+        }
+
+        [HttpPost]
+        public ActionResult AddScores(AddScoresViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                using (var context = new PredictionsContext())
+                {
+                    var scorelist = new List<String>();
+                    for (var i = 0; i < viewModel.Matchlist.Count(); i++)
+                    {
+                        scorelist.Add(viewModel.InputScorelist[i]);
+                    }
+
+                    var tour = context.Tours
+                        .Include(t => t.Matches)
+                        .SingleOrDefault(t => t.TourId == viewModel.CurrentTourId);
+
+                    for (var i = 0; i < tour.Matches.Count(); i++)
+                    {
+                        tour.Matches[i].Score = viewModel.InputScorelist[i];
+                    }
+
+                    context.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            return Content(ModelState.Values.ElementAt(0).Errors.ElementAt(0).Exception.ToString()); //change later
+        }
+
     }
 }
