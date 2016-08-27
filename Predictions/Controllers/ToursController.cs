@@ -229,5 +229,50 @@ namespace Predictions.Controllers
             return Content(ModelState.Values.ElementAt(0).Errors.ElementAt(0).Exception.ToString()); //change later
         }
 
+        public ActionResult SubmitTourPredictions(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            using (var context = new PredictionsContext())
+            {
+                var tour = context.Tours
+                    .Include(t => t.Matches
+                        .Select(m => m.HomeTeam))
+                    .Include(t => t.Matches
+                        .Select(m => m.AwayTeam))
+                    .SingleOrDefault(t => t.TourId == id);
+                if (tour == null)
+                {
+                    return HttpNotFound();
+                }
+
+                //if score already exist? TODO
+
+                var matchlist = new List<MatchInfo>();
+
+                for (var i = 0; i < tour.Matches.Count; i++)
+                {
+                    matchlist.Add(
+                        new MatchInfo()
+                        {
+                            Date = tour.Matches[i].Date,
+                            HomeTeamTitle = tour.Matches[i].HomeTeam.Title,
+                            AwayTeamTitle = tour.Matches[i].AwayTeam.Title
+                        });
+
+                }
+                AddScoresViewModel viewModel = new AddScoresViewModel()
+                {
+                    CurrentTourId = tour.TourId,
+                    Matchlist = matchlist
+                };
+
+                return View(viewModel);
+            }
+        }
+
     }
 }
