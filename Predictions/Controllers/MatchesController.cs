@@ -27,13 +27,12 @@ namespace Predictions.Controllers
                     Teamlist = teamlist,
                     Matchlist = matchlist,
                 };
-
                 return View(viewModel);
             }
         }
 
         [HttpPost]
-        public ActionResult Index(MatchesViewModel model)
+        public ActionResult Index(MatchesViewModel viewModel)
         {
             //[Bind(Include = "MatchId,AwayTeam,HomeTeam")]
             if (ModelState.IsValid)
@@ -43,25 +42,22 @@ namespace Predictions.Controllers
 
                     //NEED SERVICES!!!!
                     //find by Id, add 
-                    Team homeTeam = context.Teams.Find(model.HomeTeamId);
-                    Team awayTeam = context.Teams.Find(model.AwayTeamId);
-
-                    var tour = context.Tours.Find(model.TourId);
+                    Team homeTeam = context.Teams.Find(viewModel.SelectedHomeTeamId);
+                    Team awayTeam = context.Teams.Find(viewModel.SelectedAwayTeamId);
 
                     Match match = new Match()
                     {
                         HomeTeam = homeTeam,
                         AwayTeam = awayTeam,
-                        Date = model.Date,
-                        TourId = model.TourId
+                        Date = viewModel.InputDate,
+                        TourId = viewModel.SelectedTourId
                     };
-
                     context.Matches.Add(match);
                     context.SaveChanges();
                     return RedirectToAction("Index");
                 }
             }
-            return View(model);
+            return View(viewModel);
         }
 
         public ActionResult Delete(int? id)

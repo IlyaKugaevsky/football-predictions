@@ -13,20 +13,18 @@ namespace Predictions.Controllers
 {
     public class ToursController : Controller
     {
-        // GET: TourId
         public ActionResult Index()
         {
             using (var context = new PredictionsContext())
             {
                 var tours = context.Tours
-                    .Include(t => t.Matchlist
+                    .Include(t => t.Matches
                         .Select(m => m.HomeTeam))
-                    .Include(t => t.Matchlist
+                    .Include(t => t.Matches
                         .Select(m => m.AwayTeam))
                     .ToList();
                 return View(tours);
             }
-
         }
 
         public ActionResult EditTour(int? id)
@@ -37,28 +35,31 @@ namespace Predictions.Controllers
             }
             using (var context = new PredictionsContext())
             {
-                Tour tour = context.Tours.Find(id);
+                Tour tour = context.Tours
+                   .Include(t => t.Matches
+                       .Select(m => m.HomeTeam))
+                   .Include(t => t.Matches
+                       .Select(m => m.AwayTeam))
+                   .SingleOrDefault(t => t.TourId == id);
+
                 if (tour == null)
                 {
                     return HttpNotFound();
                 }
-
                 var teamlist = context.Teams.ToList();
-                var matchlist = tour.Matchlist.ToList();
 
                 EditTourViewModel viewModel = new EditTourViewModel()
                 {
                     Teamlist = teamlist,
-                    Matchlist = matchlist,
                     Tour = tour
                 };
-
                 return View(viewModel);
             }
         }
 
+        //TODO: real tour update
         [HttpPost]
-        public ActionResult EditTour(EditTourViewModel model)
+        public ActionResult EditTour(EditTourViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
@@ -66,27 +67,27 @@ namespace Predictions.Controllers
                 {
                     //NEED SERVICES!!!!
                     //find by Id, add 
-                    Team homeTeam = context.Teams.Find(model.HomeTeamId);
-                    Team awayTeam = context.Teams.Find(model.AwayTeamId);
+                    var homeTeam = context.Teams.Find(viewModel.SelectedHomeTeamId);
+                    var awayTeam = context.Teams.Find(viewModel.SelectedAwayTeamId);
 
                     Match match = new Match()
                     {
                         HomeTeam = homeTeam,
                         AwayTeam = awayTeam,
-                        Date = model.Date,
-                        TourId = model.Tour.TourId //TO FIX 
+                        Date = viewModel.InputDate,
+                        TourId = viewModel.Tour.TourId //TO FIX 
                     };
-
                     context.Matches.Add(match);
                     context.SaveChanges();
                     return RedirectToAction("Index");
                 }
             }
-
-            return View(model);
+            return View(viewModel);
         } 
 
-        public ActionResult AddPrediction(int? id)
+        //a lot of work here!
+        //validation
+        public ActionResult AddPredictions(int? id)
         {
             if (id == null)
             {
@@ -95,24 +96,28 @@ namespace Predictions.Controllers
 
             using (var context = new PredictionsContext())
             {
-                Tour tour = context.Tours
-                    .Include(t => t.Matchlist
+                var tour = context.Tours
+                    .Include(t => t.Matches
                         .Select(m => m.HomeTeam))
-                    .Include(t => t.Matchlist
+                    .Include(t => t.Matches
                         .Select(m => m.AwayTeam))
+                    .Include(t => t.Matches
+                        .Select(m => m.Predictions))
                     .SingleOrDefault(t => t.TourId == id);
                 if (tour == null)
                 {
                     return HttpNotFound();
                 }
 
-                var matchlist = tour.Matchlist.ToList(); //really need?
+                //if predicion already exist? TODO
+
+                //var matchlist = tour.Matches.ToList(); //really need?
                 var expertlist = context.Experts.ToList();
 
-                AddPredictionViewModel viewModel = new AddPredictionViewModel()
+                AddPredictionsViewModel viewModel = new AddPredictionsViewModel()
                 {
                     Tour = tour,
-                    Matchlist = matchlist,
+                    //Matchlist = matchlist,
                     Expertlist = expertlist
                 };
                 return View(viewModel);
@@ -120,22 +125,22 @@ namespace Predictions.Controllers
         } 
 
         [HttpPost]
-        public ActionResult AddPrediction (AddPredictionViewModel model)
+        public ActionResult AddPredictions (AddPredictionsViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
                 using (var context = new PredictionsContext())
                 {
                     var predictionlist = new List<Prediction>();
-                    for(var i = 0; i <= model.Matchlist.Count - 1; i++)
+                    for(var i = 0; i <= viewModel.Tour.Matches.Count - 1; i++)
                     {
                         predictionlist.Add
                         (
                             new Prediction()
                             {
-                                Value = model.PredictionValuelist.ElementAt(i),
-                                MatchId = model.Matchlist.ElementAt(i).MatchId,
-                                ExpertId = model.SelectedExpertId
+                                Value = viewModel.InputPredictionValuelist.ElementAt(i),
+                                MatchId = viewModel.Tour.Matches.ElementAt(i).MatchId,
+                                ExpertId = viewModel.SelectedExpertId
                             }
                         );
                     }
@@ -144,7 +149,130 @@ namespace Predictions.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            return Content(ModelState.Values.ElementAt(0).Errors.ElementAt(0).Exception.ToString());
+            return Content(ModelState.Values.ElementAt(0).Errors.ElementAt(0).Exception.ToString()); //change later
         }
+
+        public ActionResult AddScores(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            using (var context = new PredictionsContext())
+            {
+                var tour = context.Tours
+                    .Include(t => t.Matches
+                        .Select(m => m.HomeTeam))
+                    .Include(t => t.Matches
+                        .Select(m => m.AwayTeam))
+                    .SingleOrDefault(t => t.TourId == id);
+                if (tour == null)
+                {
+                    return HttpNotFound();
+                }
+
+                //if score already exist? TODO
+
+                var matchlist = new List<MatchInfo>();
+
+                for(var i = 0; i < tour.Matches.Count; i++)
+                {
+                    matchlist.Add(
+                        new MatchInfo()
+                        {
+                            Date = tour.Matches[i].Date,
+                            HomeTeamTitle = tour.Matches[i].HomeTeam.Title,
+                            AwayTeamTitle = tour.Matches[i].AwayTeam.Title
+                        });
+
+                }
+                AddScoresViewModel viewModel = new AddScoresViewModel()
+                {
+                    CurrentTourId = tour.TourId,
+                    Matchlist = matchlist
+                };
+
+                return View(viewModel);
+            }
+
+
+        }
+
+        [HttpPost]
+        public ActionResult AddScores(AddScoresViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                using (var context = new PredictionsContext())
+                {
+                    //quite ugly
+
+                    var scorelist = new List<String>();
+                    for (var i = 0; i < viewModel.Matchlist.Count(); i++)
+                    {
+                        scorelist.Add(viewModel.InputScorelist[i]);
+                    }
+
+                    var tour = context.Tours
+                        .Include(t => t.Matches)
+                        .SingleOrDefault(t => t.TourId == viewModel.CurrentTourId);
+
+                    for (var i = 0; i < tour.Matches.Count(); i++)
+                    {
+                        tour.Matches[i].Score = viewModel.InputScorelist[i];
+                    }
+                    context.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            return Content(ModelState.Values.ElementAt(0).Errors.ElementAt(0).Exception.ToString()); //change later
+        }
+
+        public ActionResult SubmitTourPredictions(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            using (var context = new PredictionsContext())
+            {
+                var tour = context.Tours
+                    .Include(t => t.Matches
+                        .Select(m => m.HomeTeam))
+                    .Include(t => t.Matches
+                        .Select(m => m.AwayTeam))
+                    .SingleOrDefault(t => t.TourId == id);
+                if (tour == null)
+                {
+                    return HttpNotFound();
+                }
+
+                //if score already exist? TODO
+
+                var matchlist = new List<MatchInfo>();
+
+                for (var i = 0; i < tour.Matches.Count; i++)
+                {
+                    matchlist.Add(
+                        new MatchInfo()
+                        {
+                            Date = tour.Matches[i].Date,
+                            HomeTeamTitle = tour.Matches[i].HomeTeam.Title,
+                            AwayTeamTitle = tour.Matches[i].AwayTeam.Title
+                        });
+
+                }
+                AddScoresViewModel viewModel = new AddScoresViewModel()
+                {
+                    CurrentTourId = tour.TourId,
+                    Matchlist = matchlist
+                };
+
+                return View(viewModel);
+            }
+        }
+
     }
 }

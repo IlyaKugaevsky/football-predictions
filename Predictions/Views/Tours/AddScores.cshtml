@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewBag.Title = "AddScores";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model Predictions.ViewModels.AddScoresViewModel
+
+@{
+    ViewBag.Title = "AddPrediction";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Ввести результаты</h1>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <div class="container">
+            <h2>@Model.CurrentTourId Тур</h2>
+            @Html.HiddenFor(model => Model.CurrentTourId)
+            <div class="panel panel-default">
+                @*<div class="panel-heading">@Model.Tour.StartDate - @Model.Tour.EndDate</div>*@
+                <div class="panel-body">
+                    <div class="col-md-5">
+                        <table class="table table-hover">
+                            <tbody>
+                                <tr>
+                                    <th class="col-md-2">Дата</th>
+                                    <th class="col-md-1">Дома</th>
+                                    <th class="col-md-1">В гостях</th>
+                                    <th class="col-md-1">Счет</th>
+                                </tr>
+                                @for (int i = 0; i < Model.Matchlist.Count(); i++)
+                                {
+                                    @Html.HiddenFor(model => Model.Matchlist[i].Id)
+                                    <tr>
+                                        <td class="col-md-2">@Model.Matchlist[i].Date</td>
+                                        <td class="col-md-1">@Model.Matchlist[i].HomeTeamTitle</td>
+                                        <td class="col-md-1">@Model.Matchlist[i].AwayTeamTitle</td>
+                                        <td class="col-md-1">
+                                            @Html.TextBoxFor(model => model.InputScorelist[i], new { @class = "form-control"})
+                                        </td>
+                                    </tr>
+                                }
+                                <tr><td><input type="submit" class="btn btn-info" value="Сохранить"></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+}

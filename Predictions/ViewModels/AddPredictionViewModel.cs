@@ -6,14 +6,14 @@ using System.Web;
 
 namespace Predictions.ViewModels
 {
-    public class AddPredictionViewModel
+    public class AddPredictionsViewModel
     {
-        public List<Match> Matchlist { get; set; }
+        //display
         public List<Expert> Expertlist { get; set; }
-        public List<string> PredictionValuelist { get; set; }
-
         public Tour Tour { get; set; }
 
+        //input
+        public List<string> InputPredictionValuelist { get; set; }
         public int SelectedExpertId { get; set; }
     }
 }
