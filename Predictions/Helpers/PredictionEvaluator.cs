@@ -14,7 +14,7 @@ namespace Predictions.Helpers
 
         public static int GetAwayGoals(string expression)
         {
-            return Convert.ToInt32(expression.Substring(expression.IndexOf(':'), expression.Length));
+            return Convert.ToInt32(expression.Substring(expression.IndexOf(':') + 1, expression.Length  - expression.IndexOf(':') - 1));
         }
 
         public static int GetDifference(string expression)

@@ -9,7 +9,6 @@ namespace Predictions.Services
 {
     public class PredictionService
     {
-        public 
 
         public void SubmitTourPredictions(int tourId, PredictionsContext context)
         {

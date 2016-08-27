@@ -201,6 +201,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MatchesController.cs" />
     <Compile Include="Controllers\PredictionsController.cs" />
+    <Compile Include="Controllers\SimpleOutputController.cs" />
     <Compile Include="Controllers\TeamsController.cs" />
     <Compile Include="Controllers\ToursController.cs" />
     <Compile Include="DAL\PredictionsContext.cs" />
@@ -406,6 +407,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\SimpleOutput\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
