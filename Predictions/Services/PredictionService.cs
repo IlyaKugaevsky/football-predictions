@@ -6,6 +6,7 @@ using Predictions.DAL;
 using Predictions.Models;
 using Predictions.Helpers;
 using System.Data.Entity;
+using Predictions.Services;
 
 namespace Predictions.Services
 {
@@ -23,11 +24,17 @@ namespace Predictions.Services
         public void SubmitPrediction (Prediction prediction, PredictionsContext context)
         {
             var predictionResults = PredictionEvaluator.GetPredictionResults(prediction.Value, prediction.Match.Score);
-            prediction.Sum = predictionResults.Item1;
-            prediction.Score = predictionResults.Item2;
-            prediction.Difference = predictionResults.Item3;
-            prediction.Outcome = predictionResults.Item4;
-            prediction.Expert.Sum += predictionResults.Item1;
+
+            prediction.Sum = predictionResults.Sum;
+            prediction.Score = predictionResults.Score;
+            prediction.Difference = predictionResults.Difference;
+            prediction.Outcome = predictionResults.Outcome;
+           
+            prediction.Expert.Sum += predictionResults.Sum;
+            if (predictionResults.Score) prediction.Expert.Scores++;
+            if (predictionResults.Difference) prediction.Expert.Differences++;
+            if (predictionResults.Outcome) prediction.Expert.Outcomes++;
+
             prediction.IsClosed = true;
         }
 
@@ -43,16 +50,22 @@ namespace Predictions.Services
             }
         }
 
-        //public void RestartPrediction(Prediction prediction, context)
-        //{
+        public void RestartPrediction(Prediction prediction, PredictionsContext context)
+        {
+            if(prediction.IsClosed)
+            {
+                prediction.Expert.Sum -= prediction.Sum;
+                if (prediction.Score) prediction.Expert.Scores++;
+                if (prediction.Difference) prediction.Expert.Differences++;
+                if (prediction.Outcome) prediction.Expert.Outcomes++;
 
-        //    prediction.Expert.Sum -= prediction.Sum;
+                prediction.Sum = 0;
+                prediction.Score = false;
+                prediction.Difference = false;
+                prediction.Outcome = false;
 
-        //    prediction.Sum = predictionResults.Item1;
-        //    prediction.Score = predictionResults.Item2;
-        //    prediction.Difference = predictionResults.Item3;
-        //    prediction.Outcome = predictionResults.Item4;
-        //    prediction.IsClosed = true;
-        //}
+                prediction.IsClosed = false;
+            }
+        }
     }
 }

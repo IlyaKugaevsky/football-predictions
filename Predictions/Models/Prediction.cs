@@ -10,10 +10,10 @@ namespace Predictions.Models
         public int PredictionId { get; set; }
         public string Value { get; set; }
 
-        public int? Sum { get; set; }
-        public bool? Score { get; set; }
-        public bool? Difference { get; set; }
-        public bool? Outcome { get; set; }
+        public int Sum { get; set; } = 0;
+        public bool Score { get; set; } = false;
+        public bool Difference { get; set; } = false;
+        public bool Outcome { get; set; } = false;
 
         public bool IsClosed { get; set; } = false;
 

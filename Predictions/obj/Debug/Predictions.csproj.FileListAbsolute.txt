@@ -219,3 +219,4 @@ C:\Git-projects\Predictions\Predictions\obj\Debug\Predictions.csprojResolveAssem
 C:\Git-projects\Predictions\Predictions\obj\Debug\Predictions.Migrations.boolIsClosedtoPredictionschema.resources
 D:\GitProjects\Predictions\Predictions\obj\Debug\Predictions.Migrations.Frommatchlisttomatches.resources
 D:\GitProjects\Predictions\Predictions\obj\Debug\Predictions.Migrations.boolIsClosedtoPredictionschema.resources
+D:\GitProjects\Predictions\Predictions\obj\Debug\Predictions.Migrations.nomorenullabletypes.resources

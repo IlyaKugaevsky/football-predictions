@@ -1,4 +1,5 @@
 ﻿using System;
+using Predictions.ViewModels.Basis;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -41,7 +42,7 @@ namespace Predictions.Helpers
         }
 
 
-        public static Tuple<int, bool, bool, bool> GetPredictionResults(string prediction, string score) //sum, score, difference, outcome
+        public static PredictionResults GetPredictionResults(string prediction, string score) //sum, score, difference, outcome
         {
             var predictOutcome = PredictOutcome(prediction, score);
             var predictDifference = PredictDifference(prediction, score);
@@ -52,7 +53,15 @@ namespace Predictions.Helpers
             if (predictDifference) sum++;
             if (predictScore) sum++;
 
-            return Tuple.Create(sum, predictScore, predictDifference, predictOutcome);
+            return new PredictionResults
+            {
+                Sum = sum,
+                Score = predictScore,
+                Difference = predictDifference,
+                Outcome = predictOutcome
+            };
+
+            //return Tuple.Create(sum, predictScore, predictDifference, predictOutcome);
         }
     }
 }
