@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using Predictions.Models;
 using Predictions.ViewModels;
+using Predictions.Services;
 using System.Net;
 using System.Data.Entity;
 
@@ -235,42 +236,16 @@ namespace Predictions.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
             using (var context = new PredictionsContext())
             {
-                var tour = context.Tours
-                    .Include(t => t.Matches
-                        .Select(m => m.HomeTeam))
-                    .Include(t => t.Matches
-                        .Select(m => m.AwayTeam))
-                    .SingleOrDefault(t => t.TourId == id);
-                if (tour == null)
-                {
-                    return HttpNotFound();
-                }
+                //mb better?
+                int correctId = id ?? default(int);
 
-                //if score already exist? TODO
-
-                var matchlist = new List<MatchInfo>();
-
-                for (var i = 0; i < tour.Matches.Count; i++)
-                {
-                    matchlist.Add(
-                        new MatchInfo()
-                        {
-                            Date = tour.Matches[i].Date,
-                            HomeTeamTitle = tour.Matches[i].HomeTeam.Title,
-                            AwayTeamTitle = tour.Matches[i].AwayTeam.Title
-                        });
-
-                }
-                AddScoresViewModel viewModel = new AddScoresViewModel()
-                {
-                    CurrentTourId = tour.TourId,
-                    Matchlist = matchlist
-                };
-
-                return View(viewModel);
+                //private, at the top of the class
+                var service = new PredictionService();
+                service.SubmitTourPredictions(correctId, context);
+                context.SaveChanges();
+                return RedirectToAction("Index");
             }
         }
 

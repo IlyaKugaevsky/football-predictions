@@ -15,8 +15,7 @@ namespace Predictions.Models
         public bool? Difference { get; set; }
         public bool? Outcome { get; set; }
 
-        public bool IsClosed { get; set; }
-
+        public bool IsClosed { get; set; } = false;
 
         public int MatchId { get; set; }
         public Match Match { get; set; }

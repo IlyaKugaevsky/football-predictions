@@ -43,15 +43,22 @@
                                 </table>
                             </div>
                             <div class="col-md-5">
-                                @Html.ActionLink("Редактировать тур", "EditTour", 
-                                    new { id = Model.ElementAt(i).TourId },
-                                    new { @class = "btn btn-sm btn-info" }) 
-                                @Html.ActionLink("Добавить прогноз", "AddPredictions",
+                                <div class="row">
+                                    @Html.ActionLink("Редактировать тур", "EditTour",
                                     new { id = Model.ElementAt(i).TourId },
                                     new { @class = "btn btn-sm btn-info" })
-                                @Html.ActionLink("Ввести результаты", "AddScores",
+                                    @Html.ActionLink("Добавить прогноз", "AddPredictions",
                                     new { id = Model.ElementAt(i).TourId },
                                     new { @class = "btn btn-sm btn-info" })
+                                    @Html.ActionLink("Ввести результаты", "AddScores",
+                                    new { id = Model.ElementAt(i).TourId },
+                                    new { @class = "btn btn-sm btn-info" })
+                                </div>
+                                <div class="row">
+                                    @Html.ActionLink("Посчитать прогнозы", "SubmitTourPredictions",
+                                    new { id = Model.ElementAt(i).TourId },
+                                    new { @class = "btn btn-sm btn-info" })
+                                </div>
                             </div>
                         </div>
                     </div>
