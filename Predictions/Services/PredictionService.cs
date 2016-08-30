@@ -32,8 +32,8 @@ namespace Predictions.Services
            
             prediction.Expert.Sum += predictionResults.Sum;
             if (predictionResults.Score) prediction.Expert.Scores++;
-            if (predictionResults.Difference) prediction.Expert.Differences++;
-            if (predictionResults.Outcome) prediction.Expert.Outcomes++;
+            else if (predictionResults.Difference) prediction.Expert.Differences++;
+            else if (predictionResults.Outcome) prediction.Expert.Outcomes++;
 
             prediction.IsClosed = true;
         }

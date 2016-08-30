@@ -220,3 +220,4 @@ C:\Git-projects\Predictions\Predictions\obj\Debug\Predictions.Migrations.boolIsC
 D:\GitProjects\Predictions\Predictions\obj\Debug\Predictions.Migrations.Frommatchlisttomatches.resources
 D:\GitProjects\Predictions\Predictions\obj\Debug\Predictions.Migrations.boolIsClosedtoPredictionschema.resources
 D:\GitProjects\Predictions\Predictions\obj\Debug\Predictions.Migrations.nomorenullabletypes.resources
+D:\GitProjects\Predictions\Predictions\obj\Debug\Predictions.csprojResolveAssemblyReference.cache
