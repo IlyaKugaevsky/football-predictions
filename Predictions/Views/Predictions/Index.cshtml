@@ -11,7 +11,7 @@
 {
     @Html.AntiForgeryToken()
 
-    for(var i = 0; i < Model.Expertlist.Count(); i++)
+    for (var i = 0; i < Model.Expertlist.Count(); i++)
     {
         @Html.HiddenFor(@model => Model.Expertlist[i].ExpertId)
         @Html.HiddenFor(@model => Model.Expertlist[i].Nickname)
@@ -28,32 +28,35 @@
                 <div class="panel-heading"></div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-3">
-                            <select name="@Html.NameFor(model => model.SelectedExpertId)"
-                                    id="@Html.IdFor(model => model.SelectedExpertId)"
-                                    class="selectpicker"
-                                    data-width="auto"
-                                    title="Выбрать эксперта">
-                                @for(var i = 0; i < Model.Expertlist.Count(); i++)
-                                {
-                                    <option value="@Model.Expertlist[i].ExpertId">@Model.Expertlist[i].Nickname</option>
-                                }
-                            </select>
-                        </div>        
-                        <div class="col-md-2">
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <select name="@Html.NameFor(model => model.SelectedExpertId)"
+                                        id="Select1"
+                                        class="selectpicker"
+                                        data-width="auto"
+                                        title="Выбрать эксперта">
+                                    @for (var i = 0; i < Model.Expertlist.Count(); i++)
+                                    {
+                                        <option value="@Model.Expertlist[i].ExpertId">@Model.Expertlist[i].Nickname</option>
+                                    }
+                                </select>
+                                <select name="@Html.NameFor(model => model.SelectedTourId)"
+                                        id="Select2"
+                                        class="selectpicker"
+                                        data-width="auto"
+                                        title="Выбрать тур">
+                                    @for (var i = 0; i < Model.Tourlist.Count(); i++)
+                                    {
+                                        <option value="@Model.Tourlist[i].TourId">@Model.Tourlist[i].TourId</option>
+                                    }
+                                </select>
+                            </div>
 
-                            <select name="@Html.NameFor(model => model.SelectedTourId)"
-                                    id="@Html.IdFor(model => model.SelectedTourId)"
-                                    class="selectpicker"
-                                    data-width="auto"
-                                    title="Выбрать тур">
-                                @for(var i = 0; i < Model.Tourlist.Count(); i++)
-                                {
-                                    <option value="@Model.Tourlist[i].TourId">@Model.Tourlist[i].TourId</option>
-                                }
-                            </select>
                         </div>
-                    </div>
+                        <div class="col-md-8">
+                            <input type="submit" class="btn btn-info pull-right" value="Показать прогноз">
+                        </div>
+                    </div>              
                     <div class="row top-buffer">
                         <table class="table table-hover">
                             <tbody>
@@ -66,7 +69,7 @@
 
                                 @if (Model.Matchlist != null)
                                 {
-                                    for(int i = 0; i <= Model.Matchlist.Count() - 1; i++)
+                                    for (int i = 0; i <= Model.Matchlist.Count() - 1; i++)
                                     {
                                         <tr>
                                             <td class="col-md-2">@Model.Matchlist[i].Date</td>
@@ -76,7 +79,6 @@
                                         </tr>
                                     }
                                 }
-                                <tr><td><input type="submit" class="btn btn-info" value="Показать прогноз"></td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -84,4 +86,15 @@
             </div>
         </div>
     </div>
+
+
 }
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.selectpicker').selectpicker('refresh');
+        $('#Select1').selectpicker('val', '@Model.SelectedExpertId');
+        $('#Select2').selectpicker('val', '@Model.SelectedTourId');
+    });
+</script>

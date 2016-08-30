@@ -52,11 +52,6 @@ namespace Predictions.Controllers
                 viewModel.Matchlist = new List<MatchInfo>();
                 for (var i = 0; i <= tour.Matches.Count() - 1; i++)
                 {
-                    //viewModel.Matchlist.Add(new MatchInfo());
-                    //viewModel.Matchlist[i].HomeTeamTitle = tour.Matches[i].HomeTeam.Title;
-                    //viewModel.Matchlist[i].AwayTeamTitle = tour.Matches[i].AwayTeam.Title;
-                    //viewModel.Matchlist[i].Date = tour.Matches[i].Date;
-
                     viewModel.Matchlist.Add(
                         new MatchInfo()
                         {

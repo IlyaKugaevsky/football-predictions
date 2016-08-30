@@ -7,62 +7,69 @@
 
 <h1>Расписание по турам</h1>
 
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        
-            @for(var i = 0; i < Model.Count(); i++)
-            {
-                <div class="container">
-                    <h2>@Model.ElementAt(i).TourId Тур</h2>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">@Model.ElementAt(i).StartDate - @Model.ElementAt(i).EndDate</div>
-                        <div class="panel-body">
-                            <div class="col-md-7">
-                                <table class="table table-hover">
-                                    <tbody>
+        @for (var i = 0; i < Model.Count(); i++)
+        {
+            <div class="container">
+                <h2>@Model.ElementAt(i).TourId Тур</h2>
+                <div class="panel panel-default">
+                    <div class="panel-heading">@Model.ElementAt(i).StartDate - @Model.ElementAt(i).EndDate</div>
+                    <div class="panel-body">
+                        <div class="col-md-7">
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th>Дата</th>
+                                        <th>Дома</th>
+                                        <th>В гостях</th>
+                                        <th>Счет</th>
+                                    </tr>
+                                    @foreach (var item in Model.ElementAt(i).Matches)
+                                    {
                                         <tr>
-                                            <th>Дата</th>
-                                            <th>Дома</th>
-                                            <th>В гостях</th>
-                                            <th>Счет</th>
+                                            <td>@item.Date</td>
+                                            <td>@item.HomeTeam.Title</td>
+                                            <td>@item.AwayTeam.Title</td>
+                                            <td>@item.Score</td>
+                                            <td>@Html.ActionLink("Delete", "Delete", new { id = item.MatchId })</td>
                                         </tr>
-                                        @foreach(var item in Model.ElementAt(i).Matches)
-                                        {
-                                            <tr>
-                                                <td>@item.Date</td>
-                                                <td>@item.HomeTeam.Title</td>
-                                                <td>@item.AwayTeam.Title</td>
-                                                <td>@item.Score</td>
-                                                <td>@Html.ActionLink("Delete", "Delete", new { id = item.MatchId })</td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="col-md-5">
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-2 col-md-offset-2">
+                            <div class="btn-group-justified" role="group">
                                 <div class="row">
                                     @Html.ActionLink("Редактировать тур", "EditTour",
                                     new { id = Model.ElementAt(i).TourId },
-                                    new { @class = "btn btn-sm btn-info" })
+                                    new { @class = "btn btn-sm btn-info", @role = "group"})
+                                </div>
+
+                                <div class="row top-buffer">
                                     @Html.ActionLink("Добавить прогноз", "AddPredictions",
                                     new { id = Model.ElementAt(i).TourId },
                                     new { @class = "btn btn-sm btn-info" })
+                                </div>
+                                <div class="row top-buffer">
                                     @Html.ActionLink("Ввести результаты", "AddScores",
                                     new { id = Model.ElementAt(i).TourId },
                                     new { @class = "btn btn-sm btn-info" })
                                 </div>
-                                <div class="row">
+                                <div class="row top-buffer">
                                     @Html.ActionLink("Посчитать прогнозы", "SubmitTourPredictions",
                                     new { id = Model.ElementAt(i).TourId },
-                                    new { @class = "btn btn-sm btn-info" })
+                                    new { @class = "btn btn-sm btn-danger" })
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            }
+            </div>
+        }
     </div>
 }

@@ -60,8 +60,6 @@ namespace Predictions.Helpers
                 Difference = predictDifference,
                 Outcome = predictOutcome
             };
-
-            //return Tuple.Create(sum, predictScore, predictDifference, predictOutcome);
         }
     }
 }
