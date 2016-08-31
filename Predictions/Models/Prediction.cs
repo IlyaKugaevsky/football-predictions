@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.ComponentModel.DataAnnotations;
 
 namespace Predictions.Models
 {
     public class Prediction
     {
         public int PredictionId { get; set; }
+        //[RegularExpression(@"[(\d{1,2}):(\d{1,2})]", ErrorMessage = "Некорректный счет")]
         public string Value { get; set; }
 
         public int Sum { get; set; } = 0;

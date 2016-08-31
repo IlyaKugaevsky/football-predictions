@@ -133,6 +133,8 @@ namespace Predictions.Controllers
                 using (var context = new PredictionsContext())
                 {
                     var predictionlist = new List<Prediction>();
+
+                    //if valuelist null?
                     for(var i = 0; i <= viewModel.Tour.Matches.Count - 1; i++)
                     {
                         predictionlist.Add

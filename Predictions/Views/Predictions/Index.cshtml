@@ -47,7 +47,7 @@
                                         title="Выбрать тур">
                                     @for (var i = 0; i < Model.Tourlist.Count(); i++)
                                     {
-                                        <option value="@Model.Tourlist[i].TourId">@Model.Tourlist[i].TourId</option>
+                                        <option value="@Model.Tourlist[i].TourId">@Model.Tourlist[i].TourId тур</option>
                                     }
                                 </select>
                             </div>
@@ -58,30 +58,31 @@
                         </div>
                     </div>              
                     <div class="row top-buffer">
-                        <table class="table table-hover">
-                            <tbody>
-                                <tr>
-                                    <th class="col-md-2">Дата</th>
-                                    <th class="col-md-1">Дома</th>
-                                    <th class="col-md-1">В гостях</th>
-                                    <th class="col-md-1">Прогноз</th>
-                                </tr>
+                        <div class="col-md-12">
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th class="col-md-2">Дата</th>
+                                        <th class="col-md-1">Дома</th>
+                                        <th class="col-md-1">В гостях</th>
+                                        <th class="col-md-1">Прогноз</th>
+                                    </tr>
 
-                                @if (Model.Matchlist != null)
-                                {
-                                    for (int i = 0; i <= Model.Matchlist.Count() - 1; i++)
+                                    @if (Model.Matchlist != null)
                                     {
-                                        <tr>
-                                            <td class="col-md-2">@Model.Matchlist[i].Date</td>
-                                            <td class="col-md-1">@Model.Matchlist[i].HomeTeamTitle</td>
-                                            <td class="col-md-1">@Model.Matchlist[i].AwayTeamTitle</td>
-                                            <td class="col-md-1">@Model.Matchlist[i].PredictionValue</td>
-                                        </tr>
+                                        for (int i = 0; i <= Model.Matchlist.Count() - 1; i++)
+                                        {
+                                            <tr>
+                                                <td class="col-md-2">@Model.Matchlist[i].Date</td>
+                                                <td class="col-md-1">@Model.Matchlist[i].HomeTeamTitle</td>
+                                                <td class="col-md-1">@Model.Matchlist[i].AwayTeamTitle</td>
+                                                <td class="col-md-1">@Model.Matchlist[i].PredictionValue</td>
+                                            </tr>
+                                        }
                                     }
-                                }
-                            </tbody>
-                        </table>
-                    </div>
+                                </tbody>
+                            </table>
+                        </div>                    </div>
                 </div>
             </div>
         </div>
