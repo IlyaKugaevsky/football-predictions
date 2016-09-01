@@ -71,6 +71,7 @@ namespace Predictions.Controllers
                     return View(viewModel);
                 };
             }
+            //WTF!!!
             else return View(viewModel);
         }
     }
