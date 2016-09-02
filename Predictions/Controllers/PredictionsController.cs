@@ -18,8 +18,18 @@ namespace Predictions.Controllers
         {
             using (var context = new PredictionsContext())
             {
-                var expertlist = context.Experts.ToList();
-                var tourlist = context.Tours.ToList();
+                var expertlist = new List<SelectListItem>();
+                var tourlist = new List<SelectListItem>();
+
+                context.Experts.ToList().
+                    ForEach(e => expertlist.Add(
+                        new SelectListItem() { Text = e.Nickname, Value = e.ExpertId.ToString() }
+                        ));
+
+                context.Tours.ToList().
+                    ForEach(t => tourlist.Add(
+                        new SelectListItem() { Text = t.TourId.ToString(), Value = t.TourId.ToString() }
+                        ));
 
                 var viewModel = new PredictionsDisplayViewModel()
                 {

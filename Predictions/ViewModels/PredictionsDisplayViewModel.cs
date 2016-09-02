@@ -11,8 +11,11 @@ namespace Predictions.ViewModels
     public class PredictionsDisplayViewModel
     {
         //display
-        public List<Expert> Expertlist { get; set; }
-        public List<Tour> Tourlist { get; set; }
+        //public List<Expert> Expertlist { get; set; }
+        public List<SelectListItem> Expertlist { get; set; }
+        //public List<Tour> Tourlist { get; set; }
+        public List<SelectListItem> Tourlist { get; set; }
+
         public List<MatchInfo> Matchlist { get; set; }
 
         //input

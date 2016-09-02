@@ -13,13 +13,15 @@
 
     for (var i = 0; i < Model.Expertlist.Count(); i++)
     {
-        @Html.HiddenFor(@model => Model.Expertlist[i].ExpertId)
-        @Html.HiddenFor(@model => Model.Expertlist[i].Nickname)
+        @Html.HiddenFor(@model => Model.Expertlist[i].Text);
+        @Html.HiddenFor(@model => Model.Expertlist[i].Value);
     }
+
 
     for (var i = 0; i < Model.Tourlist.Count(); i++)
     {
-        @Html.HiddenFor(@model => Model.Tourlist[i].TourId)
+        @Html.HiddenFor(@model => Model.Tourlist[i].Text);
+        @Html.HiddenFor(@model => Model.Tourlist[i].Value);
     }
 
     <div class="form-horizontal">
@@ -30,7 +32,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="input-group">
-                                <select name="@Html.NameFor(model => model.SelectedExpertId)"
+                                @*<select name="@Html.NameFor(model => model.SelectedExpertId)"
                                         id="Select1"
                                         class="selectpicker"
                                         data-width="auto"
@@ -49,7 +51,15 @@
                                     {
                                         <option value="@Model.Tourlist[i].TourId">@Model.Tourlist[i].TourId тур</option>
                                     }
-                                </select>
+                                </select>*@
+                                @Html.DropDownListFor(model => model.SelectedExpertId, Model.Expertlist, 
+                               new { @class = "selectpicker", @data_width = "auto", @title = "Выбрать эксперта" })
+
+                                @Html.DropDownListFor(model => model.SelectedTourId,
+                               Model.Tourlist,
+                               new { @class = "selectpicker", @data_width = "auto", @title = "Выбрать тур" })
+
+
                             </div>
 
                         </div>

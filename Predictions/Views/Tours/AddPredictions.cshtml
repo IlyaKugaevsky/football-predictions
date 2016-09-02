@@ -22,7 +22,7 @@
                             <div class="col-md-2 pull-right">
                                 @Html.DropDownListFor(model => model.SelectedExpertId, 
                                new SelectList(Model.Expertlist, "ExpertId", "Nickname"),
-                               new { @class = "form-control" })
+                               new { @class = "selectpicker", @data_width = "auto", @title = "Выбрать эксперта" })
                             </div>               
                         </div>
                     </div>
