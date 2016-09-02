@@ -4,7 +4,7 @@ using Predictions.Models;
 using Predictions.ViewModels.Basis;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Web.Mvc;
 
 namespace Predictions.Services
 {
@@ -17,5 +17,16 @@ namespace Predictions.Services
         //    if (predictionResults.Difference) expert.Differences++;
         //    if (predictionResults.Outcome) expert.Outcomes++;
         //} 
+
+        public List<SelectListItem> GenerateSelectList(PredictionsContext context)
+        {
+            var expertlist = new List<SelectListItem>();
+            context.Experts.ToList().
+                ForEach(e => expertlist.Add
+                (
+                    new SelectListItem() { Text = e.Nickname, Value = e.ExpertId.ToString() }
+                ));
+            return expertlist;
+        }
     }
 }

@@ -8,69 +8,74 @@ using Predictions.Models;
 using Predictions.ViewModels;
 using System.Net;
 using System.Data.Entity;
+using Predictions.Services;
 
 namespace Predictions.Controllers
 {
     public class PredictionsController : Controller
     {
-        // GET: Predictions
-        public ActionResult Index()
+        private readonly ExpertService _expertService;
+        private readonly TourService _tourService;
+
+        public PredictionsController()
+        {
+            _expertService = new ExpertService();
+            _tourService = new TourService();
+        }
+
+        public ActionResult PredictionsDisplay()
         {
             using (var context = new PredictionsContext())
             {
-                var expertlist = new List<SelectListItem>();
-                var tourlist = new List<SelectListItem>();
-
-                context.Experts.ToList().
-                    ForEach(e => expertlist.Add(
-                        new SelectListItem() { Text = e.Nickname, Value = e.ExpertId.ToString() }
-                        ));
-
-                context.Tours.ToList().
-                    ForEach(t => tourlist.Add(
-                        new SelectListItem() { Text = t.TourId.ToString(), Value = t.TourId.ToString() }
-                        ));
-
                 var viewModel = new PredictionsDisplayViewModel()
                 {
-                    Expertlist = expertlist,
-                    Tourlist = tourlist
+                    Expertlist = _expertService.GenerateSelectList(context),
+                    Tourlist = _tourService.GenerateSelectList(context)
                 };
                 return View(viewModel);
             }
         }
 
         [HttpPost]
-        public ActionResult Index(PredictionsDisplayViewModel viewModel)
+        public ActionResult PredictionsDisplay(PredictionsDisplayViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
                 using (var context = new PredictionsContext())
                 {
+
+                    var tour = _tourService.LoadMatchInfoWithPredictions(viewModel.SelectedTourId, context);
+
                     //mb not so effective
-                    var tour = context.Tours
-                        .Include(t => t.Matches
-                            .Select(m => m.HomeTeam))
-                        .Include(t => t.Matches
-                            .Select(m => m.AwayTeam))
-                        .Include(t => t.Matches
-                            .Select(m => m.Predictions))
-                        .SingleOrDefault(t => t.TourId == viewModel.SelectedTourId);
+
+                    //var tour = context.Tours
+                    //    .Include(t => t.Matches
+                    //        .Select(m => m.HomeTeam))
+                    //    .Include(t => t.Matches
+                    //        .Select(m => m.AwayTeam))
+                    //    .Include(t => t.Matches
+                    //        .Select(m => m.Predictions))
+                    //    .Single(t => t.TourId == viewModel.SelectedTourId);
+
+
                     if (tour == null)
                     {
                         return HttpNotFound();
                     }
 
                     viewModel.Matchlist = new List<MatchInfo>();
+
                     for (var i = 0; i <= tour.Matches.Count() - 1; i++)
                     {
-                        viewModel.Matchlist.Add(
+                        viewModel.Matchlist.Add
+                        (
                             new MatchInfo()
                             {
                                 Date = tour.Matches[i].Date,
                                 HomeTeamTitle = tour.Matches[i].HomeTeam.Title,
                                 AwayTeamTitle = tour.Matches[i].AwayTeam.Title
-                            });
+                            }
+                        );
 
                         var filteredPredictions = tour.Matches[i].Predictions
                             .Where(p => p.ExpertId == viewModel.SelectedExpertId).ToList();

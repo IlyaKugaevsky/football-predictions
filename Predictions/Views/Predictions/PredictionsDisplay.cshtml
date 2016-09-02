@@ -17,7 +17,6 @@
         @Html.HiddenFor(@model => Model.Expertlist[i].Value);
     }
 
-
     for (var i = 0; i < Model.Tourlist.Count(); i++)
     {
         @Html.HiddenFor(@model => Model.Tourlist[i].Text);
@@ -32,41 +31,16 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="input-group">
-                                @*<select name="@Html.NameFor(model => model.SelectedExpertId)"
-                                        id="Select1"
-                                        class="selectpicker"
-                                        data-width="auto"
-                                        title="Выбрать эксперта">
-                                    @for (var i = 0; i < Model.Expertlist.Count(); i++)
-                                    {
-                                        <option value="@Model.Expertlist[i].ExpertId">@Model.Expertlist[i].Nickname</option>
-                                    }
-                                </select>
-                                <select name="@Html.NameFor(model => model.SelectedTourId)"
-                                        id="Select2"
-                                        class="selectpicker"
-                                        data-width="auto"
-                                        title="Выбрать тур">
-                                    @for (var i = 0; i < Model.Tourlist.Count(); i++)
-                                    {
-                                        <option value="@Model.Tourlist[i].TourId">@Model.Tourlist[i].TourId тур</option>
-                                    }
-                                </select>*@
-                                @Html.DropDownListFor(model => model.SelectedExpertId, Model.Expertlist, 
-                               new { @class = "selectpicker", @data_width = "auto", @title = "Выбрать эксперта" })
-
-                                @Html.DropDownListFor(model => model.SelectedTourId,
-                               Model.Tourlist,
-                               new { @class = "selectpicker", @data_width = "auto", @title = "Выбрать тур" })
-
-
+                                @Html.DropDownListFor(model => model.SelectedExpertId, Model.Expertlist,
+                                    new { @class = "selectpicker", @data_width = "auto", @title = "Выбрать эксперта" })
+                                @Html.DropDownListFor(model => model.SelectedTourId, Model.Tourlist,
+                                    new { @class = "selectpicker", @data_width = "auto", @title = "Выбрать тур" })
                             </div>
-
                         </div>
                         <div class="col-md-8">
                             <input type="submit" class="btn btn-info pull-right" value="Показать прогноз">
                         </div>
-                    </div>              
+                    </div>
                     <div class="row top-buffer">
                         <div class="col-md-12">
                             <table class="table table-hover">
@@ -92,7 +66,8 @@
                                     }
                                 </tbody>
                             </table>
-                        </div>                    </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -102,10 +77,10 @@
 }
 
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('.selectpicker').selectpicker('refresh');
-        $('#Select1').selectpicker('val', '@Model.SelectedExpertId');
-        $('#Select2').selectpicker('val', '@Model.SelectedTourId');
-    });
-</script>
+@*<script type="text/javascript">
+        $(document).ready(function () {
+            $('.selectpicker').selectpicker('refresh');
+            $('#Select1').selectpicker('val', '@Model.SelectedExpertId');
+            $('#Select2').selectpicker('val', '@Model.SelectedTourId');
+        });
+    </script>*@

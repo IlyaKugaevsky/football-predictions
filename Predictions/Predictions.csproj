@@ -261,6 +261,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ExpertService.cs" />
     <Compile Include="Services\PredictionService.cs" />
+    <Compile Include="Services\TourService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AddPredictionsViewModel.cs" />
     <Compile Include="ViewModels\AddScoreViewModel.cs" />
@@ -412,7 +413,7 @@
     <Content Include="Views\Tours\Index.cshtml" />
     <Content Include="Views\Tours\EditTour.cshtml" />
     <Content Include="Views\Tours\AddPredictions.cshtml" />
-    <Content Include="Views\Predictions\Index.cshtml" />
+    <Content Include="Views\Predictions\PredictionsDisplay.cshtml" />
     <Content Include="Views\Tours\AddScores.cshtml" />
   </ItemGroup>
   <ItemGroup>
