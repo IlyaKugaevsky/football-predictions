@@ -1,35 +1,52 @@
 ﻿@model Predictions.ViewModels.EditTourViewModel
-
 @{
     ViewBag.Title = "EditTour";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Тур @Model.Tour.TourId</h2>
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-md-3">
-                        @Html.EditorFor(model => model.Tour.EndDate, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Tour.StartDate, "", new { @class = "text-danger" })
-                    </div>
-
-                    <div class="col-md-3">
-                        @Html.EditorFor(model => model.Tour.EndDate, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Tour.EndDate, "", new { @class = "text-danger" })
-                    </div>                
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Тур @Model.Tour.TourId</h2>
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "editTourForm", @class = "form-horizontal" }))
+                    {
+                        <div class="form-group">
+                            <label for="editStartDate" class="col-sm-2 control-label">Старт тура</label>
+                            <div class="col-sm-10">
+                                @Html.EditorFor(model => model.Tour.EndDate, new { htmlAttributes = new { @class = "form-control", @id = "editStartDate" } })
+                                @Html.ValidationMessageFor(model => model.Tour.StartDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="editEndDate" class="col-sm-2 control-label">Конец тура</label>
+                            <div class="col-sm-10">
+                                @Html.EditorFor(model => model.Tour.EndDate, new { htmlAttributes = new { @class = "form-control", @id = "editEndDate" } })
+                                @Html.ValidationMessageFor(model => model.Tour.StartDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-info">Сохранить</button>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
-            <div class="panel-body">
-                <table class="table table-hover">
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    @{
+                        Html.RenderPartial("AddMatch");
+                    }
+                </div>
+            </div>
+           
+             <div class="panel panel-default">
+                <div class="panel-body">
+                    <table class="table table-hover">
                         <tbody>
                             <tr>
                                 <th>Дата</th>
@@ -44,37 +61,25 @@
                                     <td>@item.HomeTeam.Title</td>
                                     <td>@item.AwayTeam.Title</td>
                                     <td>@item.Score</td>
-                                    <td>@Html.ActionLink("Delete", "Delete", new { id = item.MatchId })</td>
+                                    <td>@Html.ActionLink("Delete", "Delete", new { id = item.MatchId }, new { @class = "btn btn-default"})</td>
                                 </tr>
-                            }
+                                }
                         </tbody>
                     </table>
-                <hr />
-                @*<div class="row form-group">
-                    <div>
-                        @Html.HiddenFor(model => model.Tour.TourId, Model.Tour.TourId)
-                        @Html.TextBoxFor(model => model.InputDate, new { @class = "form-control datepicker", @type = "date", @data_width = "auto" })
-                    </div>
-                    <div>
-                        @Html.DropDownListFor(model => model.SelectedHomeTeamId, Model.Teamlist, new { @class = "selectpicker", @data_width = "auto", @title = "Дома" })
-                    </div>
-                    <div>
-                        @Html.DropDownListFor(model => model.SelectedAwayTeamId, Model.Teamlist, new { @class = "selectpicker", @data_width = "auto", @title = "В гостях" })
-                    </div>
-                    <div>
-                        <input type="submit" class="btn btn-info" value="Добавить матч">
-                    </div>
-                </div>*@
+
+                </div>
+            </div>
+
+            @*<div class="panel">
+                <div class="panel-body">
+                    @{
+                        Html.RenderPartial("AddMatch");
+                    }
+                </div>
+            </div>*@
+            <div>
+                @Html.ActionLink("Назад к расписанию", "Index", new {}, new { @class = "btn btn-info" })
             </div>
         </div>
     </div>
-}
-
-@{
-    Html.RenderPartial("AddMatch");
-}
-
-<div>
-    <hr />
-    @Html.ActionLink("Back to List", "Index")
 </div>
