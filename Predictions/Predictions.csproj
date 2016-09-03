@@ -419,6 +419,7 @@
     <Content Include="Views\Tours\AddPredictions.cshtml" />
     <Content Include="Views\Predictions\PredictionsDisplay.cshtml" />
     <Content Include="Views\Tours\AddScores.cshtml" />
+    <Content Include="Views\Shared\AddMatch.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -10,7 +10,7 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -50,25 +50,28 @@
                         </tbody>
                     </table>
                 <hr />
-                <div class="row">
-                    <div class="col-md-3 control-group">
+                @*<div class="row form-group">
+                    <div>
                         @Html.HiddenFor(model => model.Tour.TourId, Model.Tour.TourId)
                         @Html.TextBoxFor(model => model.InputDate, new { @class = "form-control datepicker", @type = "date", @data_width = "auto" })
                     </div>
-                    <div class="col-md-2">
-                        @Html.DropDownListFor(model => model.SelectedHomeTeamId, Model.Teamlist, new { @class = "selectpicker span-2", @data_width = "auto", @title = "Дома" })
+                    <div>
+                        @Html.DropDownListFor(model => model.SelectedHomeTeamId, Model.Teamlist, new { @class = "selectpicker", @data_width = "auto", @title = "Дома" })
                     </div>
-                    <div class="col-md-2">
-                        @Html.DropDownListFor(model => model.SelectedAwayTeamId, Model.Teamlist, new { @class = "selectpicker span-2", @data_width = "auto", @title = "В гостях" })
+                    <div>
+                        @Html.DropDownListFor(model => model.SelectedAwayTeamId, Model.Teamlist, new { @class = "selectpicker", @data_width = "auto", @title = "В гостях" })
                     </div>
-                    <div class="col-md-1">
+                    <div>
                         <input type="submit" class="btn btn-info" value="Добавить матч">
                     </div>
-                </div>
-
+                </div>*@
             </div>
         </div>
     </div>
+}
+
+@{
+    Html.RenderPartial("AddMatch");
 }
 
 <div>
