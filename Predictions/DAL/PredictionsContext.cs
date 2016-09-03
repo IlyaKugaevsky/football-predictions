@@ -8,6 +8,7 @@ namespace Predictions.DAL
     {
         public PredictionsContext() : base("PredictionsContext")
         {
+            this.Configuration.LazyLoadingEnabled = false;
         }
 
         public DbSet<Expert> Experts { get; set; }

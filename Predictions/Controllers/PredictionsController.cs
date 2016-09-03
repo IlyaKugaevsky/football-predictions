@@ -44,7 +44,15 @@ namespace Predictions.Controllers
                 using (var context = new PredictionsContext())
                 {
 
-                    var tour = _tourService.LoadMatchInfoWithPredictions(viewModel.SelectedTourId, context);
+                    //var tour = _tourService.LoadMatchInfoWithPredictions(viewModel.SelectedTourId, context);
+
+                    var tour = _tourService.EagerLoadById
+                        (
+                            viewModel.SelectedTourId,
+                            context,
+                            t => t.Matches.Select(m => m.HomeTeam),
+                            t => t.Matches 
+                        );
 
                     //mb not so effective
 

@@ -17,49 +17,39 @@ namespace Predictions.Controllers
         private readonly ExpertService _expertService;
         private readonly TourService _tourService;
         private readonly PredictionService _predictionService;
+        private readonly MatchService _matchService;
+        private readonly TeamService _teamService;
+
+
 
         public ToursController()
         {
             _expertService = new ExpertService();
             _tourService = new TourService();
             _predictionService = new PredictionService();
+            _matchService = new MatchService();
+            _teamService = new TeamService();
         }
 
         public ActionResult Index()
         {
             using (var context = new PredictionsContext())
             {
-                var tours = context.Tours
-                    .Include(t => t.Matches
-                        .Select(m => m.HomeTeam))
-                    .Include(t => t.Matches
-                        .Select(m => m.AwayTeam))
-                    .ToList();
-
-                return View(tours);
+                return View(_tourService.LoadBasicsWith(context));
             }
         }
 
         public ActionResult EditTour(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
             using (var context = new PredictionsContext())
             {
-                Tour tour = context.Tours
-                   .Include(t => t.Matches
-                       .Select(m => m.HomeTeam))
-                   .Include(t => t.Matches
-                       .Select(m => m.AwayTeam))
-                   .SingleOrDefault(t => t.TourId == id);
+                int realId = id.GetValueOrDefault();
+                Tour tour = _tourService.LoadBasicsWith(realId, context);
 
-                if (tour == null)
-                {
-                    return HttpNotFound();
-                }
-                var teamlist = context.Teams.ToList();
+                if (tour == null) return HttpNotFound();
+                var teamlist = _teamService.GenerateSelectList(context);
 
                 EditTourViewModel viewModel = new EditTourViewModel()
                 {
@@ -78,20 +68,14 @@ namespace Predictions.Controllers
             {
                 using (var context = new PredictionsContext())
                 {
-                    //NEED SERVICES!!!!
-                    //find by Id, add 
-                    var homeTeam = context.Teams.Find(viewModel.SelectedHomeTeamId);
-                    var awayTeam = context.Teams.Find(viewModel.SelectedAwayTeamId);
+                    var match = _matchService.CreateMatch(
+                        viewModel.SelectedHomeTeamId,
+                        viewModel.SelectedAwayTeamId,
+                        viewModel.Tour.TourId,
+                        viewModel.InputDate,
+                        context);
 
-                    Match match = new Match()
-                    {
-                        HomeTeam = homeTeam,
-                        AwayTeam = awayTeam,
-                        Date = viewModel.InputDate,
-                        TourId = viewModel.Tour.TourId //TO FIX 
-                    };
-                    context.Matches.Add(match);
-                    context.SaveChanges();
+                    _matchService.AddMatch(match, context);
                     return RedirectToAction("Index");
                 }
             }
@@ -99,7 +83,6 @@ namespace Predictions.Controllers
         } 
 
         //a lot of work here!
-        //validation
         public ActionResult AddPredictions(int? id)
         {
             if (id == null)
@@ -154,7 +137,6 @@ namespace Predictions.Controllers
                         (
                             new Prediction()
                             {
-                                //Value = viewModel.InputPredictionValuelist.ElementAt(i),
                                 Value = viewModel.InputData[i].PredictionValue,
                                 MatchId = viewModel.Tour.Matches.ElementAt(i).MatchId,
                                 ExpertId = viewModel.SelectedExpertId
@@ -190,7 +172,7 @@ namespace Predictions.Controllers
                     return HttpNotFound();
                 }
 
-                //if score already exist? TODO
+                //if the score already exists? TODO
 
                 var matchlist = new List<MatchInfo>();
 
@@ -213,8 +195,6 @@ namespace Predictions.Controllers
 
                 return View(viewModel);
             }
-
-
         }
 
         [HttpPost]

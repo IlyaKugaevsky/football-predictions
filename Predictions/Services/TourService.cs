@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
-
+using System.Linq.Expressions;
 
 namespace Predictions.Services
 {
@@ -23,17 +23,40 @@ namespace Predictions.Services
             return tourlist;
         }
 
-        public Tour LoadMatchInfoWithPredictions(int id, PredictionsContext context)
+        public Tour EagerLoadById(int id, PredictionsContext context, params Expression<Func<Tour, object>>[] includes)
         {
-            var tour = context.Tours
-                       .Include(t => t.Matches
-                           .Select(m => m.HomeTeam))
-                       .Include(t => t.Matches
-                           .Select(m => m.AwayTeam))
-                       .Include(t => t.Matches
-                           .Select(m => m.Predictions))
-                       .Single(t => t.TourId == id);
-            return tour;
+            return context.Tours.IncludeMultiple(includes)
+                .ToList()
+                .Single(t => t.TourId == id);
+        }
+
+        public IEnumerable<Tour> EagerLoadMany(PredictionsContext context, params Expression<Func<Tour, object>>[] includes)
+        {
+            return context.Tours.IncludeMultiple(includes)
+                .ToList();
+        }
+
+        public Tour LoadBasicsWith(int id, PredictionsContext context, params Expression<Func<Tour, object>>[] includes)
+        {
+            return context.Tours
+                    .Include(t => t.Matches
+                        .Select(m => m.HomeTeam))
+                    .Include(t => t.Matches
+                        .Select(m => m.AwayTeam))
+                    .IncludeMultiple(includes)
+                    .ToList()
+                    .Single(t => t.TourId == id);
+        }
+
+        public IEnumerable<Tour> LoadBasicsWith(PredictionsContext context, params Expression<Func<Tour, object>>[] includes)
+        {
+            return context.Tours
+                    .Include(t => t.Matches
+                        .Select(m => m.HomeTeam))
+                    .Include(t => t.Matches
+                        .Select(m => m.AwayTeam))
+                    .IncludeMultiple(includes)
+                    .ToList();
         }
 
     }

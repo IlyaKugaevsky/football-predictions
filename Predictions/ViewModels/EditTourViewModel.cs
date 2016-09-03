@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace Predictions.ViewModels
 {
@@ -13,9 +14,11 @@ namespace Predictions.ViewModels
         public Tour Tour { get; set; }
 
         //add new match
-            //display
-        public List<Team> Teamlist { get; set; }
-            //input
+        //display
+        //public List<Team> Teamlist { get; set; }
+        public List<SelectListItem> Teamlist { get; set; }
+
+        //input
         public int SelectedHomeTeamId { get; set; }
         public int SelectedAwayTeamId { get; set; }
         public DateTime InputDate { get; set; }

@@ -204,6 +204,7 @@
     <Compile Include="Controllers\SimpleOutputController.cs" />
     <Compile Include="Controllers\TeamsController.cs" />
     <Compile Include="Controllers\ToursController.cs" />
+    <Compile Include="DAL\EntityFrameworkExtensions.cs" />
     <Compile Include="DAL\PredictionsContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -260,11 +261,14 @@
     <Compile Include="Models\Tour.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ExpertService.cs" />
+    <Compile Include="Services\MatchService.cs" />
     <Compile Include="Services\PredictionService.cs" />
+    <Compile Include="Services\TeamService.cs" />
     <Compile Include="Services\TourService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AddPredictionsViewModel.cs" />
     <Compile Include="ViewModels\AddScoreViewModel.cs" />
+    <Compile Include="ViewModels\Basis\FootballScore.cs" />
     <Compile Include="ViewModels\Basis\PredictionResults.cs" />
     <Compile Include="ViewModels\EditTourViewModel.cs" />
     <Compile Include="ViewModels\MatchesViewModel.cs" />

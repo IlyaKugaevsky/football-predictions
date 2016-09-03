@@ -41,6 +41,7 @@ namespace Predictions.Services
         public void SubmitTourPredictions(int tourId, PredictionsContext context)
         {
             var tour = LoadTour(tourId, context);
+
             foreach(var m in tour.Matches)
             {
                 foreach(var p in m.Predictions)

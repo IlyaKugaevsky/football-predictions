@@ -21,7 +21,7 @@ namespace Predictions.ViewModels
         [Required]
         public string AwayTeamTitle { get; set; }
 
-        [RegularExpression(@"^$|^[0 - 9]{1, 2}:[0-9]{1,2}$", ErrorMessage = "Все очень плохо!")]
+        [RegularExpression(@"^$|^[0 - 9]{1, 2}:[0-9]{1,2}$", ErrorMessage = "Некорректный счет")]
         public string PredictionValue { get; set; }
 
         [Required]
