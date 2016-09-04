@@ -247,5 +247,21 @@ namespace Predictions.Controllers
             }
         }
 
+        public ActionResult DeleteMatch(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            using (var context = new PredictionsContext())
+            {
+                Match match = context.Matches.Find(id);
+                int tourId = match.TourId;
+                context.Matches.Remove(match);
+                context.SaveChanges();
+                return RedirectToAction("EditTour", new { id = tourId});
+            }
+        }
     }
 }

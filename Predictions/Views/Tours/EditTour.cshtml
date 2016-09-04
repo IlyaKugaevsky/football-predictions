@@ -61,12 +61,11 @@
                                     <td>@item.HomeTeam.Title</td>
                                     <td>@item.AwayTeam.Title</td>
                                     <td>@item.Score</td>
-                                    <td>@Html.ActionLink("Delete", "Delete", new { id = item.MatchId }, new { @class = "btn btn-default"})</td>
+                                    <td>@Html.ActionLink("Удалить", "DeleteMatch", new { id = item.MatchId }, new { @class = "btn btn-default"})</td>
                                 </tr>
                                 }
                         </tbody>
                     </table>
-
                 </div>
             </div>
 
