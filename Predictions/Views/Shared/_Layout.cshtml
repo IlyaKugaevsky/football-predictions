@@ -37,6 +37,8 @@
                             <li>@Html.ActionLink("Участники", "Index", "Experts")</li>
                             <li>@Html.ActionLink("Команды", "Index", "Teams")</li>
                             <li>@Html.ActionLink("Вывод", "Index", "SimpleOutput")</li>
+                            <li>@Html.ActionLink("Тест", "Tours", "TestAction")</li>
+
 
                         </ul>
                     </li>
@@ -63,8 +65,6 @@
             <p>&copy; @DateTime.Now.Year – cherocky</p>
         </footer>
     </div>
-
-    @*@Scripts.Render("~/bundles/jquery")*@
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>

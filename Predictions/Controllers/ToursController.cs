@@ -65,7 +65,6 @@ namespace Predictions.Controllers
             return View(viewModel);
         } 
 
-        //a lot of work here!
         public ActionResult AddPredictions(int? id)
         {
             //if predicion already exist? TODO
@@ -86,25 +85,6 @@ namespace Predictions.Controllers
         {
             if (ModelState.IsValid)
             {
-
-                //var predictionlist = new List<Prediction>();
-
-                ////if valuelist null?
-                //for (var i = 0; i <= viewModel.Tour.Matches.Count - 1; i++)
-                //{
-                //    predictionlist.Add
-                //    (
-                //        new Prediction()
-                //        {
-                //            Value = viewModel.InputData[i].PredictionValue,
-                //            MatchId = viewModel.Tour.Matches.ElementAt(i).MatchId,
-                //            ExpertId = viewModel.SelectedExpertId
-                //        }
-                //    );
-                //}
-                //predictionlist.ForEach(n => context.Predictions.Add(n));
-                //context.SaveChanges();
-                //return RedirectToAction("Index");
                 var matches = _tourService.GetMatchesByTour(viewModel.TourInfo.TourId);
                 _predictionService.AddExpertPredictions(viewModel.SelectedExpertId, matches, viewModel.EditPredictionsValuelist);
                 return RedirectToAction("Index");
@@ -128,11 +108,7 @@ namespace Predictions.Controllers
             if (ModelState.IsValid)
             {
                 //really works? mb inputScorelist < matchlist?
-
-                //if the score already exists? TODO
-
                 _matchService.AddScores(_tourService.GetMatchesByTour(viewModel.CurrentTourId), viewModel.EditScorelist);
-
                 return RedirectToAction("Index");
             }
             return AddScores(viewModel.CurrentTourId); //not sure
@@ -166,6 +142,33 @@ namespace Predictions.Controllers
             return RedirectToAction("EditTour", new { id = tourId });
         }
 
+        public ActionResult TestAction()
+        {
+            var tour = _tourService.LoadBasicsWith(1);
+            var matches = tour.Matches.ToList();
+            var matchlist = _matchService.GenerateMatchlist(matches);
+            var rows = new List<MatchTableRow>();
+            for (var i = 0; i< matchlist.Count(); i++)
+            {
+                var row = new MatchTableRow(matchlist[i]);
+                rows.Add(row);
+            }
 
+            var headers = new List<string>()
+            {
+                "Дата",
+                "Дома",
+                "В гостях"
+            };
+
+            var table = new MatchTableViewModel()
+            {
+                Headers = headers,
+                Rows = rows
+            };
+
+            return View(table);
+
+        }
     }
 }

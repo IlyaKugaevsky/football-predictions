@@ -17,8 +17,8 @@ namespace Predictions.ViewModels
             Date = date;
             HomeTeamTitle = homeTitle;
             AwayTeamTitle = awayTitle;
-            PredictionValue = predictionValue;
-            Score = score;
+            //PredictionValue = predictionValue;
+            //Score = score;
         }
 
         //really need?
@@ -34,12 +34,12 @@ namespace Predictions.ViewModels
         [Required]
         public string AwayTeamTitle { get; set; }
 
-        //really need?
-        [RegularExpression(@"^$|^[0-9]{1,2}:[0-9]{1,2}$", ErrorMessage = "Некорректный счет")]
-        public string PredictionValue { get; set; }
+        ////really need?
+        //[RegularExpression(@"^$|^[0-9]{1,2}:[0-9]{1,2}$", ErrorMessage = "Некорректный счет")]
+        //public string PredictionValue { get; set; }
 
-        [Required]
-        [RegularExpression(@"^$|^[0-9]{1,2}:[0-9]{1,2}$", ErrorMessage = "Некорректный счет")]
-        public string Score { get; set; }
+        //[Required]
+        //[RegularExpression(@"^$|^[0-9]{1,2}:[0-9]{1,2}$", ErrorMessage = "Некорректный счет")]
+        //public string Score { get; set; }
     }
 }

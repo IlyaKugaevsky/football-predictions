@@ -73,8 +73,10 @@ namespace Predictions.Controllers
                         var filteredPredictions = tour.Matches[i].Predictions
                             .Where(p => p.ExpertId == viewModel.SelectedExpertId).ToList();
 
-                        if (filteredPredictions.Count == 0 || filteredPredictions == null) viewModel.Matchlist[i].PredictionValue = "N/A";
-                        else viewModel.Matchlist[i].PredictionValue = filteredPredictions.Count == 1 ? filteredPredictions[0].Value : "несколько";
+                        //just change to smth like predictionlist 
+
+                        //if (filteredPredictions.Count == 0 || filteredPredictions == null) viewModel.Matchlist[i].PredictionValue = "N/A";
+                        //else viewModel.Matchlist[i].PredictionValue = filteredPredictions.Count == 1 ? filteredPredictions[0].Value : "несколько";
                     }
                     return View(viewModel);
                 };
