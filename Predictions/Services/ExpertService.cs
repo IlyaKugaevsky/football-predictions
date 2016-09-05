@@ -10,6 +10,13 @@ namespace Predictions.Services
 {
     public class ExpertService
     {
+        private readonly PredictionsContext _context;
+
+        public ExpertService(PredictionsContext context)
+        {
+            _context = context;
+        }
+
         //public void AddPredictionResults(Expert expert, PredictionResults predictionResults,  PredictionsContext context)
         //{
         //    expert.Sum += predictionResults.Sum;
@@ -18,10 +25,10 @@ namespace Predictions.Services
         //    if (predictionResults.Outcome) expert.Outcomes++;
         //} 
 
-        public List<SelectListItem> GenerateSelectList(PredictionsContext context)
+        public List<SelectListItem> GenerateSelectList()
         {
             var expertlist = new List<SelectListItem>();
-            context.Experts.ToList().
+            _context.Experts.ToList().
                 ForEach(e => expertlist.Add(
                     new SelectListItem() { Text = e.Nickname, Value = e.ExpertId.ToString() }));
             return expertlist;

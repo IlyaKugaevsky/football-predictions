@@ -9,10 +9,19 @@ namespace Predictions.Services
 {
     public class TeamService
     {
-        public List<SelectListItem> GenerateSelectList(PredictionsContext context)
+        private readonly PredictionsContext _context;
+
+        public TeamService(PredictionsContext context)
+        {
+            _context = context;
+        }
+
+
+
+        public List<SelectListItem> GenerateSelectList()
         {
             var teamlist = new List<SelectListItem>();
-            context.Teams.ToList().
+            _context.Teams.ToList().
                 ForEach(e => teamlist.Add(
                     new SelectListItem() { Text = e.Title, Value = e.TeamId.ToString() }));
             return teamlist;

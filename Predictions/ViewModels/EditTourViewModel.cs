@@ -9,6 +9,15 @@ namespace Predictions.ViewModels
 {
     public class EditTourViewModel
     {
+        public EditTourViewModel()
+        { }
+
+        public EditTourViewModel(List<SelectListItem> teamlist, Tour tour)
+        {
+            Teamlist = teamlist;
+            Tour = tour;
+        }
+
         //model to edit 
             // display (current values) + input (new values)
         public Tour Tour { get; set; }

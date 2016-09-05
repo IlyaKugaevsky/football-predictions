@@ -13,32 +13,40 @@ namespace Predictions.Services
 {
     public class TourService
     {
-        public List<SelectListItem> GenerateSelectList(PredictionsContext context)
+        private readonly PredictionsContext _context;
+
+        public TourService(PredictionsContext context)
+        {
+            _context = context;
+        }
+
+        public List<SelectListItem> GenerateSelectList()
         {
             var tourlist = new List<SelectListItem>();
-            context.Tours.ToList()
+            _context.Tours.ToList()
                 .ForEach(t => tourlist.Add( new SelectListItem() { Text = t.TourId.ToString(), Value = t.TourId.ToString() }));
             return tourlist;
         }
 
 
-        public Tour EagerLoad(int id, PredictionsContext context, params Expression<Func<Tour, object>>[] includes)
+        public Tour EagerLoad(int? id, params Expression<Func<Tour, object>>[] includes)
         {
-            return context.Tours.IncludeMultiple(includes)
+            if (id == null) return null;
+            return _context.Tours.IncludeMultiple(includes)
                 .ToList()
                 .Single(t => t.TourId == id);
         }
 
-        public IEnumerable<Tour> EagerLoad(PredictionsContext context, params Expression<Func<Tour, object>>[] includes)
+        public List<Tour> EagerLoad(params Expression<Func<Tour, object>>[] includes)
         {
-            return context.Tours.IncludeMultiple(includes)
+            return _context.Tours.IncludeMultiple(includes)
                 .ToList();
         }
 
-        public Tour LoadBasicsWith(int? id, PredictionsContext context, params Expression<Func<Tour, object>>[] includes)
+        public Tour LoadBasicsWith(int? id, params Expression<Func<Tour, object>>[] includes)
         {
             if (id == null) return null;
-            return context.Tours
+            return _context.Tours
                     .Include(t => t.Matches
                         .Select(m => m.HomeTeam))
                     .Include(t => t.Matches
@@ -48,15 +56,21 @@ namespace Predictions.Services
                     .Single(t => t.TourId == id);
         }
 
-        public IEnumerable<Tour> LoadBasicsWith(PredictionsContext context, params Expression<Func<Tour, object>>[] includes)
+        public List<Tour> LoadBasicsWith(params Expression<Func<Tour, object>>[] includes)
         {
-            return context.Tours
+            return _context.Tours
                     .Include(t => t.Matches
                         .Select(m => m.HomeTeam))
                     .Include(t => t.Matches
                         .Select(m => m.AwayTeam))
                     .IncludeMultiple(includes)
                     .ToList();
+        }
+
+        public List<Match> GetMatchesByTour(int? id)
+        {
+            if (id == null) return null;
+            return EagerLoad(id, t => t.Matches).Matches.ToList();
         }
 
     }

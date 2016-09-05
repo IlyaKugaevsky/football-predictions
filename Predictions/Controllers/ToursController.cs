@@ -14,70 +14,52 @@ namespace Predictions.Controllers
 {
     public class ToursController : Controller
     {
+        private readonly PredictionsContext _context;
         private readonly ExpertService _expertService;
         private readonly TourService _tourService;
         private readonly PredictionService _predictionService;
         private readonly MatchService _matchService;
         private readonly TeamService _teamService;
 
-
-
         public ToursController()
         {
-            _expertService = new ExpertService();
-            _tourService = new TourService();
-            _predictionService = new PredictionService();
-            _matchService = new MatchService();
-            _teamService = new TeamService();
+            _context = new PredictionsContext();
+            _expertService = new ExpertService(_context);
+            _tourService = new TourService(_context);
+            _predictionService = new PredictionService(_context);
+            _matchService = new MatchService(_context);
+            _teamService = new TeamService(_context);
         }
 
         public ActionResult Index()
         {
-            using (var context = new PredictionsContext())
-            {
-                return View(_tourService.LoadBasicsWith(context));
-            }
+            var tours = _tourService.LoadBasicsWith();
+            if (tours == null) return HttpNotFound();
+            return View(tours);
         }
 
         public ActionResult EditTour(int? id)
         {
-            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            using (var context = new PredictionsContext())
-            {
-                int realId = id.GetValueOrDefault();
-                Tour tour = _tourService.LoadBasicsWith(realId, context);
-
-                if (tour == null) return HttpNotFound();
-                var teamlist = _teamService.GenerateSelectList(context);
-
-                EditTourViewModel viewModel = new EditTourViewModel()
-                {
-                    Teamlist = teamlist,
-                    Tour = tour
-                };
-                return View(viewModel);
-            }
+            Tour tour = _tourService.LoadBasicsWith(id);
+            if (tour == null) return HttpNotFound();
+            var teamlist = _teamService.GenerateSelectList();
+            return View(new EditTourViewModel(teamlist, tour));
         }
 
+        //bind include
         //TODO: real tour update
         [HttpPost]
         public ActionResult EditTour(EditTourViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                using (var context = new PredictionsContext())
-                {
-                    var match = _matchService.CreateMatch(
-                        viewModel.SelectedHomeTeamId,
-                        viewModel.SelectedAwayTeamId,
-                        viewModel.Tour.TourId,
-                        viewModel.InputDate,
-                        context);
-
-                    _matchService.AddMatch(match, context);
-                    return RedirectToAction("Index");
-                }
+                var match = _matchService.CreateMatch(
+                    viewModel.InputDate,
+                    viewModel.SelectedHomeTeamId,
+                    viewModel.SelectedAwayTeamId,
+                    viewModel.Tour.TourId);
+                _matchService.AddMatch(match);
+                return RedirectToAction("Index");
             }
             return View(viewModel);
         } 
@@ -85,37 +67,28 @@ namespace Predictions.Controllers
         //a lot of work here!
         public ActionResult AddPredictions(int? id)
         {
-            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            int realId = id.Value;
+            var tour = _tourService.LoadBasicsWith(id, t => t.Matches.Select(m => m.Predictions));
 
-            using (var context = new PredictionsContext())
+            //var tour = context.Tours
+            //    .Include(t => t.Matches
+            //        .Select(m => m.HomeTeam))
+            //    .Include(t => t.Matches
+            //        .Select(m => m.AwayTeam))
+            //    .Include(t => t.Matches
+            //        .Select(m => m.Predictions))
+            //    .Single(t => t.TourId == id);
+
+            if (tour == null) return HttpNotFound();
+
+            //if predicion already exist? TODO
+            var expertlist = _expertService.GenerateSelectList();
+
+            AddPredictionsViewModel viewModel = new AddPredictionsViewModel()
             {
-                var tour = _tourService.LoadBasicsWith(
-                        realId, 
-                        context, 
-                        t => t.Matches.Select(m => m.Predictions));
-
-                //var tour = context.Tours
-                //    .Include(t => t.Matches
-                //        .Select(m => m.HomeTeam))
-                //    .Include(t => t.Matches
-                //        .Select(m => m.AwayTeam))
-                //    .Include(t => t.Matches
-                //        .Select(m => m.Predictions))
-                //    .Single(t => t.TourId == id);
-
-                if (tour == null) return HttpNotFound();
-
-                //if predicion already exist? TODO
-                var expertlist = _expertService.GenerateSelectList(context);
-
-                AddPredictionsViewModel viewModel = new AddPredictionsViewModel()
-                {
-                    Tour = tour,
-                    Expertlist = expertlist
-                };
-                return View(viewModel);
+                Tour = tour,
+                Expertlist = expertlist
             };
+            return View(viewModel);
         } 
 
         [HttpPost]
@@ -150,21 +123,10 @@ namespace Predictions.Controllers
 
         public ActionResult AddScores(int? id)
         {
-            //id?-problem ---> to service
-            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            using (var context = new PredictionsContext())
-            {
-                var tour = _tourService.LoadBasicsWith(id, context);
-                if (tour == null) return HttpNotFound();
-                var matchlist = _matchService.GenerateMatchlist(tour.Matches);
-                AddScoresViewModel viewModel = new AddScoresViewModel(tour.TourId, matchlist);
-                //{
-                //    CurrentTourId = tour.TourId,
-                //    Matchlist = matchlist
-                //};
-                return View(viewModel);
-            }
+            var tour = _tourService.LoadBasicsWith(id);
+            if (tour == null) return HttpNotFound();
+            var matchlist = _matchService.GenerateMatchlist(tour.Matches);
+            return View(new AddScoresViewModel(tour.TourId, matchlist));
         }
 
         [HttpPost]
@@ -172,31 +134,34 @@ namespace Predictions.Controllers
         {
             if (ModelState.IsValid)
             {
-                using (var context = new PredictionsContext())
-                {
-                    //quite ugly
 
-                   // var scorelist = new List<String>();
+                //quite ugly
 
-                    //really works? mb inputScorelist < matchlist?
-                    //for (var i = 0; i < viewModel.InputScorelist.Count; i++)
-                    //{
-                    //    scorelist.Add(viewModel.InputScorelist[i].Value);
-                    //}
+                // var scorelist = new List<String>();
 
-                    //if the score already exists? TODO
+                //really works? mb inputScorelist < matchlist?
+                //for (var i = 0; i < viewModel.InputScorelist.Count; i++)
+                //{
+                //    scorelist.Add(viewModel.InputScorelist[i].Value);
+                //}
 
-                    var tour = _tourService.EagerLoad(viewModel.CurrentTourId, context, t => t.Matches);
+                //////////////////////////////////////////////////////////////////////////////////////
 
-                    for (var i = 0; i < tour.Matches.Count(); i++)
-                    {
-                        tour.Matches[i].Score = viewModel.InputScorelist[i].Value;
-                    }
-                    context.SaveChanges();
-                    return RedirectToAction("Index");
-                }
+                //var tour = _tourService.EagerLoad(viewModel.CurrentTourId, t => t.Matches);
+
+                //for (var i = 0; i < tour.Matches.Count(); i++)
+                //{
+                //    tour.Matches[i].Score = viewModel.InputScorelist[i].Value;
+                //}
+                //_context.SaveChanges();
+
+                //if the score already exists? TODO
+
+                _matchService.AddScores(_tourService.GetMatchesByTour(viewModel.CurrentTourId), viewModel.InputScorelist);
+
+                return RedirectToAction("Index");
             }
-            return Content(ModelState.Values.ElementAt(0).Errors.ElementAt(0).Exception.ToString()); //change later
+            return AddScores(viewModel.CurrentTourId); //not sure
         }
 
         public ActionResult SubmitTourPredictions(int? id)
@@ -211,8 +176,8 @@ namespace Predictions.Controllers
                 int correctId = id ?? default(int);
 
                 //private, at the top of the class
-                var service = new PredictionService();
-                service.SubmitTourPredictions(correctId, context);
+                _predictionService.SubmitTourPredictions(correctId);
+                //to service
                 context.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -232,5 +197,7 @@ namespace Predictions.Controllers
                 return RedirectToAction("EditTour", new { id = tourId});
             }
         }
+
+
     }
 }

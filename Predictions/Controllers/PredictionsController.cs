@@ -14,13 +14,15 @@ namespace Predictions.Controllers
 {
     public class PredictionsController : Controller
     {
+        private readonly PredictionsContext _context;
         private readonly ExpertService _expertService;
         private readonly TourService _tourService;
 
         public PredictionsController()
         {
-            _expertService = new ExpertService();
-            _tourService = new TourService();
+            _context = new PredictionsContext();
+            _expertService = new ExpertService(_context);
+            _tourService = new TourService(_context);
         }
 
         public ActionResult PredictionsDisplay()
@@ -29,8 +31,8 @@ namespace Predictions.Controllers
             {
                 var viewModel = new PredictionsDisplayViewModel()
                 {
-                    Expertlist = _expertService.GenerateSelectList(context),
-                    Tourlist = _tourService.GenerateSelectList(context)
+                    Expertlist = _expertService.GenerateSelectList(),
+                    Tourlist = _tourService.GenerateSelectList()
                 };
                 return View(viewModel);
             }
@@ -43,10 +45,7 @@ namespace Predictions.Controllers
             {
                 using (var context = new PredictionsContext())
                 {
-                    var tour = _tourService.LoadBasicsWith(
-                            viewModel.SelectedTourId,
-                            context,
-                            t => t.Matches.Select(m => m.Predictions));
+                    var tour = _tourService.LoadBasicsWith(viewModel.SelectedTourId, t => t.Matches.Select(m => m.Predictions));
 
                     //mb not so effective
 

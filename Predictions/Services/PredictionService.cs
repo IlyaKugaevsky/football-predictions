@@ -12,16 +12,23 @@ namespace Predictions.Services
 {
     public class PredictionService
     {
-        public Tour LoadTour(int tourId, PredictionsContext context)
+        private readonly PredictionsContext _context;
+
+        public PredictionService(PredictionsContext context)
         {
-            return context.Tours
+            _context = context;
+        }
+
+        public Tour LoadTour(int tourId)
+        {
+            return _context.Tours
                    .Include(t => t.Matches
                        .Select(m => m.Predictions
                            .Select(p => p.Expert)))
                    .SingleOrDefault(t => t.TourId == tourId);
         }
 
-        public void SubmitPrediction (Prediction prediction, PredictionsContext context)
+        public void SubmitPrediction (Prediction prediction)
         {
             var predictionResults = PredictionEvaluator.GetPredictionResults(prediction.Value, prediction.Match.Score);
 
@@ -38,20 +45,20 @@ namespace Predictions.Services
             prediction.IsClosed = true;
         }
 
-        public void SubmitTourPredictions(int tourId, PredictionsContext context)
+        public void SubmitTourPredictions(int tourId)
         {
-            var tour = LoadTour(tourId, context);
+            var tour = LoadTour(tourId);
 
             foreach(var m in tour.Matches)
             {
                 foreach(var p in m.Predictions)
                 {
-                    if(!p.IsClosed)SubmitPrediction(p, context);
+                    if(!p.IsClosed)SubmitPrediction(p);
                 }
             }
         }
 
-        public void RestartPrediction(Prediction prediction, PredictionsContext context)
+        public void RestartPrediction(Prediction prediction)
         {
             if(prediction.IsClosed)
             {
