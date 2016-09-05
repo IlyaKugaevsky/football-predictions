@@ -126,38 +126,20 @@ namespace Predictions.Controllers
             var tour = _tourService.LoadBasicsWith(id);
             if (tour == null) return HttpNotFound();
             var matchlist = _matchService.GenerateMatchlist(tour.Matches);
-            return View(new AddScoresViewModel(tour.TourId, matchlist));
+            var scorelist = _matchService.GenerateScoreList(tour.Matches);
+            return View(new AddScoresViewModel(tour.TourId, matchlist, scorelist));
         }
 
         [HttpPost]
-        public ActionResult AddScores([Bind(Include = "InputScorelist, CurrentTourId")] AddScoresViewModel viewModel)
+        public ActionResult AddScores([Bind(Include = "EditScorelist, CurrentTourId")] AddScoresViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-
-                //quite ugly
-
-                // var scorelist = new List<String>();
-
                 //really works? mb inputScorelist < matchlist?
-                //for (var i = 0; i < viewModel.InputScorelist.Count; i++)
-                //{
-                //    scorelist.Add(viewModel.InputScorelist[i].Value);
-                //}
-
-                //////////////////////////////////////////////////////////////////////////////////////
-
-                //var tour = _tourService.EagerLoad(viewModel.CurrentTourId, t => t.Matches);
-
-                //for (var i = 0; i < tour.Matches.Count(); i++)
-                //{
-                //    tour.Matches[i].Score = viewModel.InputScorelist[i].Value;
-                //}
-                //_context.SaveChanges();
 
                 //if the score already exists? TODO
 
-                _matchService.AddScores(_tourService.GetMatchesByTour(viewModel.CurrentTourId), viewModel.InputScorelist);
+                _matchService.AddScores(_tourService.GetMatchesByTour(viewModel.CurrentTourId), viewModel.EditScorelist);
 
                 return RedirectToAction("Index");
             }
@@ -185,17 +167,11 @@ namespace Predictions.Controllers
 
         public ActionResult DeleteMatch(int? id)
         {
-            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            using (var context = new PredictionsContext())
-            {
-                //to service
-                Match match = context.Matches.Find(id);
-                int tourId = match.TourId;
-                context.Matches.Remove(match);
-                context.SaveChanges();
-                return RedirectToAction("EditTour", new { id = tourId});
-            }
+            //so~so, mb better
+            var tourId = _matchService.GetTourId(id);
+            if (tourId == null) return HttpNotFound(); //this also checks id
+            _matchService.DeleteMatch(id);
+            return RedirectToAction("EditTour", new { id = tourId });
         }
 
 

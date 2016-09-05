@@ -18,14 +18,21 @@ namespace Predictions.Services
             _context = context;
         }
 
+        //to think; scores, predictions? mb options
         public List<MatchInfo> GenerateMatchlist(List<Match> matches)
         {
-            var matchlist = new List<MatchInfo>();
-            for (var i = 0; i < matches.Count; i++)
-            {
-                matchlist.Add(new MatchInfo(matches[i].Date, matches[i].HomeTeam.Title, matches[i].AwayTeam.Title));
-            }
-            return matchlist;
+            return matches.Select(m => new MatchInfo(m.Date, m.HomeTeam.Title, m.AwayTeam.Title)).ToList();
+            //var matchlist = new List<MatchInfo>();
+            //for (var i = 0; i < matches.Count; i++)
+            //{
+            //    matchlist.Add(new MatchInfo(matches[i].Date, matches[i].HomeTeam.Title, matches[i].AwayTeam.Title, null, matches[i].Score));
+            //}
+            //return matchlist;
+        }
+
+        public List<FootballScore> GenerateScoreList(List<Match> matches)
+        {
+            return  matches.Select(m => new FootballScore { Value =  m.Score}).ToList();
         }
 
         public Match CreateMatch(DateTime date, int homeId, int awayId, int tourId)
@@ -45,6 +52,22 @@ namespace Predictions.Services
             _context.Matches.Add(match);
             _context.SaveChanges();
         } 
+
+        public int? GetTourId(int? matchId)
+        {
+            if (matchId == null) return null;
+            var match = _context.Matches.Find(matchId);
+            if (match == null) return null;
+            return match.TourId;
+        }
+
+        //always null-check before execute this
+        public void DeleteMatch(int? id)
+        {
+            var match = _context.Matches.Find(id);
+            _context.Matches.Remove(match);
+            _context.SaveChanges();
+        }
 
         public void AddScores(List<Match> matches, List<FootballScore> scorelist)
         {

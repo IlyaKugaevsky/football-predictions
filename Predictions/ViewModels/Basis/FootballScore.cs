@@ -10,7 +10,6 @@ namespace Predictions.ViewModels.Basis
     {
         private string _value;
 
-        [Required]
         [RegularExpression(@"^$|^[0-9]{1,2}:[0-9]{1,2}$", ErrorMessage = "Некорректный счет")]
         public string Value
         {
