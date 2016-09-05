@@ -43,16 +43,10 @@ namespace Predictions.Controllers
             {
                 using (var context = new PredictionsContext())
                 {
-
-                    //var tour = _tourService.LoadMatchInfoWithPredictions(viewModel.SelectedTourId, context);
-
-                    var tour = _tourService.EagerLoadById
-                        (
+                    var tour = _tourService.LoadBasicsWith(
                             viewModel.SelectedTourId,
                             context,
-                            t => t.Matches.Select(m => m.HomeTeam),
-                            t => t.Matches 
-                        );
+                            t => t.Matches.Select(m => m.Predictions));
 
                     //mb not so effective
 
@@ -66,10 +60,7 @@ namespace Predictions.Controllers
                     //    .Single(t => t.TourId == viewModel.SelectedTourId);
 
 
-                    if (tour == null)
-                    {
-                        return HttpNotFound();
-                    }
+                    if (tour == null) return HttpNotFound();
 
                     viewModel.Matchlist = new List<MatchInfo>();
 
@@ -77,12 +68,7 @@ namespace Predictions.Controllers
                     {
                         viewModel.Matchlist.Add
                         (
-                            new MatchInfo()
-                            {
-                                Date = tour.Matches[i].Date,
-                                HomeTeamTitle = tour.Matches[i].HomeTeam.Title,
-                                AwayTeamTitle = tour.Matches[i].AwayTeam.Title
-                            }
+                            new MatchInfo(tour.Matches[i].Date, tour.Matches[i].HomeTeam.Title, tour.Matches[i].AwayTeam.Title)
                         );
 
                         var filteredPredictions = tour.Matches[i].Predictions
@@ -95,7 +81,7 @@ namespace Predictions.Controllers
                 };
             }
             //WTF!!!
-            else return View(viewModel);
+            else return HttpNotFound();
         }
     }
 }

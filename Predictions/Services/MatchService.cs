@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Predictions.Models;
 using Predictions.DAL;
+using Predictions.ViewModels;
 
 namespace Predictions.Services
 {
@@ -27,5 +28,18 @@ namespace Predictions.Services
             context.Matches.Add(match);
             context.SaveChanges();
         } 
+
+        public List<MatchInfo> GenerateMatchlist(List<Match> matches)
+        {
+            var matchlist = new List<MatchInfo>();
+            for (var i = 0; i < matches.Count; i++)
+            {
+                matchlist.Add(new MatchInfo(
+                    matches[i].Date,
+                    matches[i].HomeTeam.Title,
+                    matches[i].AwayTeam.Title));
+            }
+            return matchlist;
+        }
     }
 }

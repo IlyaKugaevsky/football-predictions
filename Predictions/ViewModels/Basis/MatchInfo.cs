@@ -9,6 +9,15 @@ namespace Predictions.ViewModels
 {
     public class MatchInfo
     {
+        public MatchInfo(DateTime date, string homeTitle, string awayTitle, string predictionValue = null, string score = null)
+        {
+            Date = date;
+            HomeTeamTitle = homeTitle;
+            AwayTeamTitle = awayTitle;
+            PredictionValue = predictionValue;
+            Score = score;
+        }
+
         public int Id { get; set; }
 
         [Required]
@@ -21,11 +30,11 @@ namespace Predictions.ViewModels
         [Required]
         public string AwayTeamTitle { get; set; }
 
-        [RegularExpression(@"^$|^[0 - 9]{1, 2}:[0-9]{1,2}$", ErrorMessage = "Некорректный счет")]
+        [RegularExpression(@"^$|^[0-9]{1,2}:[0-9]{1,2}$", ErrorMessage = "Некорректный счет")]
         public string PredictionValue { get; set; }
 
         [Required]
-        [RegularExpression(@"^$|^[0 - 9]{1, 2}:[0-9]{1,2}$", ErrorMessage = "Некорректный счет")]
+        [RegularExpression(@"^$|^[0-9]{1,2}:[0-9]{1,2}$", ErrorMessage = "Некорректный счет")]
         public string Score { get; set; }
     }
 }

@@ -13,7 +13,6 @@ namespace Predictions.ViewModels
         //display
         public List<SelectListItem> Expertlist { get; set; }
         public List<SelectListItem> Tourlist { get; set; }
-
         public List<MatchInfo> Matchlist { get; set; }
 
         //input

@@ -13,10 +13,8 @@ namespace Predictions.Services
         {
             var teamlist = new List<SelectListItem>();
             context.Teams.ToList().
-                ForEach(e => teamlist.Add
-                (
-                    new SelectListItem() { Text = e.Title, Value = e.TeamId.ToString() }
-                ));
+                ForEach(e => teamlist.Add(
+                    new SelectListItem() { Text = e.Title, Value = e.TeamId.ToString() }));
             return teamlist;
         }
     }

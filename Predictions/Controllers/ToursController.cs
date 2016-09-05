@@ -85,31 +85,28 @@ namespace Predictions.Controllers
         //a lot of work here!
         public ActionResult AddPredictions(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            int realId = id.Value;
 
             using (var context = new PredictionsContext())
             {
-                var tour = context.Tours
-                    .Include(t => t.Matches
-                        .Select(m => m.HomeTeam))
-                    .Include(t => t.Matches
-                        .Select(m => m.AwayTeam))
-                    .Include(t => t.Matches
-                        .Select(m => m.Predictions))
-                    .Single(t => t.TourId == id);
+                var tour = _tourService.LoadBasicsWith(
+                        realId, 
+                        context, 
+                        t => t.Matches.Select(m => m.Predictions));
 
-                if (tour == null)
-                {
-                    return HttpNotFound();
-                }
+                //var tour = context.Tours
+                //    .Include(t => t.Matches
+                //        .Select(m => m.HomeTeam))
+                //    .Include(t => t.Matches
+                //        .Select(m => m.AwayTeam))
+                //    .Include(t => t.Matches
+                //        .Select(m => m.Predictions))
+                //    .Single(t => t.TourId == id);
+
+                if (tour == null) return HttpNotFound();
 
                 //if predicion already exist? TODO
-
-                //var expertlist = context.Experts.ToList();
-
                 var expertlist = _expertService.GenerateSelectList(context);
 
                 AddPredictionsViewModel viewModel = new AddPredictionsViewModel()
@@ -153,52 +150,25 @@ namespace Predictions.Controllers
 
         public ActionResult AddScores(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            //id?-problem ---> to service
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             using (var context = new PredictionsContext())
             {
-                var tour = context.Tours
-                    .Include(t => t.Matches
-                        .Select(m => m.HomeTeam))
-                    .Include(t => t.Matches
-                        .Select(m => m.AwayTeam))
-                    .SingleOrDefault(t => t.TourId == id);
-
-                if (tour == null)
-                {
-                    return HttpNotFound();
-                }
-
-                //if the score already exists? TODO
-
-                var matchlist = new List<MatchInfo>();
-
-                for(var i = 0; i < tour.Matches.Count; i++)
-                {
-                    matchlist.Add(
-                        new MatchInfo()
-                        {
-                            Date = tour.Matches[i].Date,
-                            HomeTeamTitle = tour.Matches[i].HomeTeam.Title,
-                            AwayTeamTitle = tour.Matches[i].AwayTeam.Title
-                        });
-
-                }
-                AddScoresViewModel viewModel = new AddScoresViewModel()
-                {
-                    CurrentTourId = tour.TourId,
-                    Matchlist = matchlist
-                };
-
+                var tour = _tourService.LoadBasicsWith(id, context);
+                if (tour == null) return HttpNotFound();
+                var matchlist = _matchService.GenerateMatchlist(tour.Matches);
+                AddScoresViewModel viewModel = new AddScoresViewModel(tour.TourId, matchlist);
+                //{
+                //    CurrentTourId = tour.TourId,
+                //    Matchlist = matchlist
+                //};
                 return View(viewModel);
             }
         }
 
         [HttpPost]
-        public ActionResult AddScores(AddScoresViewModel viewModel)
+        public ActionResult AddScores([Bind(Include = "InputScorelist, CurrentTourId")] AddScoresViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
@@ -206,20 +176,21 @@ namespace Predictions.Controllers
                 {
                     //quite ugly
 
-                    var scorelist = new List<String>();
+                   // var scorelist = new List<String>();
 
-                    for (var i = 0; i < viewModel.Matchlist.Count(); i++)
-                    {
-                        scorelist.Add(viewModel.InputScorelist[i]);
-                    }
+                    //really works? mb inputScorelist < matchlist?
+                    //for (var i = 0; i < viewModel.InputScorelist.Count; i++)
+                    //{
+                    //    scorelist.Add(viewModel.InputScorelist[i].Value);
+                    //}
 
-                    var tour = context.Tours
-                        .Include(t => t.Matches)
-                        .SingleOrDefault(t => t.TourId == viewModel.CurrentTourId);
+                    //if the score already exists? TODO
+
+                    var tour = _tourService.EagerLoad(viewModel.CurrentTourId, context, t => t.Matches);
 
                     for (var i = 0; i < tour.Matches.Count(); i++)
                     {
-                        tour.Matches[i].Score = viewModel.InputScorelist[i];
+                        tour.Matches[i].Score = viewModel.InputScorelist[i].Value;
                     }
                     context.SaveChanges();
                     return RedirectToAction("Index");
@@ -249,13 +220,11 @@ namespace Predictions.Controllers
 
         public ActionResult DeleteMatch(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             using (var context = new PredictionsContext())
             {
+                //to service
                 Match match = context.Matches.Find(id);
                 int tourId = match.TourId;
                 context.Matches.Remove(match);

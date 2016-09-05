@@ -22,10 +22,8 @@ namespace Predictions.Services
         {
             var expertlist = new List<SelectListItem>();
             context.Experts.ToList().
-                ForEach(e => expertlist.Add
-                (
-                    new SelectListItem() { Text = e.Nickname, Value = e.ExpertId.ToString() }
-                ));
+                ForEach(e => expertlist.Add(
+                    new SelectListItem() { Text = e.Nickname, Value = e.ExpertId.ToString() }));
             return expertlist;
         }
     }

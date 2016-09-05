@@ -42,9 +42,9 @@
                                         {
                                             @Html.HiddenFor(model => Model.Tour.Matches[i].MatchId)
                                             <tr>
-                                                <td>@Model.Tour.Matches[i].Date</td>
-                                                <td>@Model.Tour.Matches[i].HomeTeam.Title</td>
-                                                <td>@Model.Tour.Matches[i].AwayTeam.Title</td>
+                                                <td>@Html.DisplayFor(model => Model.Tour.Matches[i].Date)</td>
+                                                <td>@Html.DisplayFor(model => Model.Tour.Matches[i].HomeTeam.Title)</td>
+                                                <td>@Html.DisplayFor(model => Model.Tour.Matches[i].AwayTeam.Title)</td>
                                                 <td>
                                                     <div class="form-group">
                                                         @Html.EditorFor(model => Model.InputData[i].PredictionValue, new { htmlAttributes = new { @class = "form-control" } })
