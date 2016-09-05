@@ -7,107 +7,108 @@
 
 <h1>Добавить прогноз</h1>
 
-@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "addPredictionForm", @class = "form-horizontal"}))
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "addPredictionsForm", @class = "form-horizontal" }))
 {
     @Html.AntiForgeryToken()
 
-        <div class="container">
-                <h2>@Model.Tour.TourId тур</h2>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <div class="form-group">
-                            @* <p> inside <label> *@
-                            <label class="col-md-3 control-label">
-                                <p class="pull-left">@Html.DisplayFor(model => model.Tour.StartDate) - @Html.DisplayFor(model => @Model.Tour.EndDate)</p>
-                            </label>     
-                            <div class="col-md-2 pull-right">
-                                @Html.DropDownListFor(model => model.SelectedExpertId, 
+    <div class="container">
+        <h2>@Model.TourInfo.TourId тур</h2>
+        @Html.HiddenFor(model => Model.TourInfo.TourId)
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="form-group">
+                        @* <p> inside <label> *@
+                        <label class="col-md-3 control-label">
+                            <p class="pull-left">@Html.DisplayFor(model => model.TourInfo.StartDate) - @Html.DisplayFor(model => @Model.TourInfo.EndDate)</p>
+                        </label>
+                        <div class="col-md-2 pull-right">
+                            @Html.DropDownListFor(model => model.SelectedExpertId,
                                Model.Expertlist,
                                new { @class = "selectpicker", @data_width = "auto", @title = "Выбрать эксперта" })
-                            </div>               
                         </div>
                     </div>
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <table class="table table-hover">
-                                    <tbody>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th>Дата</th>
+                                        <th>Дома</th>
+                                        <th>В гостях</th>
+                                        <th>Прогноз</th>
+                                    </tr>
+                                    @for (int i = 0; i <= Model.Matchlist.Count - 1; i++)
+                                    {
+                                        @Html.HiddenFor(model => Model.Matchlist[i].Id)
                                         <tr>
-                                            <th>Дата</th>
-                                            <th>Дома</th>
-                                            <th>В гостях</th>
-                                            <th>Прогноз</th>
+                                            <td>@Html.DisplayFor(model => Model.Matchlist[i].Date)</td>
+                                            <td>@Html.DisplayFor(model => Model.Matchlist[i].HomeTeamTitle)</td>
+                                            <td>@Html.DisplayFor(model => Model.Matchlist[i].AwayTeamTitle)</td>
+                                            <td>
+                                                <div class="form-group">
+                                                    @Html.EditorFor(model => Model.EditPredictionsValuelist[i].Value, new { htmlAttributes = new { @class = "form-control" } })
+                                                    <span class="input-group-addon">
+                                                        <i data-toggle="tooltip" title="Error msg here" data-container="body">
+                                                            @Html.ValidationMessageFor(model => Model.EditPredictionsValuelist[i].Value, "", new { @class = "help-inline" })
+                                                        </i>
+                                                    </span>
+                                                </div>
+                                            </td>
                                         </tr>
-                                        @for (int i = 0; i <= Model.Tour.Matches.Count - 1; i++)
-                                        {
-                                            @Html.HiddenFor(model => Model.Tour.Matches[i].MatchId)
-                                            <tr>
-                                                <td>@Html.DisplayFor(model => Model.Tour.Matches[i].Date)</td>
-                                                <td>@Html.DisplayFor(model => Model.Tour.Matches[i].HomeTeam.Title)</td>
-                                                <td>@Html.DisplayFor(model => Model.Tour.Matches[i].AwayTeam.Title)</td>
-                                                <td>
-                                                    <div class="form-group">
-                                                        @Html.EditorFor(model => Model.InputData[i].PredictionValue, new { htmlAttributes = new { @class = "form-control" } })
-                                                        <span class="input-group-addon">
-                                                            <i data-toggle="tooltip" title="Error msg here" data-container="body">
-                                                                @Html.ValidationMessageFor(model => Model.InputData[i].PredictionValue, "", new { @class = "help-inline" })
-                                                            </i>
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            }
-                                        <tr><td><input type="submit" class="btn btn-info" value="Сохранить прогноз"></td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>                    
+                                    }
+                                    <tr><td><input type="submit" class="btn btn-info" value="Сохранить прогноз"></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
+            </div>
         </div>
 
 
 
 
-    <script type="text/javascript">
+        <script type="text/javascript">
 
-        //$(document).ready(function () {
+            //$(document).ready(function () {
 
-        //    $.validator.addMethod("regex", function (value, element, regexpr) {
-        //        return regexpr.test(value);
-        //    }, "Некорректный счет");
+            //    $.validator.addMethod("regex", function (value, element, regexpr) {
+            //        return regexpr.test(value);
+            //    }, "Некорректный счет");
 
-        //    $('#addPredictionForm').validate({
-        //        highlight: function (element) {
-        //            $(element).closest('.control-group').removeClass('success').addClass('error');
-        //        },
-        //        success: function (element) {
-        //            element.text('OK!').addClass('valid')
-        //                .closest('.control-group').removeClass('error').addClass('success');
-        //        }
-        //    });
+            //    $('#addPredictionForm').validate({
+            //        highlight: function (element) {
+            //            $(element).closest('.control-group').removeClass('success').addClass('error');
+            //        },
+            //        success: function (element) {
+            //            element.text('OK!').addClass('valid')
+            //                .closest('.control-group').removeClass('error').addClass('success');
+            //        }
+            //    });
 
-        //    //$("input[name^='InputPredictionValuelist']").each(function () {
-        //    $("input[name^='InputData']").each(function () {
-        //        $(this).rules('add', {
-        //            regex: /^$|^[0-9]{1,2}:[0-9]{1,2}$/
-        //        });
-        //    });
-        //});
+            //    //$("input[name^='InputPredictionValuelist']").each(function () {
+            //    $("input[name^='InputData']").each(function () {
+            //        $(this).rules('add', {
+            //            regex: /^$|^[0-9]{1,2}:[0-9]{1,2}$/
+            //        });
+            //    });
+            //});
 
-        //$(document).ready(function () {
-        //    $.validator.addMethod("regex", function (value, element, regexpr) {
-        //        return regexpr.test(value);
-        //    }, "Неверный счет");
+            //$(document).ready(function () {
+            //    $.validator.addMethod("regex", function (value, element, regexpr) {
+            //        return regexpr.test(value);
+            //    }, "Неверный счет");
 
-        //    $("input[name^='input']").validate({
-        //        rules: {
-        //            required: true,
-        //            regex: /^[0-9]+$/
-        //        }
-        //    });
-        //});
-    </script>
+            //    $("input[name^='input']").validate({
+            //        rules: {
+            //            required: true,
+            //            regex: /^[0-9]+$/
+            //        }
+            //    });
+            //});
+        </script>
 
 }
 

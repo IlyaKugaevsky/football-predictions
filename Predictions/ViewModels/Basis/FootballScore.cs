@@ -17,7 +17,6 @@ namespace Predictions.ViewModels.Basis
             {
                 return _value;
             }
-
             set
             {
                 //to think; "N/A", "-", "не сыгран"?

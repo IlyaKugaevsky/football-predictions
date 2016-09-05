@@ -7,6 +7,7 @@ using Predictions.Models;
 using Predictions.Helpers;
 using System.Data.Entity;
 using Predictions.Services;
+using Predictions.ViewModels.Basis;
 
 namespace Predictions.Services
 {
@@ -26,6 +27,23 @@ namespace Predictions.Services
                        .Select(m => m.Predictions
                            .Select(p => p.Expert)))
                    .SingleOrDefault(t => t.TourId == tourId);
+        }
+
+        public Prediction CreatePrediction(int expertId, int matchId, string value)
+        {
+            return new Prediction() { ExpertId = expertId, MatchId = matchId, Value = value };
+        }
+
+
+        public void AddExpertPredictions(int expertId, List<Match> matches, List<FootballScore> scorelist)
+        {
+            var predictions = new List<Prediction>();
+            for (var i = 0; i < matches.Count; i++)
+            {
+                predictions.Add(CreatePrediction(expertId, matches[i].MatchId, scorelist[i].Value));
+            }
+            predictions.ForEach(p => _context.Predictions.Add(p));
+            _context.SaveChanges();
         }
 
         public void SubmitPrediction (Prediction prediction)

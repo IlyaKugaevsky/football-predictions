@@ -270,6 +270,7 @@
     <Compile Include="ViewModels\AddScoresViewModel.cs" />
     <Compile Include="ViewModels\Basis\FootballScore.cs" />
     <Compile Include="ViewModels\Basis\PredictionResults.cs" />
+    <Compile Include="ViewModels\Basis\TourInfo.cs" />
     <Compile Include="ViewModels\EditTourViewModel.cs" />
     <Compile Include="ViewModels\MatchesViewModel.cs" />
     <Compile Include="ViewModels\Basis\MatchInfo.cs" />

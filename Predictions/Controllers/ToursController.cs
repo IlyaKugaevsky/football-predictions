@@ -9,6 +9,7 @@ using Predictions.ViewModels;
 using Predictions.Services;
 using System.Net;
 using System.Data.Entity;
+using Predictions.ViewModels.Basis;
 
 namespace Predictions.Controllers
 {
@@ -67,56 +68,47 @@ namespace Predictions.Controllers
         //a lot of work here!
         public ActionResult AddPredictions(int? id)
         {
+            //if predicion already exist? TODO
+
             var tour = _tourService.LoadBasicsWith(id, t => t.Matches.Select(m => m.Predictions));
-
-            //var tour = context.Tours
-            //    .Include(t => t.Matches
-            //        .Select(m => m.HomeTeam))
-            //    .Include(t => t.Matches
-            //        .Select(m => m.AwayTeam))
-            //    .Include(t => t.Matches
-            //        .Select(m => m.Predictions))
-            //    .Single(t => t.TourId == id);
-
             if (tour == null) return HttpNotFound();
 
-            //if predicion already exist? TODO
+            var tourInfo = new TourInfo(tour.TourId, tour.StartDate, tour.EndDate);
             var expertlist = _expertService.GenerateSelectList();
+            var matchlist = _matchService.GenerateMatchlist(_tourService.GetMatchesByTour(tour.TourId));
 
-            AddPredictionsViewModel viewModel = new AddPredictionsViewModel()
-            {
-                Tour = tour,
-                Expertlist = expertlist
-            };
+            AddPredictionsViewModel viewModel = new AddPredictionsViewModel(tourInfo, expertlist, matchlist);
             return View(viewModel);
         } 
 
         [HttpPost]
-        public ActionResult AddPredictions (AddPredictionsViewModel viewModel)
+        public ActionResult AddPredictions ([Bind(Include = "TourInfo, SelectedExpertId, EditPredictionsValuelist")] AddPredictionsViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                using (var context = new PredictionsContext())
-                {
-                    var predictionlist = new List<Prediction>();
 
-                    //if valuelist null?
-                    for(var i = 0; i <= viewModel.Tour.Matches.Count - 1; i++)
-                    {
-                        predictionlist.Add
-                        (
-                            new Prediction()
-                            {
-                                Value = viewModel.InputData[i].PredictionValue,
-                                MatchId = viewModel.Tour.Matches.ElementAt(i).MatchId,
-                                ExpertId = viewModel.SelectedExpertId
-                            }
-                        );
-                    }
-                    predictionlist.ForEach(n => context.Predictions.Add(n));
-                    context.SaveChanges();
-                    return RedirectToAction("Index");
-                }
+                //var predictionlist = new List<Prediction>();
+
+                ////if valuelist null?
+                //for (var i = 0; i <= viewModel.Tour.Matches.Count - 1; i++)
+                //{
+                //    predictionlist.Add
+                //    (
+                //        new Prediction()
+                //        {
+                //            Value = viewModel.InputData[i].PredictionValue,
+                //            MatchId = viewModel.Tour.Matches.ElementAt(i).MatchId,
+                //            ExpertId = viewModel.SelectedExpertId
+                //        }
+                //    );
+                //}
+                //predictionlist.ForEach(n => context.Predictions.Add(n));
+                //context.SaveChanges();
+                //return RedirectToAction("Index");
+                var matches = _tourService.GetMatchesByTour(viewModel.TourInfo.TourId);
+                _predictionService.AddExpertPredictions(viewModel.SelectedExpertId, matches, viewModel.EditPredictionsValuelist);
+                return RedirectToAction("Index");
+
             }
             return Content(ModelState.Values.ElementAt(0).Errors.ElementAt(0).Exception.ToString()); //change later
         }
