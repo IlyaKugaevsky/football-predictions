@@ -12,13 +12,11 @@ namespace Predictions.ViewModels
         public MatchInfo()
         { }
 
-        public MatchInfo(DateTime date, string homeTitle, string awayTitle, string predictionValue = null, string score = null)
+        public MatchInfo(DateTime date, string homeTitle, string awayTitle)
         {
             Date = date;
             HomeTeamTitle = homeTitle;
             AwayTeamTitle = awayTitle;
-            //PredictionValue = predictionValue;
-            //Score = score;
         }
 
         //really need?
@@ -33,13 +31,5 @@ namespace Predictions.ViewModels
 
         [Required]
         public string AwayTeamTitle { get; set; }
-
-        ////really need?
-        //[RegularExpression(@"^$|^[0-9]{1,2}:[0-9]{1,2}$", ErrorMessage = "Некорректный счет")]
-        //public string PredictionValue { get; set; }
-
-        //[Required]
-        //[RegularExpression(@"^$|^[0-9]{1,2}:[0-9]{1,2}$", ErrorMessage = "Некорректный счет")]
-        //public string Score { get; set; }
     }
 }

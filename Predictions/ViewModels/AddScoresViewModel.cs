@@ -12,19 +12,20 @@ namespace Predictions.ViewModels
         public AddScoresViewModel()
         { }
 
-        public AddScoresViewModel(int currentTourId, List<MatchInfo> matchlist, List<FootballScore> scorelist)
+        public AddScoresViewModel(int currentTourId, MatchTableViewModel matchTable)
         {
             CurrentTourId = currentTourId;
-            Matchlist = matchlist;
-            EditScorelist = scorelist;
+            MatchTable = matchTable;
         }
 
         public int CurrentTourId { get; set; }
 
-        //display
-        public List<MatchInfo> Matchlist { get; set; }
+        ////display
+        //public List<MatchInfo> Matchlist { get; set; }
 
-        //input and display
-        public List<FootballScore> EditScorelist { get; set; }
+        ////input and display
+        //public List<FootballScore> EditScorelist { get; set; }
+
+        public MatchTableViewModel MatchTable {get; set;}
     }
 }

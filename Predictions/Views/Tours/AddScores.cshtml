@@ -1,13 +1,7 @@
-﻿
+﻿@model Predictions.ViewModels.AddScoresViewModel
+
 @{
     ViewBag.Title = "AddScores";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-@model Predictions.ViewModels.AddScoresViewModel
-
-@{
-    ViewBag.Title = "AddPrediction";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -31,15 +25,15 @@
                                     <th class="col-md-1">В гостях</th>
                                     <th class="col-md-1">Счет</th>
                                 </tr>
-                                @for (int i = 0; i < Model.Matchlist.Count(); i++)
+                                @for (int i = 0; i < Model.MatchTable.Matchlist.Count(); i++)
                                 {
                                     <tr>
-                                        <td class="col-md-2">@Html.DisplayFor(model => Model.Matchlist[i].Date)</td>
-                                        <td class="col-md-1">@Html.DisplayFor(model => Model.Matchlist[i].HomeTeamTitle)</td>
-                                        <td class="col-md-1">@Html.DisplayFor(model => Model.Matchlist[i].AwayTeamTitle)</td>
+                                        <td class="col-md-2">@Html.DisplayFor(model => Model.MatchTable.Matchlist[i].Date)</td>
+                                        <td class="col-md-1">@Html.DisplayFor(model => Model.MatchTable.Matchlist[i].HomeTeamTitle)</td>
+                                        <td class="col-md-1">@Html.DisplayFor(model => Model.MatchTable.Matchlist[i].AwayTeamTitle)</td>
                                         <td class="col-md-1">
-                                            @Html.EditorFor(model => model.EditScorelist[i].Value, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model.EditScorelist[i].Value)
+                                            @Html.EditorFor(model => model.MatchTable.Scorelist[i].Value, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.MatchTable.Scorelist[i].Value)
                                         </td>
                                     </tr>
                                 }

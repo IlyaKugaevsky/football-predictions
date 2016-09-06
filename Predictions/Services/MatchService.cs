@@ -6,6 +6,7 @@ using Predictions.Models;
 using Predictions.DAL;
 using Predictions.ViewModels;
 using Predictions.ViewModels.Basis;
+using System.Data.Entity;
 
 namespace Predictions.Services
 {
@@ -18,21 +19,48 @@ namespace Predictions.Services
             _context = context;
         }
 
-        //to think; scores, predictions? mb options
+        public List<MatchInfo> GenerateMatchlist(int? tourId)
+        {
+            if (tourId == null) return null;
+
+            var tour = _context.Tours
+                    .Include(t => t.Matches
+                        .Select(m => m.HomeTeam))
+                    .Include(t => t.Matches
+                        .Select(m => m.AwayTeam))
+                    .ToList()
+                    .Single(t => t.TourId == tourId);
+
+            if (tour == null) return null;
+            return tour.Matches.Select(m => new MatchInfo(m.Date, m.HomeTeam.Title, m.AwayTeam.Title)).ToList();
+        }
+
         public List<MatchInfo> GenerateMatchlist(List<Match> matches)
         {
             return matches.Select(m => new MatchInfo(m.Date, m.HomeTeam.Title, m.AwayTeam.Title)).ToList();
-            //var matchlist = new List<MatchInfo>();
-            //for (var i = 0; i < matches.Count; i++)
-            //{
-            //    matchlist.Add(new MatchInfo(matches[i].Date, matches[i].HomeTeam.Title, matches[i].AwayTeam.Title, null, matches[i].Score));
-            //}
-            //return matchlist;
         }
 
-        public List<FootballScore> GenerateScoreList(List<Match> matches)
+        public List<FootballScore> GenerateScoreList(int? tourId, bool editable = false)
         {
-            return  matches.Select(m => new FootballScore { Value =  m.Score}).ToList();
+            if (tourId == null) return null;
+
+            var tour = _context.Tours
+                    .Include(t => t.Matches
+                        .Select(m => m.HomeTeam))
+                    .Include(t => t.Matches
+                        .Select(m => m.AwayTeam))
+                    .ToList()
+                    .Single(t => t.TourId == tourId);
+
+            if (tour == null) return null;
+
+            return tour.Matches.Select(m => new FootballScore { Value = m.Score, Editable = editable }).ToList();
+
+        }
+
+        public List<FootballScore> GenerateScoreList(List<Match> matches, bool editable = false)
+        {
+            return  matches.Select(m => new FootballScore { Value =  m.Score, Editable = editable}).ToList();
         }
 
         public Match CreateMatch(DateTime date, int homeId, int awayId, int tourId)

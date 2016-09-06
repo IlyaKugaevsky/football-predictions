@@ -95,20 +95,24 @@ namespace Predictions.Controllers
 
         public ActionResult AddScores(int? id)
         {
-            var tour = _tourService.LoadBasicsWith(id);
-            if (tour == null) return HttpNotFound();
-            var matchlist = _matchService.GenerateMatchlist(tour.Matches);
-            var scorelist = _matchService.GenerateScoreList(tour.Matches);
-            return View(new AddScoresViewModel(tour.TourId, matchlist, scorelist));
+            var matchlist = _matchService.GenerateMatchlist(id);
+            var scorelist = _matchService.GenerateScoreList(id);
+
+            if (matchlist == null || scorelist == null) return HttpNotFound();
+
+            var headers = new List<string>() { "Дата", "Дома", "В гостях", "счет" };
+            var matchTable = new MatchTableViewModel(headers, matchlist, scorelist);
+
+            return View(new AddScoresViewModel(id.Value, matchTable));
         }
 
         [HttpPost]
-        public ActionResult AddScores([Bind(Include = "EditScorelist, CurrentTourId")] AddScoresViewModel viewModel)
+        public ActionResult AddScores([Bind(Include = "MatchTable, CurrentTourId")] AddScoresViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
                 //really works? mb inputScorelist < matchlist?
-                _matchService.AddScores(_tourService.GetMatchesByTour(viewModel.CurrentTourId), viewModel.EditScorelist);
+                _matchService.AddScores(_tourService.GetMatchesByTour(viewModel.CurrentTourId), viewModel.MatchTable.Scorelist);
                 return RedirectToAction("Index");
             }
             return AddScores(viewModel.CurrentTourId); //not sure
@@ -147,25 +151,17 @@ namespace Predictions.Controllers
             var tour = _tourService.LoadBasicsWith(1);
             var matches = tour.Matches.ToList();
             var matchlist = _matchService.GenerateMatchlist(matches);
-            var rows = new List<MatchTableRow>();
-            for (var i = 0; i< matchlist.Count(); i++)
-            {
-                var row = new MatchTableRow(matchlist[i]);
-                rows.Add(row);
-            }
+            var scorelist = _matchService.GenerateScoreList(matches, true);
 
             var headers = new List<string>()
             {
                 "Дата",
                 "Дома",
-                "В гостях"
+                "В гостях",
+                "Счет"
             };
 
-            var table = new MatchTableViewModel()
-            {
-                Headers = headers,
-                Rows = rows
-            };
+            var table = new MatchTableViewModel(headers, matchlist, scorelist);
 
             return View(table);
 
