@@ -96,11 +96,11 @@ namespace Predictions.Controllers
         public ActionResult AddScores(int? id)
         {
             var matchlist = _matchService.GenerateMatchlist(id);
-            var scorelist = _matchService.GenerateScoreList(id);
+            var scorelist = _matchService.GenerateScoreList(id, true);
 
             if (matchlist == null || scorelist == null) return HttpNotFound();
 
-            var headers = new List<string>() { "Дата", "Дома", "В гостях", "счет" };
+            var headers = new List<string>() { "Дата", "Дома", "В гостях", "Счет" };
             var matchTable = new MatchTableViewModel(headers, matchlist, scorelist);
 
             return View(new AddScoresViewModel(id.Value, matchTable));

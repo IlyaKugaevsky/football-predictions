@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Ввести результаты</h1>
+@*<h1>Ввести результаты</h1>
 
 @using (Html.BeginForm())
 {
@@ -45,4 +45,25 @@
             </div>
         </div>
     </div>
-}
+}*@
+
+<h1>Ввести результаты</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            @Html.AntiForgeryToken()
+            <h2>@Model.CurrentTourId Тур</h2>
+            @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "addScoresForm" }))
+            {
+                @Html.HiddenFor(model => Model.CurrentTourId)
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        @Html.Partial("MatchTable", Model.MatchTable, new ViewDataDictionary { TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "MatchTable" }})
+                    </div>
+                    <input type="submit" class="btn btn-info" value="Сохранить">
+                </div>
+            }
+     </div>
+    </div>
+</div>
