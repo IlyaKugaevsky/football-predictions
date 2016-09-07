@@ -45,23 +45,23 @@
                             <div class="btn-group-justified" role="group">
                                 <div class="row">
                                     @Html.ActionLink("Редактор тура", "EditTour",
-                                    new { id = Model.ElementAt(i).TourId },
+                                    new { tourId = Model.ElementAt(i).TourId },
                                     new { @class = "btn btn-sm btn-info", @role = "group"})
                                 </div>
 
                                 <div class="row top-buffer">
                                     @Html.ActionLink("Редактор прогнозов", "AddPredictions",
-                                    new { id = Model.ElementAt(i).TourId },
+                                    new { tourId = Model.ElementAt(i).TourId },
                                     new { @class = "btn btn-sm btn-info" })
                                 </div>
                                 <div class="row top-buffer">
                                     @Html.ActionLink("Редактор результатов", "AddScores",
-                                    new { id = Model.ElementAt(i).TourId },
+                                    new { tourId = Model.ElementAt(i).TourId },
                                     new { @class = "btn btn-sm btn-info" })
                                 </div>
                                 <div class="row top-buffer">
                                     @Html.ActionLink("Посчитать прогнозы", "SubmitTourPredictions",
-                                    new { id = Model.ElementAt(i).TourId },
+                                    new { tourId = Model.ElementAt(i).TourId },
                                     new { @class = "btn btn-sm btn-danger" })
                                 </div>
                             </div>

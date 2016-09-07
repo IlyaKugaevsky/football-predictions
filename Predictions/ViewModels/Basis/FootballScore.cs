@@ -38,4 +38,5 @@ namespace Predictions.ViewModels.Basis
         //editable in view
         public bool Editable { get; set; }
     }
+
 }

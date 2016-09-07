@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Data.Entity;
 using System.Linq.Expressions;
 using System.Net;
+using Predictions.ViewModels.Basis;
 
 namespace Predictions.Services
 {
@@ -18,6 +19,13 @@ namespace Predictions.Services
         public TourService(PredictionsContext context)
         {
             _context = context;
+        }
+
+        public TourInfo GetTourInfo(int? tourId)
+        {
+            if (tourId == null) return null;
+            var tour = _context.Tours.Find(tourId);
+            return new TourInfo(tour.TourId, tour.StartDate, tour.EndDate);
         }
 
         public List<SelectListItem> GenerateSelectList()

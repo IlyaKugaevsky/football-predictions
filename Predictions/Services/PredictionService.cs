@@ -20,13 +20,91 @@ namespace Predictions.Services
             _context = context;
         }
 
-        public Tour LoadTour(int tourId)
+        public Tour LoadTour(int? tourId)
         {
             return _context.Tours
                    .Include(t => t.Matches
-                       .Select(m => m.Predictions
-                           .Select(p => p.Expert)))
-                   .SingleOrDefault(t => t.TourId == tourId);
+                       .Select(m => m.Predictions))
+                   .Single(t => t.TourId == tourId);
+        }
+
+        //not sure, need some testing
+        public List<Prediction> LoadPredictions(List<Match> matches, int? expertId)
+        {
+            if (expertId == null || !matches.Any()) return null;
+
+            var matchesIds = matches.Select(m => m.MatchId).ToList();
+            return _context.Predictions
+                .Where(p => (p.ExpertId == expertId) && (matchesIds.Any(mId => mId == p.MatchId)))
+                .ToList();
+        }
+
+        //include-style mb?
+        public List<Prediction> LoadTourPredictions(int? tourId, int? expertId)
+        {
+            if (expertId == null || tourId == null) return null;
+
+            return _context.Predictions
+                .Where(p => p.ExpertId == expertId && p.Match.TourId == tourId)
+                .ToList();
+        }
+
+        public List<FootballScore> GenerateStraightScorelist(int length, string value = "-", bool editable = false)
+        {
+            var scorelist = new List<FootballScore>();
+            for (var i = 0; i < length; i++)
+            {
+                scorelist.Add(new FootballScore(value, editable));
+            }
+            return scorelist;
+        }
+
+        public List<FootballScore> GeneratePredictionlist(List<Match> matches, int? expertId = null, bool editable = false, string emptyDisplay = "-")
+        {
+            if (expertId == null) return GenerateStraightScorelist(matches.Count, editable ? emptyDisplay : String.Empty, editable);
+
+            var predictions = LoadPredictions(matches, expertId);
+            if (predictions == null) return null;
+
+            return predictions.Select(p => new FootballScore
+            {
+                Value = (String.IsNullOrEmpty(p.Value) && editable == false) ? emptyDisplay : p.Value,
+                Editable = editable
+            }).ToList();
+        }
+
+        //hard, heavy
+        //theorethically mb scorelist > matchlist 
+        public List<FootballScore> GeneratePredictionlist(int? tourId, int? expertId = null, bool editable = false, string emptyDisplay = "-")
+        {
+            if (tourId == null) return null;
+
+            if (expertId == null)
+            {
+                var length = _context.Tours
+                    .Include(t => t.Matches)
+                    .Single(t => t.TourId == tourId)
+                    .Matches.Count;
+                return GenerateStraightScorelist(length, editable ? String.Empty : emptyDisplay, editable);
+            }
+            else
+            {
+                var tour = _context.Tours
+                    .Include(t => t.Matches
+                    .Select(m => m.Predictions
+                        .Where(p => p.ExpertId == expertId)))
+                    .Single(t => t.TourId == tourId);
+                var matches = tour.Matches.ToList();
+                var predictions = matches.SelectMany(m => m.Predictions).ToList();
+
+                if (predictions == null) return GenerateStraightScorelist(matches.Count, editable ? emptyDisplay : String.Empty, editable);
+
+                return predictions.Select(p => new FootballScore
+                {
+                    Value = (String.IsNullOrEmpty(p.Value) && editable == false) ? emptyDisplay : p.Value,
+                    Editable = editable
+                }).ToList();
+            }
         }
 
         public Prediction CreatePrediction(int expertId, int matchId, string value)
@@ -42,7 +120,8 @@ namespace Predictions.Services
             {
                 predictions.Add(CreatePrediction(expertId, matches[i].MatchId, scorelist[i].Value));
             }
-            predictions.ForEach(p => _context.Predictions.Add(p));
+            //predictions.ForEach(p => _context.Predictions.Add(p));
+            _context.Predictions.AddRange(predictions);
             _context.SaveChanges();
         }
 
@@ -63,7 +142,8 @@ namespace Predictions.Services
             prediction.IsClosed = true;
         }
 
-        public void SubmitTourPredictions(int tourId)
+        //mb fix
+        public void SubmitTourPredictions(int? tourId)
         {
             var tour = LoadTour(tourId);
 

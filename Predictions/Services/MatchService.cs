@@ -40,7 +40,7 @@ namespace Predictions.Services
             return matches.Select(m => new MatchInfo(m.Date, m.HomeTeam.Title, m.AwayTeam.Title)).ToList();
         }
 
-        public List<FootballScore> GenerateScoreList(int? tourId, bool editable = false, string emptyDisplay = "-")
+        public List<FootballScore> GenerateScorelist(int? tourId, bool editable = false, string emptyDisplay = "-")
         {
             if (tourId == null) return null;
 
@@ -53,7 +53,6 @@ namespace Predictions.Services
                     .Single(t => t.TourId == tourId);
 
             if (tour == null) return null;
-
             return tour.Matches.Select(m => new FootballScore
             {
                 Value = (String.IsNullOrEmpty(m.Score) && editable == false) ? emptyDisplay : m.Score,
@@ -62,9 +61,8 @@ namespace Predictions.Services
 
         }
 
-        public List<FootballScore> GenerateScoreList(List<Match> matches, bool editable = false, string emptyDisplay = "-")
+        public List<FootballScore> GenerateScorelist(List<Match> matches, bool editable = false, string emptyDisplay = "-")
         {
-            //return  matches.Select(m => new FootballScore { Value =  m.Score, Editable = editable}).ToList();
             return matches.Select(m => new FootballScore
             {
                 Value = (String.IsNullOrEmpty(m.Score) && editable == false) ? emptyDisplay : m.Score,

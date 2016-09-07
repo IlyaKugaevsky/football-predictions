@@ -21,10 +21,13 @@
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <input type="submit" class="btn btn-info" value="Сохранить">
+                        <input type="submit" class="btn btn-info pull-right" value="Сохранить">
                     </div>
                 </div>
             }
+            <div>
+                @Html.ActionLink("Назад к расписанию", "Index", new { }, new { @class = "btn btn-info" })
+            </div>
         </div>
     </div>
 </div>
