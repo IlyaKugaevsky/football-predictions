@@ -19,21 +19,24 @@
         </tr>
     </thead>
     <tbody>
-        @for (int i = 0; i < Model.Matchlist.Count(); i++)
+        @if (Model.Matchlist.Any() && Model.Scorelist.Any())
         {
-            <tr>
-                <td>@Model.Matchlist[i].Date</td>
-                <td>@Model.Matchlist[i].HomeTeamTitle</td>
-                <td>@Model.Matchlist[i].AwayTeamTitle</td>
-                <td>
-                    @if (@Model.Scorelist[i].Editable)
-                    {
-                        @Html.TextBoxFor(@model => @Model.Scorelist[i].Value, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(@model => @Model.Scorelist[i].Value)
-                    }
-                    else
-                    {@Html.DisplayFor(@model => @Model.Scorelist[i].Value)}
-            </tr>
+            for (int i = 0; i < Model.Matchlist.Count(); i++)
+            {
+                <tr>
+                    <td>@Model.Matchlist[i].Date</td>
+                    <td>@Model.Matchlist[i].HomeTeamTitle</td>
+                    <td>@Model.Matchlist[i].AwayTeamTitle</td>
+                    <td>
+                        @if (@Model.Scorelist[i].Editable)
+                        {
+                            @Html.TextBoxFor(@model => @Model.Scorelist[i].Value, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(@model => @Model.Scorelist[i].Value)
+                        }
+                        else
+                        {@Html.DisplayFor(@model => @Model.Scorelist[i].Value)}
+                </tr>
+            }
         }
     </tbody>
 </table>

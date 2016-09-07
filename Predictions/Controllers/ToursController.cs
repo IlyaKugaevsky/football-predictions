@@ -10,6 +10,7 @@ using Predictions.Services;
 using System.Net;
 using System.Data.Entity;
 using Predictions.ViewModels.Basis;
+using Predictions.Helpers;
 
 namespace Predictions.Controllers
 {
@@ -115,17 +116,24 @@ namespace Predictions.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddPredictions([Bind(Include = "TourInfo, SelectedExpertId, EditPredictionsValuelist")] AddPredictionsViewModel viewModel)
+        [MultipleButton(Name = "action", Argument = "ShowPredictions")]
+        public ActionResult ShowPredictions(AddPredictionsViewModel viewModel)
         {
-            if (ModelState.IsValid)
-            {
-                //var matches = _tourService.GetMatchesByTour(viewModel.TourInfo.TourId);
-                //_predictionService.AddExpertPredictions(viewModel.SelectedExpertId, matches, viewModel.MatchTable.Scorelist);
-                return RedirectToAction("Index");
-
-            }
-            return Content(ModelState.Values.ElementAt(0).Errors.ElementAt(0).Exception.ToString()); //change later
+            return RedirectToAction("AddPredictions", new { tourId = viewModel.TourInfo.TourId, expertId = viewModel.SelectedExpertId });
         }
+
+       
+        //public ActionResult AddPredictions([Bind(Include = "TourInfo, SelectedExpertId, EditPredictionsValuelist")] AddPredictionsViewModel viewModel)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        //var matches = _tourService.GetMatchesByTour(viewModel.TourInfo.TourId);
+        //        //_predictionService.AddExpertPredictions(viewModel.SelectedExpertId, matches, viewModel.MatchTable.Scorelist);
+        //        return RedirectToAction("Index");
+
+        //    }
+        //    return Content(ModelState.Values.ElementAt(0).Errors.ElementAt(0).Exception.ToString()); //change later
+        //}
 
         public ActionResult AddScores(int? tourId)
         {

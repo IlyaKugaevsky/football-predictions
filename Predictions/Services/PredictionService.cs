@@ -79,25 +79,19 @@ namespace Predictions.Services
         {
             if (tourId == null) return null;
 
-            if (expertId == null)
-            {
-                var length = _context.Tours
-                    .Include(t => t.Matches)
-                    .Single(t => t.TourId == tourId)
-                    .Matches.Count;
-                return GenerateStraightScorelist(length, editable ? String.Empty : emptyDisplay, editable);
-            }
+            if (expertId == null) return new List<FootballScore>();
             else
             {
+                //pay attention
                 var tour = _context.Tours
                     .Include(t => t.Matches
-                    .Select(m => m.Predictions
-                        .Where(p => p.ExpertId == expertId)))
+                    .Select(m => m.Predictions))
                     .Single(t => t.TourId == tourId);
                 var matches = tour.Matches.ToList();
-                var predictions = matches.SelectMany(m => m.Predictions).ToList();
+                var predictions = matches.SelectMany(m => m.Predictions).Where(p => p.ExpertId == expertId).ToList();
 
-                if (predictions == null) return GenerateStraightScorelist(matches.Count, editable ? emptyDisplay : String.Empty, editable);
+                if (!predictions.Any()) return GenerateStraightScorelist(matches.Count, editable ? emptyDisplay : String.Empty, editable);
+
 
                 return predictions.Select(p => new FootballScore
                 {
