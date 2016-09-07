@@ -97,9 +97,7 @@ namespace Predictions.Controllers
         {
             var matchlist = _matchService.GenerateMatchlist(id);
             var scorelist = _matchService.GenerateScoreList(id, true);
-
             if (matchlist == null || scorelist == null) return HttpNotFound();
-
             var headers = new List<string>() { "Дата", "Дома", "В гостях", "Счет" };
             var matchTable = new MatchTableViewModel(headers, matchlist, scorelist);
 
@@ -152,19 +150,10 @@ namespace Predictions.Controllers
             var matches = tour.Matches.ToList();
             var matchlist = _matchService.GenerateMatchlist(matches);
             var scorelist = _matchService.GenerateScoreList(matches, true);
-
-            var headers = new List<string>()
-            {
-                "Дата",
-                "Дома",
-                "В гостях",
-                "Счет"
-            };
-
+            var headers = new List<string>(){"Дата", "Дома", "В гостях", "Счет"};
             var table = new MatchTableViewModel(headers, matchlist, scorelist);
 
             return View(table);
-
         }
     }
 }

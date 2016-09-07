@@ -36,7 +36,6 @@
                                             <td>@item.HomeTeam.Title</td>
                                             <td>@item.AwayTeam.Title</td>
                                             <td>@item.Score</td>
-                                            @*<td>@Html.ActionLink("Delete", "Delete", new { id = item.MatchId })</td>*@
                                         </tr>
                                     }
                                 </tbody>
@@ -45,18 +44,18 @@
                         <div class="col-md-2">
                             <div class="btn-group-justified" role="group">
                                 <div class="row">
-                                    @Html.ActionLink("Редактировать тур", "EditTour",
+                                    @Html.ActionLink("Редактор тура", "EditTour",
                                     new { id = Model.ElementAt(i).TourId },
                                     new { @class = "btn btn-sm btn-info", @role = "group"})
                                 </div>
 
                                 <div class="row top-buffer">
-                                    @Html.ActionLink("Добавить прогноз", "AddPredictions",
+                                    @Html.ActionLink("Редактор прогнозов", "AddPredictions",
                                     new { id = Model.ElementAt(i).TourId },
                                     new { @class = "btn btn-sm btn-info" })
                                 </div>
                                 <div class="row top-buffer">
-                                    @Html.ActionLink("Ввести результаты", "AddScores",
+                                    @Html.ActionLink("Редактор результатов", "AddScores",
                                     new { id = Model.ElementAt(i).TourId },
                                     new { @class = "btn btn-sm btn-info" })
                                 </div>

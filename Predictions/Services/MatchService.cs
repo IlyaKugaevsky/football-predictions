@@ -40,7 +40,7 @@ namespace Predictions.Services
             return matches.Select(m => new MatchInfo(m.Date, m.HomeTeam.Title, m.AwayTeam.Title)).ToList();
         }
 
-        public List<FootballScore> GenerateScoreList(int? tourId, bool editable = false)
+        public List<FootballScore> GenerateScoreList(int? tourId, bool editable = false, string emptyDisplay = "-")
         {
             if (tourId == null) return null;
 
@@ -54,13 +54,23 @@ namespace Predictions.Services
 
             if (tour == null) return null;
 
-            return tour.Matches.Select(m => new FootballScore { Value = m.Score, Editable = editable }).ToList();
+            //not sure
+            return tour.Matches.Select(m => new FootballScore
+            {
+                Value = (String.IsNullOrEmpty(m.Score) && editable == false) ? emptyDisplay : m.Score,
+                Editable = editable 
+            }).ToList();
 
         }
 
-        public List<FootballScore> GenerateScoreList(List<Match> matches, bool editable = false)
+        public List<FootballScore> GenerateScoreList(List<Match> matches, bool editable = false, string emptyDisplay = "-")
         {
-            return  matches.Select(m => new FootballScore { Value =  m.Score, Editable = editable}).ToList();
+            //return  matches.Select(m => new FootballScore { Value =  m.Score, Editable = editable}).ToList();
+            return matches.Select(m => new FootballScore
+            {
+                Value = (String.IsNullOrEmpty(m.Score) && editable == false) ? emptyDisplay : m.Score,
+                Editable = editable
+            }).ToList();
         }
 
         public Match CreateMatch(DateTime date, int homeId, int awayId, int tourId)
@@ -70,7 +80,8 @@ namespace Predictions.Services
                 Date = date,
                 HomeTeam = _context.Teams.Find(homeId),
                 AwayTeam = _context.Teams.Find(awayId),
-                TourId = tourId 
+                TourId = tourId, 
+                Score = string.Empty
             };
             return match;
         }

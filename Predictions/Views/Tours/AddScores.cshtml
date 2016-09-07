@@ -5,48 +5,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@*<h1>Ввести результаты</h1>
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    <div class="form-horizontal">
-        <div class="container">
-            <h2>@Model.CurrentTourId Тур</h2>
-            @Html.HiddenFor(model => Model.CurrentTourId)
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="col-md-5">
-                        <table class="table table-hover">
-                            <tbody>
-                                <tr>
-                                    <th class="col-md-2">Дата</th>
-                                    <th class="col-md-1">Дома</th>
-                                    <th class="col-md-1">В гостях</th>
-                                    <th class="col-md-1">Счет</th>
-                                </tr>
-                                @for (int i = 0; i < Model.MatchTable.Matchlist.Count(); i++)
-                                {
-                                    <tr>
-                                        <td class="col-md-2">@Html.DisplayFor(model => Model.MatchTable.Matchlist[i].Date)</td>
-                                        <td class="col-md-1">@Html.DisplayFor(model => Model.MatchTable.Matchlist[i].HomeTeamTitle)</td>
-                                        <td class="col-md-1">@Html.DisplayFor(model => Model.MatchTable.Matchlist[i].AwayTeamTitle)</td>
-                                        <td class="col-md-1">
-                                            @Html.EditorFor(model => model.MatchTable.Scorelist[i].Value, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model.MatchTable.Scorelist[i].Value)
-                                        </td>
-                                    </tr>
-                                }
-                                <tr><td><input type="submit" class="btn btn-info" value="Сохранить"></td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-}*@
-
 <h1>Ввести результаты</h1>
 <div class="container">
     <div class="row">
@@ -56,15 +14,17 @@
             @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "addScoresForm" }))
             {
                 @Html.HiddenFor(model => Model.CurrentTourId)
-
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        @*@Html.Partial("MatchTable", Model.MatchTable, new ViewDataDictionary { TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "MatchTable" }})*@
                         @Html.PartialFor(m => m.MatchTable, "MatchTable")
                     </div>
-                    <input type="submit" class="btn btn-info" value="Сохранить">
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <input type="submit" class="btn btn-info" value="Сохранить">
+                    </div>
                 </div>
             }
-     </div>
+        </div>
     </div>
 </div>
