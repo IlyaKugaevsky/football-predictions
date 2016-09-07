@@ -59,7 +59,8 @@
 
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        @Html.Partial("MatchTable", Model.MatchTable, new ViewDataDictionary { TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "MatchTable" }})
+                        @*@Html.Partial("MatchTable", Model.MatchTable, new ViewDataDictionary { TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "MatchTable" }})*@
+                        @Html.PartialFor(m => m.MatchTable, "MatchTable")
                     </div>
                     <input type="submit" class="btn btn-info" value="Сохранить">
                 </div>
