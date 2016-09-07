@@ -36,6 +36,11 @@ namespace Predictions.Controllers
         {
             var tours = _tourService.LoadBasicsWith();
             if (tours == null) return HttpNotFound();
+
+            var predictions = _context.Predictions.ToList();
+            predictions.ForEach(p => _context.Predictions.Remove(p));
+            _context.SaveChanges();
+
             return View(tours);
         }
 

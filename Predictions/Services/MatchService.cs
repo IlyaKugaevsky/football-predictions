@@ -54,7 +54,6 @@ namespace Predictions.Services
 
             if (tour == null) return null;
 
-            //not sure
             return tour.Matches.Select(m => new FootballScore
             {
                 Value = (String.IsNullOrEmpty(m.Score) && editable == false) ? emptyDisplay : m.Score,
