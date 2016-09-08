@@ -19,6 +19,11 @@ namespace Predictions.Services
             _context = context;
         }
 
+        public List<MatchInfo> GenerateEmptyMatchlist()
+        {
+            return new List<MatchInfo>();
+        }
+
         public List<MatchInfo> GenerateMatchlist(int? tourId)
         {
             if (tourId == null) return null;

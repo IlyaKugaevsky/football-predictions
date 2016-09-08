@@ -108,10 +108,11 @@ namespace Predictions.Controllers
 
             var headers = new List<string>() { "Дата", "Дома", "В гостях", "Прогноз" };
             var matchlist = _matchService.GenerateMatchlist(tourId);
-            var scorelist = _predictionService.GeneratePredictionlist(tourId, expertId, false);
+            var scorelist = _predictionService.GeneratePredictionlist(tourId, expertId, true);
 
             var matchTable = new MatchTableViewModel(headers, matchlist, scorelist);
             var viewModel = new AddPredictionsViewModel(expertlist, tourInfo, matchTable);
+            viewModel.SelectedExpertId = expertId ?? 0;
             return View(viewModel);
         }
 
@@ -122,7 +123,15 @@ namespace Predictions.Controllers
             return RedirectToAction("AddPredictions", new { tourId = viewModel.TourInfo.TourId, expertId = viewModel.SelectedExpertId });
         }
 
-       
+        [HttpPost]
+        [MultipleButton(Name = "action", Argument = "AddPredictions")]
+        public ActionResult AddPredictions(AddPredictionsViewModel viewModel)
+        {
+            return RedirectToAction("AddPredictions", new { tourId = viewModel.TourInfo.TourId, expertId = viewModel.SelectedExpertId });
+        }
+
+
+
         //public ActionResult AddPredictions([Bind(Include = "TourInfo, SelectedExpertId, EditPredictionsValuelist")] AddPredictionsViewModel viewModel)
         //{
         //    if (ModelState.IsValid)

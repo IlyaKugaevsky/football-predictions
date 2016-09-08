@@ -28,25 +28,41 @@ namespace Predictions.Services
                    .Single(t => t.TourId == tourId);
         }
 
-        //not sure, need some testing
+
+        //same order as matches, because of include
         public List<Prediction> LoadPredictions(List<Match> matches, int? expertId)
         {
             if (expertId == null || !matches.Any()) return null;
+            var matchesIds = matches
+                .Select(m => m.MatchId);
 
-            var matchesIds = matches.Select(m => m.MatchId).ToList();
-            return _context.Predictions
-                .Where(p => (p.ExpertId == expertId) && (matchesIds.Any(mId => mId == p.MatchId)))
+            matches = _context.Matches
+                .Where(m => matchesIds.Contains(m.MatchId))
+                .Include(m => m.Predictions)
+                .ToList();
+
+            return matches
+                .SelectMany(m => m.Predictions)
+                .Where(p => p.ExpertId == expertId)
                 .ToList();
         }
 
-        //include-style mb?
+        //same order as matches, because of include
         public List<Prediction> LoadTourPredictions(int? tourId, int? expertId)
         {
             if (expertId == null || tourId == null) return null;
 
-            return _context.Predictions
-                .Where(p => p.ExpertId == expertId && p.Match.TourId == tourId)
+            var matches = LoadTour(tourId).Matches;
+
+            return matches
+                .SelectMany(m => m.Predictions)
+                .Where(p => p.ExpertId == expertId)
                 .ToList();
+        }
+
+        public bool HasPredictionLoaded(Match match)
+        {
+            return !match.Predictions.IsNullOrEmpty();
         }
 
         public List<FootballScore> GenerateStraightScorelist(int length, string value = "-", bool editable = false)
@@ -59,45 +75,60 @@ namespace Predictions.Services
             return scorelist;
         }
 
-        public List<FootballScore> GeneratePredictionlist(List<Match> matches, int? expertId = null, bool editable = false, string emptyDisplay = "-")
-        {
-            if (expertId == null) return GenerateStraightScorelist(matches.Count, editable ? emptyDisplay : String.Empty, editable);
+        //if single match has no predictions?
+        //public List<FootballScore> GeneratePredictionlist(List<Match> matches, int? expertId = null, bool editable = false, string emptyDisplay = "-")
+        //{
+        //    if (expertId == null) return GenerateStraightScorelist(matches.Count, String.Empty, false);
 
-            var predictions = LoadPredictions(matches, expertId);
-            if (predictions == null) return null;
+        //    var predictions = LoadPredictions(matches, expertId);
+        //    if (predictions == null) return null;
 
-            return predictions.Select(p => new FootballScore
-            {
-                Value = (String.IsNullOrEmpty(p.Value) && editable == false) ? emptyDisplay : p.Value,
-                Editable = editable
-            }).ToList();
-        }
+        //    return predictions.Select(p => new FootballScore
+        //    {
+        //        Value = (String.IsNullOrEmpty(p.Value) && editable == false) ? emptyDisplay : p.Value,
+        //        Editable = editable
+        //    }).ToList();
+        //}
 
         //hard, heavy
-        //theorethically mb scorelist > matchlist 
         public List<FootballScore> GeneratePredictionlist(int? tourId, int? expertId = null, bool editable = false, string emptyDisplay = "-")
         {
             if (tourId == null) return null;
-
-            if (expertId == null) return new List<FootballScore>();
-            else
-            {
-                //pay attention
-                var tour = _context.Tours
+            var tour = _context.Tours
                     .Include(t => t.Matches
                     .Select(m => m.Predictions))
                     .Single(t => t.TourId == tourId);
-                var matches = tour.Matches.ToList();
+            var matches = tour.Matches.ToList();
+
+            if (expertId == null) return GenerateStraightScorelist(matches.Count, emptyDisplay, false);
+            else
+            {
                 var predictions = matches.SelectMany(m => m.Predictions).Where(p => p.ExpertId == expertId).ToList();
+                if (predictions.IsNullOrEmpty()) return GenerateStraightScorelist(matches.Count, editable ? String.Empty: emptyDisplay, editable);
 
-                if (!predictions.Any()) return GenerateStraightScorelist(matches.Count, editable ? emptyDisplay : String.Empty, editable);
-
-
-                return predictions.Select(p => new FootballScore
+                if (predictions.Count() == matches.Count())
                 {
-                    Value = (String.IsNullOrEmpty(p.Value) && editable == false) ? emptyDisplay : p.Value,
-                    Editable = editable
-                }).ToList();
+                    return predictions.Select(p => new FootballScore(p.Value, editable)).ToList();
+
+                }
+                else
+                {
+                    var scorelist = new List<FootballScore>();
+                    var j = 0;
+                    for(var i = 0; i < matches.Count(); i++)
+                    {
+                        if(HasPredictionLoaded(matches[i]))
+                        {
+                            scorelist.Add(new FootballScore(predictions[j].Value, editable));
+                            j++;
+                        }
+                        else
+                        {
+                            scorelist.Add(new FootballScore(editable ? String.Empty : emptyDisplay, editable));
+                        }
+                    }
+                    return scorelist;
+                }
             }
         }
 

@@ -13,6 +13,11 @@
             <h2>@Model.TourInfo.TourId Тур</h2>
             @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "addPredictionsForm" }))
             {
+                @*for (var i = 0; i < Model.Expertlist.Count(); i++)
+                {
+                    @Html.HiddenFor(@model => Model.Expertlist[i].Text);
+                    @Html.HiddenFor(@model => Model.Expertlist[i].Value);
+                }*@
                 @Html.HiddenFor(model => Model.TourInfo.TourId)
                 <div class="panel panel-default">
                     <div class="panel-body">
