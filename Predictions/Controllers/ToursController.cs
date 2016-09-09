@@ -127,7 +127,14 @@ namespace Predictions.Controllers
         [MultipleButton(Name = "action", Argument = "AddPredictions")]
         public ActionResult AddPredictions(AddPredictionsViewModel viewModel)
         {
-            return RedirectToAction("AddPredictions", new { tourId = viewModel.TourInfo.TourId, expertId = viewModel.SelectedExpertId });
+            if (ModelState.IsValid)
+            {
+                //var matches = _tourService.GetMatchesByTour(viewModel.TourInfo.TourId);
+                _predictionService.AddExpertPredictions(viewModel.SelectedExpertId, viewModel.TourInfo.TourId, viewModel.MatchTable.Scorelist);
+                return RedirectToAction("AddPredictions", new { tourId = viewModel.TourInfo.TourId, expertId = viewModel.SelectedExpertId });
+            }
+            return View(viewModel);
+
         }
 
 

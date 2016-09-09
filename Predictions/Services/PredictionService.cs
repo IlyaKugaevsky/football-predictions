@@ -60,10 +60,10 @@ namespace Predictions.Services
                 .ToList();
         }
 
-        public bool HasPredictionLoaded(Match match)
-        {
-            return !match.Predictions.IsNullOrEmpty();
-        }
+        //public bool HasPredictionLoaded(Match match, int expertId)
+        //{
+        //    return !match.Predictions.Where(p => p.ExpertId == expertId).IsNullOrEmpty();
+        //}
 
         public List<FootballScore> GenerateStraightScorelist(int length, string value = "-", bool editable = false)
         {
@@ -90,46 +90,60 @@ namespace Predictions.Services
         //    }).ToList();
         //}
 
-        //hard, heavy
         public List<FootballScore> GeneratePredictionlist(int? tourId, int? expertId = null, bool editable = false, string emptyDisplay = "-")
         {
             if (tourId == null) return null;
             var tour = _context.Tours
-                    .Include(t => t.Matches
-                    .Select(m => m.Predictions))
-                    .Single(t => t.TourId == tourId);
-            var matches = tour.Matches.ToList();
+                   .Include(t => t.Matches
+                   .Select(m => m.Predictions))
+                   .Single(t => t.TourId == tourId);
 
-            if (expertId == null) return GenerateStraightScorelist(matches.Count, emptyDisplay, false);
-            else
+            var mpList = tour.Matches.Select(m => new
             {
-                var predictions = matches.SelectMany(m => m.Predictions).Where(p => p.ExpertId == expertId).ToList();
-                if (predictions.IsNullOrEmpty()) return GenerateStraightScorelist(matches.Count, editable ? String.Empty: emptyDisplay, editable);
+                //match-prediction list
+                Match = m,
+                Prediction = m.Predictions.SingleOrDefault(p => p.ExpertId == expertId)
+            })
+            .ToList();
 
-                if (predictions.Count() == matches.Count())
-                {
-                    return predictions.Select(p => new FootballScore(p.Value, editable)).ToList();
+            if (expertId == null) return GenerateStraightScorelist(mpList.Count, emptyDisplay, false);
+            emptyDisplay = editable ? String.Empty : emptyDisplay;
 
-                }
-                else
-                {
-                    var scorelist = new List<FootballScore>();
-                    var j = 0;
-                    for(var i = 0; i < matches.Count(); i++)
-                    {
-                        if(HasPredictionLoaded(matches[i]))
-                        {
-                            scorelist.Add(new FootballScore(predictions[j].Value, editable));
-                            j++;
-                        }
-                        else
-                        {
-                            scorelist.Add(new FootballScore(editable ? String.Empty : emptyDisplay, editable));
-                        }
-                    }
-                    return scorelist;
-                }
-            }
+            return mpList
+                .Select(mp => new FootballScore(mp.Prediction == null ? emptyDisplay : mp.Prediction.Value, editable))
+                .ToList();
+
+
+            //else
+            //{
+            //    var predictions = matches.SelectMany(m => m.Predictions).Where(p => p.ExpertId == expertId).ToList();
+            //    if (predictions.IsNullOrEmpty()) return GenerateStraightScorelist(matches.Count, editable ? String.Empty: emptyDisplay, editable);
+
+            //    if (predictions.Count() == matches.Count())
+            //    {
+            //        return predictions.Select(p => new FootballScore(p.Value, editable)).ToList();
+
+            //    }
+            //    else
+            //    {
+            //        var scorelist = new List<FootballScore>();
+            //        var j = 0;
+            //        for(var i = 0; i < matches.Count(); i++)
+            //        {
+            //            // if has, but another Id?
+            //            if(HasPredictionLoaded(matches[i], expertId.Value))
+            //            {
+            //                scorelist.Add(new FootballScore(predictions[j].Value, editable));
+            //                j++;
+            //            }
+            //            else
+            //            {
+            //                scorelist.Add(new FootballScore(editable ? String.Empty : emptyDisplay, editable));
+            //            }
+            //        }
+            //        return scorelist;
+            //    }
+            //}
         }
 
         public Prediction CreatePrediction(int expertId, int matchId, string value)
@@ -138,16 +152,56 @@ namespace Predictions.Services
         }
 
 
-        public void AddExpertPredictions(int expertId, List<Match> matches, List<FootballScore> scorelist)
+        public void AddExpertPredictions(int expertId, int tourId, List<FootballScore> scorelist)
         {
-            var predictions = new List<Prediction>();
-            for (var i = 0; i < matches.Count; i++)
+            var tour = _context.Tours
+                  .Include(t => t.Matches
+                  .Select(m => m.Predictions))
+                  .Single(t => t.TourId == tourId);
+
+            var mpList = tour.Matches.Select(m => new
             {
-                predictions.Add(CreatePrediction(expertId, matches[i].MatchId, scorelist[i].Value));
+                //match-prediction list
+                Match = m,
+                Prediction = m.Predictions.SingleOrDefault(p => p.ExpertId == expertId)
+            })
+            .ToList();
+
+            var createdPredictions = new List<Prediction>();
+            for (var i = 0; i < mpList.Count(); i++)
+            {
+                if (mpList[i].Prediction == null) createdPredictions.Add(CreatePrediction(expertId, mpList[i].Match.MatchId, scorelist[i].Value));
+                else mpList[i].Prediction.Value = scorelist[i].Value;
             }
-            //predictions.ForEach(p => _context.Predictions.Add(p));
-            _context.Predictions.AddRange(predictions);
+            _context.Predictions.AddRange(createdPredictions);
             _context.SaveChanges();
+
+
+
+            //very ugly, fix later
+            //var tour = LoadTour(tourId);
+            //var matches = tour.Matches.ToList();
+            //var predictions = matches.SelectMany(m => m.Predictions).Where(p => p.ExpertId == expertId).ToList();
+            //if (predictions.IsNullOrEmpty()) predictions = new List<Prediction>();
+            //var j = 0;
+            //var createdPredictions = new List<Prediction>();
+            //for (var i = 0; i < matches.Count(); i++)
+            //{
+            //    // if has, but another Id?
+            //    if (HasPredictionLoaded(matches[i], expertId))
+            //    {
+            //        matches[i].Predictions.Single(p => p.ExpertId == expertId).Value = predictions[j].Value;
+            //        j++;
+            //    }
+            //    else
+            //    {
+            //        CreatePrediction(expertId, matches[i].MatchId, scorelist)
+            //    }
+            //}
+
+            ////predictions.ForEach(p => _context.Predictions.Add(p));
+            //_context.Predictions.AddRange(predictions);
+            //_context.SaveChanges();
         }
 
         public void SubmitPrediction (Prediction prediction)
