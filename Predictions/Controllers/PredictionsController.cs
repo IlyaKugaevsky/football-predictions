@@ -33,13 +33,14 @@ namespace Predictions.Controllers
         public ActionResult PredictionsDisplay()
         {
             var headers = new List<string>() { "Дата", "Дома", "В гостях", "Прогноз" };
-            var matchtable = new MatchTableViewModel(headers);
+            var matchTable = new MatchTableViewModel(headers);
             var expertlist = _expertService.GenerateSelectList();
             var tourlist = _tourService.GenerateSelectList();
-            var viewModel = new PredictionsDisplayViewModel(expertlist, tourlist, matchtable);
+            var viewModel = new PredictionsDisplayViewModel(expertlist, tourlist, matchTable);
             return View(viewModel);
         }
 
+        //bind, invalide model
         [HttpPost]
         public ActionResult PredictionsDisplay(PredictionsDisplayViewModel viewModel)
         {
@@ -51,35 +52,19 @@ namespace Predictions.Controllers
                 var matchtable = new MatchTableViewModel(headers, matchlist, scorelist);
                 viewModel.MatchTable = matchtable;
                 return View(viewModel);
-
-                //var tour = _tourService.LoadBasicsWith(viewModel.SelectedTourId, t => t.Matches.Select(m => m.Predictions));
-
-                ////mb not so effective
-
-
-
-                //if (tour == null) return HttpNotFound();
-
-                //viewModel.MatchTable.Matchlist = new List<MatchInfo>();
-
-                //for (var i = 0; i <= tour.Matches.Count() - 1; i++)
-                //{
-                //    viewModel.MatchTable.Matchlist.Add
-                //    (
-                //        new MatchInfo(tour.Matches[i].Date, tour.Matches[i].HomeTeam.Title, tour.Matches[i].AwayTeam.Title)
-                //    );
-
-                //    var filteredPredictions = tour.Matches[i].Predictions
-                //        .Where(p => p.ExpertId == viewModel.SelectedExpertId).ToList();
-
-                //just change to smth like predictionlist 
-
-                //if (filteredPredictions.Count == 0 || filteredPredictions == null) viewModel.Matchlist[i].PredictionValue = "N/A";
-                //else viewModel.Matchlist[i].PredictionValue = filteredPredictions.Count == 1 ? filteredPredictions[0].Value : "несколько";
             }
+            //wtf!
             else return HttpNotFound();
-
         }
-        //WTF!!!
+
+        [HttpPost]
+        public ActionResult GetMatchTable(int SelectedTourId, int SelectedExpertId)
+        {
+            var headers = new List<string>() { "Дата", "Дома", "В гостях", "Прогноз" };
+            var matchlist = _matchService.GenerateMatchlist(SelectedTourId);
+            var scorelist = _predictionService.GeneratePredictionlist(SelectedTourId, SelectedExpertId);
+            var matchTable = new MatchTableViewModel(headers, matchlist, scorelist);
+            return PartialView("MatchTable", matchTable);
+        }
     }
 }

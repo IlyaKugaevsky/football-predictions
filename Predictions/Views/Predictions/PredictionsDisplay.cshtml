@@ -11,13 +11,13 @@
         <div class="col-md-12">
             @Html.AntiForgeryToken()
             <div class="panel panel-default">
-                <div class="panel-body">
+                <div class="panel-body" id="results">
                     @Html.PartialFor(m => m.MatchTable, "MatchTable")
                 </div>
             </div>
             <div class="panel panel-default">
                 <div class="panel-body">
-                    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "displayPredictionsForm" }))
+                    @using (Ajax.BeginForm("GetMatchTable", new AjaxOptions { UpdateTargetId = "results", InsertionMode = InsertionMode.Replace}))
                     {
                         for (var i = 0; i < Model.Expertlist.Count(); i++)
                         {
@@ -33,8 +33,8 @@
 
                         <div class="row">
                             <div class="input-group col-md-6">
-                                @Html.DropDownListFor(model => model.SelectedExpertId, Model.Expertlist, new { @class = "selectpicker form-control", @data_width = "auto", @title = "Выбрать эксперта" })
-                                @Html.DropDownListFor(model => model.SelectedTourId, Model.Tourlist, new { @class = "selectpicker form-control", @data_width = "auto", @title = "Выбрать тур" })
+                                @Html.DropDownListFor(model => model.SelectedExpertId, Model.Expertlist, new { @class = "selectpicker form-control", data_width = "auto", title = "Выбрать эксперта", name = "tourId"})
+                                @Html.DropDownListFor(model => model.SelectedTourId, Model.Tourlist, new { @class = "selectpicker form-control", data_width = "auto", title = "Выбрать тур", name = "expertId" })
                                 <span class="input-group-btn">
                                     <button class="btn btn-info" type="submit">Показать прогноз</button>
                                 </span>
@@ -46,6 +46,8 @@
         </div>
     </div>
 </div>
+
+
 
 
 
