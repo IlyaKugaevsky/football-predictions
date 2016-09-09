@@ -10,10 +10,22 @@ namespace Predictions.ViewModels
 {
     public class PredictionsDisplayViewModel
     {
+        public PredictionsDisplayViewModel()
+        { }
+
+        public PredictionsDisplayViewModel (List<SelectListItem> expertlist, List<SelectListItem> tourlist, MatchTableViewModel matchtable)
+        {
+            Expertlist = expertlist;
+            Tourlist = tourlist;
+            MatchTable = matchtable;
+        }
+
         //display
         public List<SelectListItem> Expertlist { get; set; }
         public List<SelectListItem> Tourlist { get; set; }
-        public List<MatchInfo> Matchlist { get; set; }
+        public MatchTableViewModel MatchTable { get; set; }
+
+        //public List<MatchInfo> Matchlist { get; set; }
 
         //input
         public int SelectedExpertId { get; set; }

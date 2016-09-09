@@ -48,21 +48,16 @@ namespace Predictions.Services
         }
 
         //same order as matches, because of include
-        public List<Prediction> LoadTourPredictions(int? tourId, int? expertId)
-        {
-            if (expertId == null || tourId == null) return null;
-
-            var matches = LoadTour(tourId).Matches;
-
-            return matches
-                .SelectMany(m => m.Predictions)
-                .Where(p => p.ExpertId == expertId)
-                .ToList();
-        }
-
-        //public bool HasPredictionLoaded(Match match, int expertId)
+        //public List<Prediction> LoadTourPredictions(int? tourId, int? expertId)
         //{
-        //    return !match.Predictions.Where(p => p.ExpertId == expertId).IsNullOrEmpty();
+        //    if (expertId == null || tourId == null) return null;
+
+        //    var matches = LoadTour(tourId).Matches;
+
+        //    return matches
+        //        .SelectMany(m => m.Predictions)
+        //        .Where(p => p.ExpertId == expertId)
+        //        .ToList();
         //}
 
         public List<FootballScore> GenerateStraightScorelist(int length, string value = "-", bool editable = false)
@@ -74,21 +69,6 @@ namespace Predictions.Services
             }
             return scorelist;
         }
-
-        //if single match has no predictions?
-        //public List<FootballScore> GeneratePredictionlist(List<Match> matches, int? expertId = null, bool editable = false, string emptyDisplay = "-")
-        //{
-        //    if (expertId == null) return GenerateStraightScorelist(matches.Count, String.Empty, false);
-
-        //    var predictions = LoadPredictions(matches, expertId);
-        //    if (predictions == null) return null;
-
-        //    return predictions.Select(p => new FootballScore
-        //    {
-        //        Value = (String.IsNullOrEmpty(p.Value) && editable == false) ? emptyDisplay : p.Value,
-        //        Editable = editable
-        //    }).ToList();
-        //}
 
         public List<FootballScore> GeneratePredictionlist(int? tourId, int? expertId = null, bool editable = false, string emptyDisplay = "-")
         {
@@ -112,38 +92,6 @@ namespace Predictions.Services
             return mpList
                 .Select(mp => new FootballScore(mp.Prediction == null ? emptyDisplay : mp.Prediction.Value, editable))
                 .ToList();
-
-
-            //else
-            //{
-            //    var predictions = matches.SelectMany(m => m.Predictions).Where(p => p.ExpertId == expertId).ToList();
-            //    if (predictions.IsNullOrEmpty()) return GenerateStraightScorelist(matches.Count, editable ? String.Empty: emptyDisplay, editable);
-
-            //    if (predictions.Count() == matches.Count())
-            //    {
-            //        return predictions.Select(p => new FootballScore(p.Value, editable)).ToList();
-
-            //    }
-            //    else
-            //    {
-            //        var scorelist = new List<FootballScore>();
-            //        var j = 0;
-            //        for(var i = 0; i < matches.Count(); i++)
-            //        {
-            //            // if has, but another Id?
-            //            if(HasPredictionLoaded(matches[i], expertId.Value))
-            //            {
-            //                scorelist.Add(new FootballScore(predictions[j].Value, editable));
-            //                j++;
-            //            }
-            //            else
-            //            {
-            //                scorelist.Add(new FootballScore(editable ? String.Empty : emptyDisplay, editable));
-            //            }
-            //        }
-            //        return scorelist;
-            //    }
-            //}
         }
 
         public Prediction CreatePrediction(int expertId, int matchId, string value)
@@ -175,33 +123,6 @@ namespace Predictions.Services
             }
             _context.Predictions.AddRange(createdPredictions);
             _context.SaveChanges();
-
-
-
-            //very ugly, fix later
-            //var tour = LoadTour(tourId);
-            //var matches = tour.Matches.ToList();
-            //var predictions = matches.SelectMany(m => m.Predictions).Where(p => p.ExpertId == expertId).ToList();
-            //if (predictions.IsNullOrEmpty()) predictions = new List<Prediction>();
-            //var j = 0;
-            //var createdPredictions = new List<Prediction>();
-            //for (var i = 0; i < matches.Count(); i++)
-            //{
-            //    // if has, but another Id?
-            //    if (HasPredictionLoaded(matches[i], expertId))
-            //    {
-            //        matches[i].Predictions.Single(p => p.ExpertId == expertId).Value = predictions[j].Value;
-            //        j++;
-            //    }
-            //    else
-            //    {
-            //        CreatePrediction(expertId, matches[i].MatchId, scorelist)
-            //    }
-            //}
-
-            ////predictions.ForEach(p => _context.Predictions.Add(p));
-            //_context.Predictions.AddRange(predictions);
-            //_context.SaveChanges();
         }
 
         public void SubmitPrediction (Prediction prediction)
@@ -219,6 +140,8 @@ namespace Predictions.Services
             else if (predictionResults.Outcome) prediction.Expert.Outcomes++;
 
             prediction.IsClosed = true;
+
+            _context.SaveChanges();
         }
 
         //mb fix

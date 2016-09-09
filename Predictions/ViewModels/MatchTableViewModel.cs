@@ -11,11 +11,11 @@ namespace Predictions.ViewModels
         public MatchTableViewModel()
         { }
 
-        public MatchTableViewModel (List<string> headers, List<MatchInfo> matchlist, List<FootballScore> scorelist)
+        public MatchTableViewModel (List<string> headers, List<MatchInfo> matchlist = null, List<FootballScore> scorelist = null)
         {
             Headers = headers;
-            Matchlist = matchlist;
-            Scorelist = scorelist;
+            Matchlist = matchlist ?? new List<MatchInfo>();
+            Scorelist = scorelist ?? new List<FootballScore>();
         }
 
         public List<string> Headers { get; set; }

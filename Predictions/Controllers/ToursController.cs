@@ -74,6 +74,7 @@ namespace Predictions.Controllers
             //return null;
         }
 
+        //404 after deleting
         public ActionResult EditTour(int? tourId)
         {
             Tour tour = _tourService.LoadBasicsWith(tourId);
@@ -116,6 +117,7 @@ namespace Predictions.Controllers
             return View(viewModel);
         }
 
+        //bind
         [HttpPost]
         [MultipleButton(Name = "action", Argument = "ShowPredictions")]
         public ActionResult ShowPredictions(AddPredictionsViewModel viewModel)
@@ -123,6 +125,7 @@ namespace Predictions.Controllers
             return RedirectToAction("AddPredictions", new { tourId = viewModel.TourInfo.TourId, expertId = viewModel.SelectedExpertId });
         }
 
+        //bind
         [HttpPost]
         [MultipleButton(Name = "action", Argument = "AddPredictions")]
         public ActionResult AddPredictions(AddPredictionsViewModel viewModel)
@@ -136,20 +139,6 @@ namespace Predictions.Controllers
             return View(viewModel);
 
         }
-
-
-
-        //public ActionResult AddPredictions([Bind(Include = "TourInfo, SelectedExpertId, EditPredictionsValuelist")] AddPredictionsViewModel viewModel)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        //var matches = _tourService.GetMatchesByTour(viewModel.TourInfo.TourId);
-        //        //_predictionService.AddExpertPredictions(viewModel.SelectedExpertId, matches, viewModel.MatchTable.Scorelist);
-        //        return RedirectToAction("Index");
-
-        //    }
-        //    return Content(ModelState.Values.ElementAt(0).Errors.ElementAt(0).Exception.ToString()); //change later
-        //}
 
         public ActionResult AddScores(int? tourId)
         {
@@ -167,32 +156,19 @@ namespace Predictions.Controllers
         {
             if (ModelState.IsValid)
             {
-                //really works? mb inputScorelist < matchlist?
                 _matchService.AddScores(_tourService.GetMatchesByTour(viewModel.CurrentTourId), viewModel.MatchTable.Scorelist);
                 return RedirectToAction("Index");
             }
             return AddScores(viewModel.CurrentTourId); //not sure
         }
 
-        public ActionResult SubmitTourPredictions(int? tourId)
+        public ActionResult SubmitTourPredictions(int tourId)
         {
-            if (tourId == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            using (var context = new PredictionsContext())
-            {
-                //mb better?
-                int correctId = tourId ?? default(int);
-
-                //private, at the top of the class
-                _predictionService.SubmitTourPredictions(correctId);
-                //to service
-                context.SaveChanges();
-                return RedirectToAction("Index");
-            }
+            _predictionService.SubmitTourPredictions(tourId);
+            return RedirectToAction("Index");
         }
 
+        //404
         public ActionResult DeleteMatch(int? id)
         {
             //so~so, mb better
