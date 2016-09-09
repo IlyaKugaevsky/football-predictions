@@ -19,6 +19,18 @@
                 <div class="panel-body">
                     @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "displayPredictionsForm" }))
                     {
+                        for (var i = 0; i < Model.Expertlist.Count(); i++)
+                        {
+                            @Html.HiddenFor(@model => Model.Expertlist[i].Text);
+                            @Html.HiddenFor(@model => Model.Expertlist[i].Value);
+                        }
+
+                        for (var i = 0; i < Model.Tourlist.Count(); i++)
+                        {
+                            @Html.HiddenFor(@model => Model.Tourlist[i].Text);
+                            @Html.HiddenFor(@model => Model.Tourlist[i].Value);
+                        }
+
                         <div class="row">
                             <div class="input-group col-md-6">
                                 @Html.DropDownListFor(model => model.SelectedExpertId, Model.Expertlist, new { @class = "selectpicker form-control", @data_width = "auto", @title = "Выбрать эксперта" })

@@ -45,46 +45,41 @@ namespace Predictions.Controllers
         {
             if (ModelState.IsValid)
             {
-                using (var context = new PredictionsContext())
-                {
-                    var tour = _tourService.LoadBasicsWith(viewModel.SelectedTourId, t => t.Matches.Select(m => m.Predictions));
+                var headers = new List<string>() { "Дата", "Дома", "В гостях", "Прогноз" };
+                var matchlist = _matchService.GenerateMatchlist(viewModel.SelectedTourId);
+                var scorelist = _predictionService.GeneratePredictionlist(viewModel.SelectedTourId, viewModel.SelectedExpertId);
+                var matchtable = new MatchTableViewModel(headers, matchlist, scorelist);
+                viewModel.MatchTable = matchtable;
+                return View(viewModel);
 
-                    //mb not so effective
+                //var tour = _tourService.LoadBasicsWith(viewModel.SelectedTourId, t => t.Matches.Select(m => m.Predictions));
 
-                    //var tour = context.Tours
-                    //    .Include(t => t.Matches
-                    //        .Select(m => m.HomeTeam))
-                    //    .Include(t => t.Matches
-                    //        .Select(m => m.AwayTeam))
-                    //    .Include(t => t.Matches
-                    //        .Select(m => m.Predictions))
-                    //    .Single(t => t.TourId == viewModel.SelectedTourId);
+                ////mb not so effective
 
 
-                    if (tour == null) return HttpNotFound();
 
-                    viewModel.MatchTable.Matchlist = new List<MatchInfo>();
+                //if (tour == null) return HttpNotFound();
 
-                    for (var i = 0; i <= tour.Matches.Count() - 1; i++)
-                    {
-                        viewModel.MatchTable.Matchlist.Add
-                        (
-                            new MatchInfo(tour.Matches[i].Date, tour.Matches[i].HomeTeam.Title, tour.Matches[i].AwayTeam.Title)
-                        );
+                //viewModel.MatchTable.Matchlist = new List<MatchInfo>();
 
-                        var filteredPredictions = tour.Matches[i].Predictions
-                            .Where(p => p.ExpertId == viewModel.SelectedExpertId).ToList();
+                //for (var i = 0; i <= tour.Matches.Count() - 1; i++)
+                //{
+                //    viewModel.MatchTable.Matchlist.Add
+                //    (
+                //        new MatchInfo(tour.Matches[i].Date, tour.Matches[i].HomeTeam.Title, tour.Matches[i].AwayTeam.Title)
+                //    );
 
-                        //just change to smth like predictionlist 
+                //    var filteredPredictions = tour.Matches[i].Predictions
+                //        .Where(p => p.ExpertId == viewModel.SelectedExpertId).ToList();
 
-                        //if (filteredPredictions.Count == 0 || filteredPredictions == null) viewModel.Matchlist[i].PredictionValue = "N/A";
-                        //else viewModel.Matchlist[i].PredictionValue = filteredPredictions.Count == 1 ? filteredPredictions[0].Value : "несколько";
-                    }
-                    return View(viewModel);
-                };
+                //just change to smth like predictionlist 
+
+                //if (filteredPredictions.Count == 0 || filteredPredictions == null) viewModel.Matchlist[i].PredictionValue = "N/A";
+                //else viewModel.Matchlist[i].PredictionValue = filteredPredictions.Count == 1 ? filteredPredictions[0].Value : "несколько";
             }
-            //WTF!!!
             else return HttpNotFound();
+
         }
+        //WTF!!!
     }
 }

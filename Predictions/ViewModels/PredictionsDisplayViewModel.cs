@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace Predictions.ViewModels
 {
@@ -21,8 +22,12 @@ namespace Predictions.ViewModels
         }
 
         //display
+        [Required]
         public List<SelectListItem> Expertlist { get; set; }
+
+        [Required]
         public List<SelectListItem> Tourlist { get; set; }
+
         public MatchTableViewModel MatchTable { get; set; }
 
         //public List<MatchInfo> Matchlist { get; set; }
