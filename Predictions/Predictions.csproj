@@ -270,6 +270,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AddPredictionsViewModel.cs" />
     <Compile Include="ViewModels\AddScoresViewModel.cs" />
+    <Compile Include="ViewModels\Basis\ActionLinkParams.cs" />
     <Compile Include="ViewModels\Basis\FootballScore.cs" />
     <Compile Include="ViewModels\Basis\PredictionResults.cs" />
     <Compile Include="ViewModels\Basis\TourInfo.cs" />

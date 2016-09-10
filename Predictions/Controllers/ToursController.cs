@@ -77,10 +77,26 @@ namespace Predictions.Controllers
         //404 after deleting
         public ActionResult EditTour(int? tourId)
         {
+            //doesn't need
             Tour tour = _tourService.LoadBasicsWith(tourId);
             if (tour == null) return HttpNotFound();
+            var tourInfo = _tourService.GetTourInfo(tourId);
             var teamlist = _teamService.GenerateSelectList();
-            return View(new EditTourViewModel(teamlist, tour));
+            var headers = new List<string>() { "Дата", "Дома", "В гостях", "Счет" };
+            var matchlist = _matchService.GenerateMatchlist(tourId);
+            var scorelist = _matchService.GenerateScorelist(tourId);
+
+            var actionLinklist = new List<ActionLinkParams>();
+            var matches = _tourService.GetMatchesByTour(tourId);
+            for (var i = 0; i < matches.Count; i++)
+            {
+                var actionLink = new ActionLinkParams("Удалить", "DeleteMatch", null, new { id = matches[i].MatchId }, new { @class = "btn btn-default" });
+                actionLinklist.Add(actionLink);
+            }
+
+            var matchTable = new MatchTableViewModel(headers, matchlist, scorelist, actionLinklist);
+
+            return View(new EditTourViewModel(teamlist, tourInfo, matchTable));
         }
 
         //bind include
@@ -94,7 +110,7 @@ namespace Predictions.Controllers
                     viewModel.InputDate,
                     viewModel.SelectedHomeTeamId,
                     viewModel.SelectedAwayTeamId,
-                    viewModel.Tour.TourId);
+                    viewModel.TourInfo.TourId);
                 _matchService.AddMatch(match);
                 return RedirectToAction("Index");
             }
@@ -132,7 +148,6 @@ namespace Predictions.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var matches = _tourService.GetMatchesByTour(viewModel.TourInfo.TourId);
                 _predictionService.AddExpertPredictions(viewModel.SelectedExpertId, viewModel.TourInfo.TourId, viewModel.MatchTable.Scorelist);
                 return RedirectToAction("AddPredictions", new { tourId = viewModel.TourInfo.TourId, expertId = viewModel.SelectedExpertId });
             }

@@ -19,9 +19,6 @@ namespace Predictions.ViewModels
             AwayTeamTitle = awayTitle;
         }
 
-        //really need?
-        public int Id { get; set; }
-
         [Required]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy/HH:mm}")]
         public DateTime Date { get; set; }

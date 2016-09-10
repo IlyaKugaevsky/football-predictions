@@ -20,6 +20,11 @@
             {
                 <th class="col-xs-1">@Model.Headers[3]</th>
             }
+            @if (!@Model.ActionLinklist.IsNullOrEmpty())
+            {
+                <th class="col-xs-1"></th>
+            }
+
         </tr>
     </thead>
     <tbody>
@@ -39,6 +44,20 @@
                         }
                         else
                         {@Html.DisplayFor(@model => @Model.Scorelist[i].Value)}
+                    </td>
+
+                    @if (!@Model.ActionLinklist.IsNullOrEmpty())
+                    {
+                        <td class="col-xs-1">
+                            <div>
+                                @Html.ActionLink(
+                                Model.ActionLinklist[i].LinkText,
+                                Model.ActionLinklist[i].ActionName,
+                                Model.ActionLinklist[i].RouteValues,
+                                Model.ActionLinklist[i].HtmlAttributes)
+                            </div>
+                        </td>
+                    }
                 </tr>
             }
         }
