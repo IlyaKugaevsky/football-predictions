@@ -58,11 +58,11 @@ namespace Predictions.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetMatchTable(int SelectedTourId, int SelectedExpertId)
+        public ActionResult GetMatchTable(int tourId, int expertId)
         {
             var headers = new List<string>() { "Дата", "Дома", "В гостях", "Прогноз" };
-            var matchlist = _matchService.GenerateMatchlist(SelectedTourId);
-            var scorelist = _predictionService.GeneratePredictionlist(SelectedTourId, SelectedExpertId);
+            var matchlist = _matchService.GenerateMatchlist(tourId);
+            var scorelist = _predictionService.GeneratePredictionlist(tourId, expertId);
             var matchTable = new MatchTableViewModel(headers, matchlist, scorelist);
             return PartialView("MatchTable", matchTable);
         }
