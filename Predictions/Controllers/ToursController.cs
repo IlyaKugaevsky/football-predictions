@@ -39,6 +39,8 @@ namespace Predictions.Controllers
             if (tours == null) return HttpNotFound();
             return View(tours);
 
+
+
             //var t1 = DateTime.Now;
             //var t2 = DateTime.Now;
             //var time1 = DateTime.Now - t1;

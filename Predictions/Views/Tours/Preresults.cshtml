@@ -40,9 +40,9 @@
                     <div class="panel-body">
                         <div class="text-success">Все матчи сыграны. Рассчитать тур?</div>
                         <div>
-                            @Html.ActionLink("Рассчитать", "SubmitTour",
+                            @Html.ActionLink("Рассчитать", "SubmitTourPredictions",
                                     new { tourId = Model.CurrentTourId },
-                                    new { @class = "btn btn btn-danger pull-right" })
+                                    new { @class = "btn btn btn-success pull-right" })
                         </div>
                     </div>
                 </div>
@@ -53,7 +53,7 @@
                     <div class="panel-body">
                         <div class="text-danger">Сыграны не все матчи. Нельзя рассчитать тур.</div>
                         <div>
-                            @Html.ActionLink("Рассчитать", "SubmitTour",
+                            @Html.ActionLink("Рассчитать", "SubmitTourPredictions",
                                     new { tourId = Model.CurrentTourId },
                                     new { @class = "btn btn btn-danger pull-right disabled" })
                         </div>

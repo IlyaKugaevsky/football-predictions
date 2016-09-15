@@ -23,9 +23,10 @@ namespace Predictions.Services
         public Tour LoadTour(int? tourId)
         {
             return _context.Tours
-                   .Include(t => t.Matches
-                       .Select(m => m.Predictions))
-                   .Single(t => t.TourId == tourId);
+                .Include(t => t.Matches
+                    .Select(m => m.Predictions
+                        .Select(p => p.Expert)))
+                .Single(t => t.TourId == tourId);
         }
 
 
@@ -149,7 +150,6 @@ namespace Predictions.Services
         public void SubmitTourPredictions(int? tourId)
         {
             var tour = LoadTour(tourId);
-
             foreach(var m in tour.Matches)
             {
                 foreach(var p in m.Predictions)
