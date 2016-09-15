@@ -216,6 +216,10 @@
     <Compile Include="Helpers\CustomAttributes.cs" />
     <Compile Include="Helpers\HtmlHelpers.cs" />
     <Compile Include="Helpers\PredictionEvaluator.cs" />
+    <Compile Include="Migrations\201609152253279_Tour IsClosed.cs" />
+    <Compile Include="Migrations\201609152253279_Tour IsClosed.Designer.cs">
+      <DependentUpon>201609152253279_Tour IsClosed.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Expert.cs" />
@@ -415,6 +419,9 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Migrations\201609152253279_Tour IsClosed.resx">
+      <DependentUpon>201609152253279_Tour IsClosed.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

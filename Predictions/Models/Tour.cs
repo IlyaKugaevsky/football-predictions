@@ -13,6 +13,7 @@ namespace Predictions.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int TourId { get; set; }
+        public bool IsClosed { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Column(TypeName = "DateTime2")]
@@ -21,7 +22,6 @@ namespace Predictions.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Column(TypeName = "DateTime2")]
         public DateTime EndDate { get; set; }
-
         public virtual List<Match> Matches { get; set; }
     }
 }
