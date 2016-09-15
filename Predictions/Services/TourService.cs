@@ -28,6 +28,17 @@ namespace Predictions.Services
             return new TourInfo(tour.TourId, tour.StartDate, tour.EndDate);
         }
 
+        public void UpdateTour(TourInfo tourInfo)
+        {
+            var tour = _context.Tours.Find(tourInfo.TourId);
+            if (tour != null)
+            {
+                tour.StartDate = tourInfo.StartDate;
+                tour.EndDate = tourInfo.EndDate;
+                _context.SaveChanges();
+            }
+        }
+
         public List<SelectListItem> GenerateSelectList()
         {
             var tourlist = new List<SelectListItem>();

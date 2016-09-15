@@ -22,16 +22,8 @@ namespace Predictions.ViewModels
 
         public TourInfo TourInfo { get; set; }
         public MatchTableViewModel MatchTable { get; set; }
-        //model to edit 
-        // display (current values) + input (new values)
-        //public Tour Tour { get; set; }
-
-        //add new match
-        //display
-        //public List<Team> Teamlist { get; set; }
 
         public List<SelectListItem> Teamlist { get; set; }
-        //input
         public int SelectedHomeTeamId { get; set; }
         public int SelectedAwayTeamId { get; set; }
         public DateTime InputDate { get; set; }

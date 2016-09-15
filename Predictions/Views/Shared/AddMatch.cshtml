@@ -7,6 +7,6 @@
         @Html.TextBoxFor(model => model.InputDate, new { @class = "form-control datepicker", @type = "date", @data_width = "auto" })
         @Html.DropDownListFor(model => model.SelectedHomeTeamId, Model.Teamlist, new { @class = "selectpicker", @data_width = "auto", @title = "Дома" })
         @Html.DropDownListFor(model => model.SelectedAwayTeamId, Model.Teamlist, new { @class = "selectpicker", @data_width = "auto", @title = "В гостях" })
-        <button class="btn btn-info" type="submit">Добавить матч</button>
+        <button class="btn btn-info" name="action:AddMatch" type="submit">Добавить матч</button>
     </div>
 }
