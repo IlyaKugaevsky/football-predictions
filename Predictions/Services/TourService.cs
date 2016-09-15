@@ -16,6 +16,11 @@ namespace Predictions.Services
     {
         private readonly PredictionsContext _context;
 
+        public int MatchesCount(int tourId)
+        {
+            return _context.Tours.Single(t => t.TourId == tourId).Matches.Count();
+        }
+
         public TourService(PredictionsContext context)
         {
             _context = context;

@@ -11,12 +11,12 @@ namespace Predictions.ViewModels
         public PreresultsViewModel()
         { }
 
-        public PreresultsViewModel(List<Tuple<Expert, int>> expertTourInfo, int tourId)
+        public PreresultsViewModel(List<Tuple<Expert, int>> expertTourInfo, int predictionsNeed, int tourId)
         {
             ExpertTourInfo = expertTourInfo.Select(
                 e => new Tuple<string, string>(
                     e.Item1.Nickname, 
-                    e.Item2.ToString()))
+                    e.Item2.ToString() + " из " + predictionsNeed.ToString()))
                     .ToList();
             CurrentTourId = tourId;
         }

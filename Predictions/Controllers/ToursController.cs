@@ -198,7 +198,7 @@ namespace Predictions.Controllers
         public ActionResult Preresults(int tourId)
         {
             var preresults = _tourService.GenerateTourPreresultlist(tourId);
-            var viewModel = new PreresultsViewModel(preresults, tourId);
+            var viewModel = new PreresultsViewModel(preresults, _tourService.MatchesCount(tourId), tourId);
             return View(viewModel);
         }
 
