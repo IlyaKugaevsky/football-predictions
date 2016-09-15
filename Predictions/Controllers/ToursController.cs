@@ -37,43 +37,18 @@ namespace Predictions.Controllers
         {
             var tours = _tourService.LoadBasicsWith();
             if (tours == null) return HttpNotFound();
+
+            //var experts = _context.Experts.ToList();
+            //foreach (var item in experts)
+            //{
+            //    item.Differences = 0;
+            //    item.Outcomes = 0;
+            //    item.Scores = 0;
+            //}
+            //_context.SaveChanges();
+
             return View(tours);
 
-
-
-            //var t1 = DateTime.Now;
-            //var t2 = DateTime.Now;
-            //var time1 = DateTime.Now - t1;
-            //var time2 = DateTime.Now - t2;
-
-            //using (var context = new PredictionsContext())
-            //{
-            //    t1 = DateTime.Now;
-            //    var tour = context.Tours
-            //            .Include(t => t.Matches
-            //                .Select(m => m.HomeTeam))
-            //            .Include(t => t.Matches
-            //                .Select(m => m.AwayTeam))
-            //            .ToList()
-            //            .Single(t => t.TourId == 1);
-            //    time1 = DateTime.Now - t1;
-            //}
-
-            //using (var context = new PredictionsContext())
-            //{
-
-            //    t2 = DateTime.Now;
-            //    var matches = context.Matches
-            //        .Include(m => m.HomeTeam)
-            //        .Include(m => m.AwayTeam)
-            //        .Where(m => m.TourId == 1)
-            //        .ToList();
-            //    time2 = DateTime.Now - t2;
-
-            //}
-
-            //var delta = time1 - time2;
-            //return null;
         }
 
 
@@ -208,6 +183,12 @@ namespace Predictions.Controllers
         public ActionResult SubmitTourPredictions(int tourId)
         {
             _predictionService.SubmitTourPredictions(tourId);
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult RestartTour(int tourId)
+        {
+            _predictionService.RestartTour(tourId);
             return RedirectToAction("Index");
         }
 

@@ -127,7 +127,7 @@ namespace Predictions.Services
             _context.SaveChanges();
         }
 
-        public void SubmitPrediction (Prediction prediction)
+        void SubmitPrediction (Prediction prediction)
         {
             var predictionResults = PredictionEvaluator.GetPredictionResults(prediction.Value, prediction.Match.Score);
 
@@ -142,8 +142,6 @@ namespace Predictions.Services
             else if (predictionResults.Outcome) prediction.Expert.Outcomes++;
 
             prediction.IsClosed = true;
-
-            _context.SaveChanges();
         }
 
         //mb fix
@@ -157,16 +155,17 @@ namespace Predictions.Services
                     if(!p.IsClosed)SubmitPrediction(p);
                 }
             }
+            _context.SaveChanges();
         }
 
-        public void RestartPrediction(Prediction prediction)
+        void RestartPrediction(Prediction prediction)
         {
             if(prediction.IsClosed)
             {
                 prediction.Expert.Sum -= prediction.Sum;
-                if (prediction.Score) prediction.Expert.Scores++;
-                if (prediction.Difference) prediction.Expert.Differences++;
-                if (prediction.Outcome) prediction.Expert.Outcomes++;
+                if (prediction.Score) prediction.Expert.Scores--;
+                else if(prediction.Difference) prediction.Expert.Differences--;
+                else if(prediction.Outcome) prediction.Expert.Outcomes--;
 
                 prediction.Sum = 0;
                 prediction.Score = false;
@@ -175,6 +174,19 @@ namespace Predictions.Services
 
                 prediction.IsClosed = false;
             }
+        }
+
+        public void RestartTour(int tourId)
+        {
+            var tour = LoadTour(tourId);
+            foreach (var m in tour.Matches)
+            {
+                foreach (var p in m.Predictions)
+                {
+                    if (p.IsClosed) RestartPrediction(p);
+                }
+            }
+            _context.SaveChanges();
         }
     }
 }

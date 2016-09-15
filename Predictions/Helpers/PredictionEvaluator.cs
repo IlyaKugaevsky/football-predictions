@@ -44,6 +44,17 @@ namespace Predictions.Helpers
 
         public static PredictionResults GetPredictionResults(string prediction, string score) //sum, score, difference, outcome
         {
+            if (string.IsNullOrEmpty(prediction))
+            {
+                return new PredictionResults
+                {
+                    Sum = 0,
+                    Score = false,
+                    Difference = false,
+                    Outcome = false
+                };
+            }
+
             var predictOutcome = PredictOutcome(prediction, score);
             var predictDifference = PredictDifference(prediction, score);
             var predictScore = PredictScore(prediction, score);

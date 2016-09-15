@@ -117,11 +117,10 @@ namespace Predictions.Services
                 tourPreresultList.Add(
                     new Tuple<Expert, int>(
                         experts[i], 
-                        predictions.Count(p => p.ExpertId == experts[i].ExpertId)));
+                        predictions.Count(p => p.ExpertId == experts[i].ExpertId 
+                        && !string.IsNullOrEmpty(p.Value))));
             }
             return tourPreresultList;
         }
-
-
     }
 }
