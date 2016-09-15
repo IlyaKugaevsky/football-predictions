@@ -25,6 +25,8 @@ namespace Predictions.Services
         //    if (predictionResults.Outcome) expert.Outcomes++;
         //} 
 
+
+        
         public List<SelectListItem> GenerateSelectList()
         {
             var expertlist = new List<SelectListItem>();

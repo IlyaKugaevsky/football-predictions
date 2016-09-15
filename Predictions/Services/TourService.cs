@@ -92,5 +92,26 @@ namespace Predictions.Services
             return EagerLoad(id, t => t.Matches).Matches.ToList();
         }
 
+        //not sure
+        public List<Tuple<Expert, int>> GenerateTourPreresultlist(int tourId)
+        {
+            var tour = EagerLoad(tourId, t => t.Matches.Select(m => m.Predictions));
+            var matches = tour.Matches;
+            var predictions = matches.SelectMany(m => m.Predictions).ToList();
+            var experts = _context.Experts.ToList();
+
+            var tourPreresultList = new List<Tuple<Expert, int>>();
+
+            for (var i = 0; i < experts.Count(); i++)
+            {
+                tourPreresultList.Add(
+                    new Tuple<Expert, int>(
+                        experts[i], 
+                        predictions.Count(p => p.ExpertId == experts[i].ExpertId)));
+            }
+            return tourPreresultList;
+        }
+
+
     }
 }

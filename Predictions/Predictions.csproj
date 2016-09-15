@@ -243,6 +243,7 @@
     <Compile Include="ViewModels\Basis\MatchInfo.cs" />
     <Compile Include="ViewModels\MatchTableViewModel.cs" />
     <Compile Include="ViewModels\PredictionsDisplayViewModel.cs" />
+    <Compile Include="ViewModels\PreresultsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-select.css" />
@@ -400,6 +401,7 @@
     <Content Include="Views\Shared\AddMatch.cshtml" />
     <Content Include="Views\Shared\MatchTable.cshtml" />
     <Content Include="Views\Tours\TestAction.cshtml" />
+    <Content Include="Views\Tours\Preresults.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
