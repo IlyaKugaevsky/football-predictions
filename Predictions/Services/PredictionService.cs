@@ -155,6 +155,7 @@ namespace Predictions.Services
                     if(!p.IsClosed)SubmitPrediction(p);
                 }
             }
+            tour.IsClosed = true;
             _context.SaveChanges();
         }
 
@@ -186,6 +187,7 @@ namespace Predictions.Services
                     if (p.IsClosed) RestartPrediction(p);
                 }
             }
+            tour.IsClosed = false;
             _context.SaveChanges();
         }
     }
