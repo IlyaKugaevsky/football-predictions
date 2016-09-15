@@ -75,7 +75,8 @@ namespace Predictions.Services
             if (tourId == null) return null;
             var tour = _context.Tours
                    .Include(t => t.Matches
-                   .Select(m => m.Predictions))
+                   .Select(m => m.Predictions
+                   .Select(p => p.Expert)))
                    .Single(t => t.TourId == tourId);
 
             var mpList = tour.Matches.Select(m => new

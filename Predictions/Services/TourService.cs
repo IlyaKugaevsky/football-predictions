@@ -21,6 +21,11 @@ namespace Predictions.Services
             return _context.Tours.Single(t => t.TourId == tourId).Matches.Count();
         }
 
+        public bool AllResultsReady(int tourId)
+        {
+            return !EagerLoad(tourId, t => t.Matches).Matches.Any(m => m.Score.IsNullOrEmpty());
+        }
+
         public TourService(PredictionsContext context)
         {
             _context = context;

@@ -33,6 +33,33 @@
                     </table>
                 </div>
             </div>
+
+            @if (Model.EnableSubmit)
+            {
+                <div class="panel panel-success">
+                    <div class="panel-body">
+                        <div class="text-success">Все матчи сыграны. Рассчитать тур?</div>
+                        <div>
+                            @Html.ActionLink("Рассчитать", "SubmitTour",
+                                    new { tourId = Model.CurrentTourId },
+                                    new { @class = "btn btn btn-danger pull-right" })
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="panel panel-danger">
+                    <div class="panel-body">
+                        <div class="text-danger">Сыграны не все матчи. Нельзя рассчитать тур.</div>
+                        <div>
+                            @Html.ActionLink("Рассчитать", "SubmitTour",
+                                    new { tourId = Model.CurrentTourId },
+                                    new { @class = "btn btn btn-danger pull-right disabled" })
+                        </div>
+                    </div>
+                </div>
+            }
             <div>
                 @Html.ActionLink("Назад к расписанию", "Index", new { }, new { @class = "btn btn-info" })
             </div>
