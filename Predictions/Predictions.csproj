@@ -243,6 +243,7 @@
     <Compile Include="ViewModels\Basis\PredictionResults.cs" />
     <Compile Include="ViewModels\Basis\TourInfo.cs" />
     <Compile Include="ViewModels\EditTourViewModel.cs" />
+    <Compile Include="ViewModels\EvaluationDetailsViewModel.cs" />
     <Compile Include="ViewModels\MatchesViewModel.cs" />
     <Compile Include="ViewModels\Basis\MatchInfo.cs" />
     <Compile Include="ViewModels\MatchTableViewModel.cs" />
@@ -406,6 +407,7 @@
     <Content Include="Views\Shared\MatchTable.cshtml" />
     <Content Include="Views\Tours\TestAction.cshtml" />
     <Content Include="Views\Tours\Preresults.cshtml" />
+    <Content Include="Views\Shared\EvaluationDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

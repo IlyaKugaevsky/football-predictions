@@ -11,13 +11,8 @@
         <div class="col-md-12">
             @Html.AntiForgeryToken()
             <div class="panel panel-default">
-                <div class="panel-body" id="results">
-                    @Html.PartialFor(m => m.MatchTable, "MatchTable")
-                </div>
-            </div>
-            <div class="panel panel-default">
                 <div class="panel-body">
-                    @using (Ajax.BeginForm("GetMatchTable", new AjaxOptions { UpdateTargetId = "results", InsertionMode = InsertionMode.Replace}))
+                    @using (Ajax.BeginForm("GetEvaluationDetails", new AjaxOptions { UpdateTargetId = "results", InsertionMode = InsertionMode.Replace}))
                     {
                         for (var i = 0; i < Model.Expertlist.Count(); i++)
                         {
@@ -41,6 +36,11 @@
                             </div>
                         </div>
                     }
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-body" id="results">
+                    @Html.PartialFor(m => m.EvaluationDetails, "EvaluationDetails")
                 </div>
             </div>
         </div>

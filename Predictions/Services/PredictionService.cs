@@ -20,6 +20,7 @@ namespace Predictions.Services
             _context = context;
         }
 
+        //add custom includes
         public Tour LoadTour(int? tourId)
         {
             return _context.Tours
@@ -49,17 +50,17 @@ namespace Predictions.Services
         }
 
         //same order as matches, because of include
-        //public List<Prediction> LoadTourPredictions(int? tourId, int? expertId)
-        //{
-        //    if (expertId == null || tourId == null) return null;
+        public List<Prediction> LoadTourPredictions(int? tourId, int? expertId)
+        {
+            if (expertId == null || tourId == null) return null;
 
-        //    var matches = LoadTour(tourId).Matches;
+            var matches = LoadTour(tourId).Matches;
 
-        //    return matches
-        //        .SelectMany(m => m.Predictions)
-        //        .Where(p => p.ExpertId == expertId)
-        //        .ToList();
-        //}
+            return matches
+                .SelectMany(m => m.Predictions)
+                .Where(p => p.ExpertId == expertId)
+                .ToList();
+        }
 
         public List<FootballScore> GenerateStraightScorelist(int length, string value = "-", bool editable = false)
         {
@@ -94,6 +95,13 @@ namespace Predictions.Services
             return mpList
                 .Select(mp => new FootballScore(mp.Prediction == null ? emptyDisplay : mp.Prediction.Value, editable))
                 .ToList();
+        }
+
+        public List<string> GenerateTempResultlist(int? tourId, int? expertId = null)
+        {
+            var predictions = LoadTourPredictions(tourId, expertId);
+            if (predictions.IsNullOrEmpty()) return null;
+            return predictions.Select(p => p.IsClosed ? p.Sum.ToString() : "-").ToList();
         }
 
         public Prediction CreatePrediction(int expertId, int matchId, string value)

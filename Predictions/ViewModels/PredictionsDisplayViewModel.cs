@@ -14,11 +14,11 @@ namespace Predictions.ViewModels
         public PredictionsDisplayViewModel()
         { }
 
-        public PredictionsDisplayViewModel (List<SelectListItem> expertlist, List<SelectListItem> tourlist, MatchTableViewModel matchtable)
+        public PredictionsDisplayViewModel (List<SelectListItem> expertlist, List<SelectListItem> tourlist, EvaluationDetailsViewModel evaluationDetails)
         {
             Expertlist = expertlist;
             Tourlist = tourlist;
-            MatchTable = matchtable;
+            EvaluationDetails = evaluationDetails;
         }
 
         [Required]
@@ -27,9 +27,11 @@ namespace Predictions.ViewModels
         [Required]
         public List<SelectListItem> Tourlist { get; set; }
 
-        public MatchTableViewModel MatchTable { get; set; }
-
         public int SelectedExpertId { get; set; }
         public int SelectedTourId { get; set; }
+        public EvaluationDetailsViewModel EvaluationDetails { get; set; }
+        //public MatchTableViewModel MatchTable { get; set; }
+
+
     }
 }

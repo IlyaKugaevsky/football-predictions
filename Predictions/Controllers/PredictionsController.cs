@@ -33,29 +33,29 @@ namespace Predictions.Controllers
         public ActionResult PredictionsDisplay()
         {
             var headers = new List<string>() { "Дата", "Дома", "В гостях", "Прогноз" };
-            var matchTable = new MatchTableViewModel(headers);
+            var evaluationDetails = new EvaluationDetailsViewModel();
             var expertlist = _expertService.GenerateSelectList();
             var tourlist = _tourService.GenerateSelectList();
-            var viewModel = new PredictionsDisplayViewModel(expertlist, tourlist, matchTable);
+            var viewModel = new PredictionsDisplayViewModel(expertlist, tourlist, evaluationDetails);
             return View(viewModel);
         }
 
         //bind, invalide model
-        [HttpPost]
-        public ActionResult PredictionsDisplay(PredictionsDisplayViewModel viewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                var headers = new List<string>() { "Дата", "Дома", "В гостях", "Прогноз" };
-                var matchlist = _matchService.GenerateMatchlist(viewModel.SelectedTourId);
-                var scorelist = _predictionService.GeneratePredictionlist(viewModel.SelectedTourId, viewModel.SelectedExpertId);
-                var matchtable = new MatchTableViewModel(headers, matchlist, scorelist);
-                viewModel.MatchTable = matchtable;
-                return View(viewModel);
-            }
-            //wtf!
-            else return HttpNotFound();
-        }
+        //[HttpPost]
+        //public ActionResult PredictionsDisplay(PredictionsDisplayViewModel viewModel)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var headers = new List<string>() { "Дата", "Дома", "В гостях", "Прогноз" };
+        //        var matchlist = _matchService.GenerateMatchlist(viewModel.SelectedTourId);
+        //        var scorelist = _predictionService.GeneratePredictionlist(viewModel.SelectedTourId, viewModel.SelectedExpertId);
+        //        var matchtable = new MatchTableViewModel(headers, matchlist, scorelist);
+        //        viewModel.EvaluationDetails = matchtable;
+        //        return View(viewModel);
+        //    }
+        //    //wtf!
+        //    else return HttpNotFound();
+        //}
 
         [HttpPost]
         public ActionResult GetMatchTable(int tourId, int expertId)
@@ -65,6 +65,17 @@ namespace Predictions.Controllers
             var scorelist = _predictionService.GeneratePredictionlist(tourId, expertId);
             var matchTable = new MatchTableViewModel(headers, matchlist, scorelist);
             return PartialView("MatchTable", matchTable);
+        }
+
+        [HttpPost]
+        public ActionResult GetEvaluationDetails(int tourId, int expertId)
+        {
+            var matchlist = _matchService.GenerateMatchlist(tourId);
+            var scorelist = _matchService.GenerateScorelist(tourId);
+            var predictionlist = _predictionService.GeneratePredictionlist(tourId, expertId);
+            var tempResultlist = _predictionService.GenerateTempResultlist(tourId, expertId);
+            var evaluationDetails = new EvaluationDetailsViewModel(matchlist, scorelist, predictionlist, tempResultlist);
+            return PartialView("EvaluationDetails", evaluationDetails);
         }
     }
 }
