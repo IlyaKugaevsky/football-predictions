@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Predictions.DAL;
 
 namespace Predictions.ViewModels
 {
@@ -18,13 +19,13 @@ namespace Predictions.ViewModels
             Scorelist = scorelist ?? new List<FootballScore>();
             Predictionlist = predictionlist ?? new List<FootballScore>();
             TempResultlist = tempResultlist ?? new List<string>();
-            Sum = tempResultlist.Select(tr => Convert.ToInt32(tr)).Sum();
+            if (!tempResultlist.IsNullOrEmpty() && !tempResultlist.Contains("-")) Sum = tempResultlist.Select(tr => Convert.ToInt32(tr)).Sum();
         }
         public List<MatchInfo> Matchlist { get; set; }
         public List<FootballScore> Scorelist { get; set; }
         public List<FootballScore> Predictionlist { get; set; }
         public List<string> TempResultlist { get; set; }
 
-        public int Sum;
+        public int Sum = -1;
     }
 }

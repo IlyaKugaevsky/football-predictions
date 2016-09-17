@@ -74,7 +74,7 @@ namespace Predictions.Services
 
         public List<FootballScore> GeneratePredictionlist(int? tourId, int? expertId = null, bool editable = false, string emptyDisplay = "-")
         {
-            if (tourId == null) return null;
+            if (tourId == null || expertId == null) return null;
             var tour = _context.Tours
                    .Include(t => t.Matches
                    .Select(m => m.Predictions
@@ -89,7 +89,7 @@ namespace Predictions.Services
             })
             .ToList();
 
-            if (expertId == null) return GenerateStraightScorelist(mpList.Count, emptyDisplay, false);
+            //if (expertId == null) return GenerateStraightScorelist(mpList.Count, emptyDisplay, false);
             emptyDisplay = editable ? String.Empty : emptyDisplay;
 
             return mpList
@@ -97,11 +97,31 @@ namespace Predictions.Services
                 .ToList();
         }
 
-        public List<string> GenerateTempResultlist(int? tourId, int? expertId = null)
+        //predictions can be null; need matches!
+        public List<string> GenerateTempResultlist(int? tourId, int? expertId = null, string emptyDisplay = "-")
         {
-            var predictions = LoadTourPredictions(tourId, expertId);
-            if (predictions.IsNullOrEmpty()) return null;
-            return predictions.Select(p => p.IsClosed ? p.Sum.ToString() : "-").ToList();
+            //var predictions = LoadTourPredictions(tourId, expertId);
+            //if (predictions.IsNullOrEmpty()) return null;
+            //return predictions.Select(p => p.IsClosed ? p.Sum.ToString() : "-").ToList();
+
+            if (tourId == null || expertId == null) return null;
+            var tour = _context.Tours
+                   .Include(t => t.Matches
+                   .Select(m => m.Predictions
+                   .Select(p => p.Expert)))
+                   .Single(t => t.TourId == tourId);
+
+            var mpList = tour.Matches.Select(m => new
+            {
+                //match-prediction list
+                Match = m,
+                Prediction = m.Predictions.SingleOrDefault(p => p.ExpertId == expertId)
+            })
+            .ToList();
+
+            return mpList
+                .Select(mp => mp.Prediction == null ? emptyDisplay : mp.Prediction.Sum.ToString())
+                .ToList();
         }
 
         public Prediction CreatePrediction(int expertId, int matchId, string value)
