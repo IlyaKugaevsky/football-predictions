@@ -37,8 +37,6 @@ namespace Predictions.Controllers
         {
             var tours = _tourService.LoadBasicsWith();
             if (tours == null) return HttpNotFound();
-
-            //var experts = _context.Experts.ToList();
             //foreach (var item in experts)
             //{
             //    item.Differences = 0;
@@ -46,12 +44,8 @@ namespace Predictions.Controllers
             //    item.Scores = 0;
             //}
             //_context.SaveChanges();
-
             return View(tours);
-
         }
-
-
 
         //404 after deleting
         public ActionResult EditTour(int tourId)
