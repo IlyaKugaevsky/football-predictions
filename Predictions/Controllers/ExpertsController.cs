@@ -18,7 +18,7 @@ namespace Predictions.Controllers
         // GET: Experts
         public ActionResult Index()
         {
-            return View(db.Experts.ToList());
+            return View(db.Experts.ToList().OrderBy(e => e.Sum));
         }
 
         // GET: Experts/Details/5

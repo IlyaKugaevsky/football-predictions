@@ -7,8 +7,6 @@
 
 <h1>Расписание по турам</h1>
 
-
-
 @Html.AntiForgeryToken()
 
 
@@ -16,7 +14,7 @@
 {
     <div class="container">
         <h2>@Model.ElementAt(i).TourId Тур</h2>
-        <div class="panel panel-default">
+        <div class="panel panel-primary">
             <div class="panel-heading">@Model.ElementAt(i).StartDate - @Model.ElementAt(i).EndDate</div>
             <div class="panel-body">
                 <div class="col-md-10">
