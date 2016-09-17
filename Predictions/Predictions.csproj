@@ -409,6 +409,7 @@
     <Content Include="Views\Tours\Preresults.cshtml" />
     <Content Include="Views\Shared\EvaluationDetails.cshtml" />
     <Content Include="Views\Shared\Tour.cshtml" />
+    <Content Include="Views\Tours\DeleteConfirmation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

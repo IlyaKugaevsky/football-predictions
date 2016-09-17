@@ -21,11 +21,11 @@ namespace Predictions.ViewModels.Basis
         public int TourId { get; set; }
 
         //[DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:MM.dd.yyyy | HH:mm}")]
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:dd.MM.yyyy | HH:mm}")]
         public DateTime StartDate { get; set; }
 
         //[DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:MM.dd.yyyy | HH:mm}")]
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:dd.MM.yyyy | HH:mm}")]
         public DateTime EndDate { get; set; }
     }
 }

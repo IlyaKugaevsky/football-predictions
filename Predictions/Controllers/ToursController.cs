@@ -64,7 +64,7 @@ namespace Predictions.Controllers
             var matches = _tourService.GetMatchesByTour(tourId);
             for (var i = 0; i < matches.Count; i++)
             {
-                var actionLink = new ActionLinkParams("Удалить", "DeleteMatch", null, new { id = matches[i].MatchId }, new { @class = "btn btn-default" });
+                var actionLink = new ActionLinkParams("Удалить", "DeleteConfirmation", null, new { id = matches[i].MatchId }, new { @class = "btn btn-default" });
                 actionLinklist.Add(actionLink);
             }
 
@@ -101,7 +101,7 @@ namespace Predictions.Controllers
                     viewModel.SelectedAwayTeamId,
                     viewModel.TourInfo.TourId);
                 _matchService.AddMatch(match);
-                return RedirectToAction("Index");
+                return RedirectToAction("EditTour", new {tourId = viewModel.TourInfo.TourId });
             }
             return View(viewModel);
         }
@@ -187,13 +187,23 @@ namespace Predictions.Controllers
         }
 
         //404
-        public ActionResult DeleteMatch(int? id)
+        public ActionResult DeleteMatch(int id)
         {
             //so~so, mb better
             var tourId = _matchService.GetTourId(id);
             if (tourId == null) return HttpNotFound(); //this also checks id
             _matchService.DeleteMatch(id);
             return RedirectToAction("EditTour", new { id = tourId });
+        }
+
+        //terrible, fix as fast as possible
+        public ActionResult DeleteConfirmation(int id)
+        {
+            var match = _context.Matches.Find(id);
+
+            ViewBag.number = match.Predictions.IsNullOrEmpty() ? 0 : match.Predictions.Count();
+            ViewBag.id = id;
+            return View();
         }
 
         //public ActionResult TestAction()

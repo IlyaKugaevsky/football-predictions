@@ -16,13 +16,13 @@ namespace Predictions.Models
         public bool IsClosed { get; set; }
 
         //[DisplayFormat(DataFormatString = "{0:yyyy.MM.dd}", ApplyFormatInEditMode = false)]
-        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:MM.dd.yyyy HH:mm}")]
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:dd.MM.yyyy HH:mm}")]
 
         [Column(TypeName = "DateTime2")]
         public DateTime StartDate { get; set; }
 
         //[DisplayFormat(DataFormatString = "{0:yyyy.MM.dd}", ApplyFormatInEditMode = false)]
-        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:MM.dd.yyyy HH:mm}")]
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:dd.MM.yyyy HH:mm}")]
         [Column(TypeName = "DateTime2")]
         public DateTime EndDate { get; set; }
         public virtual List<Match> Matches { get; set; }

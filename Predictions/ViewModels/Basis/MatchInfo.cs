@@ -20,7 +20,7 @@ namespace Predictions.ViewModels
         }
 
         [Required]
-        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:MM.dd.yyyy | HH:mm}")]
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:dd.MM.yyyy | HH:mm}")]
         public DateTime Date { get; set; }
 
         [Required]

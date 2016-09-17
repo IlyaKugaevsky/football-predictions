@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewBag.Title = "DeleteConfirmation";
+}
+
+<h2>Подтвердить удаление</h2>
+
+@model Predictions.ViewModels.PredictionsDisplayViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Список прогнозов</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    Вы уверены, что хотите удалить матч? 
+                    Количество связанных прогнозов: @ViewBag.number 
+                    <div>
+                        @Html.ActionLink("Удалить", "DeleteMatch", new { id = ViewBag.id}, new { @class = "btn btn-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
