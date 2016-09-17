@@ -13,7 +13,7 @@ namespace Predictions.Models
         public string Title { get; set; }
         public string Score { get; set; } = "-";
 
-        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:MM.dd.yyyy | HH:mm}")]
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:dd.MM.yyyy | HH:mm}")]
         [Column(TypeName = "DateTime2")]
         public DateTime Date { get; set; }
 
