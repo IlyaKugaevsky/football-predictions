@@ -6,11 +6,19 @@
 }
 
 <h1>Расписание по турам</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            @for (var i = 0; i < Model.Count(); i++)
+            {
+                @Html.Partial("Tour", Model.ElementAt(i))
+            }
+        </div>
+    </div>
+</div>
 
-@Html.AntiForgeryToken()
 
-
-@for (var i = 0; i < Model.Count(); i++)
+@*@for (var i = 0; i < Model.Count(); i++)
 {
     <div class="container">
         <h2>@Model.ElementAt(i).TourId Тур</h2>
@@ -18,14 +26,16 @@
             <div class="panel-heading">@Model.ElementAt(i).StartDate - @Model.ElementAt(i).EndDate</div>
             <div class="panel-body">
                 <div class="col-md-10">
-                    <table class="table table-hover">
-                        <tbody>
+                    <table class="table table-hover" id="schedule">
+                        <thead>
                             <tr>
                                 <th>Дата</th>
                                 <th>Дома</th>
                                 <th>В гостях</th>
                                 <th>Счет</th>
                             </tr>
+                        </thead>
+                        <tbody>
                             @foreach (var item in Model.ElementAt(i).Matches)
                             {
                                 <tr>
@@ -39,69 +49,131 @@
                     </table>
                 </div>
                 <div class="col-md-2">
-                    <div class="btn-group-justified" role="group">
-                        @if (Model.ElementAt(i).IsClosed)
-                        {
-                        <div class="row">
-                            @Html.ActionLink("Редактор тура", "EditTour",
-                                         new { tourId = Model.ElementAt(i).TourId },
-                                         new { @class = "btn btn-sm btn-info disabled" })
+                    @if (Model.ElementAt(i).IsClosed)
+                    {
+                        <div class="btn-group-vertical">
+                            <a href="@Url.Action("EditTour", new  { tourId = Model.ElementAt(i).TourId })" class="btn btn-primary disabled">
+                                Редактор тура
+                            </a>
+                            <a href="@Url.Action("AddPredictions", new  { tourId = Model.ElementAt(i).TourId })" class="btn btn-primary disabled">
+                                Редактор прогнозов
+                            </a>
+                            <a href="@Url.Action("AddScores", new  { tourId = Model.ElementAt(i).TourId })" class="btn btn-primary disabled">
+                                Редактор результатов
+                            </a>
+                            <a href="@Url.Action("SubmitTourPredictions", new  { tourId = Model.ElementAt(i).TourId })" class="btn btn-success disabled top-buffer">
+                                Рассчитать тур
+                            </a>
+                            <a href="@Url.Action("RestartTour", new  { tourId = Model.ElementAt(i).TourId })" class="btn btn-danger">
+                                Откатить тур
+                            </a>
                         </div>
-                        <div class="row top-buffer">
-                            @Html.ActionLink("Редактор прогнозов", "AddPredictions",
-                                         new { tourId = Model.ElementAt(i).TourId },
-                                         new { @class = "btn btn-sm btn-info disabled" })
+                    }
+                    else
+                    {
+                        <div class="btn-group-vertical">
+
+                            <a href="@Url.Action("EditTour", new  { tourId = Model.ElementAt(i).TourId })" class="btn btn-primary">
+                                Редактор тура
+                            </a>
+                            <a href="@Url.Action("AddPredictions", new  { tourId = Model.ElementAt(i).TourId })" class="btn btn-primary">
+                                Редактор прогнозов
+                            </a>
+                            <a href="@Url.Action("AddScores", new  { tourId = Model.ElementAt(i).TourId })" class="btn btn-primary">
+                                Редактор результатов
+                            </a>
+                            <a href="@Url.Action("SubmitTourPredictions", new  { tourId = Model.ElementAt(i).TourId })" class="btn btn-success">
+                                Рассчитать тур
+                            </a>
+                            <a href="@Url.Action("RestartTour", new  { tourId = Model.ElementAt(i).TourId })" class="btn btn-danger disabled">
+                                Откатить тур
+                            </a>
                         </div>
-                        <div class="row top-buffer">
-                            @Html.ActionLink("Редактор результатов", "AddScores",
-                                         new { tourId = Model.ElementAt(i).TourId },
-                                         new { @class = "btn btn-sm btn-info disabled" })
-                        </div>
-                        <div class="row top-buffer">
-                            @Html.ActionLink("Рассчитать тур", "Preresults",
-                                         new { tourId = Model.ElementAt(i).TourId },
-                                         new { @class = "btn btn-sm btn-info disabled" })
-                        </div>
-                        <div class="row top-buffer">
-                            @Html.ActionLink("Откатить тур", "RestartTour",
-                                         new { tourId = Model.ElementAt(i).TourId },
-                                         new { @class = "btn btn-sm btn-info" })
-                        </div>
-                        }
-                        else
-                        {
-                            <div class="row">
-                                @Html.ActionLink("Редактор тура", "EditTour",
-                                         new { tourId = Model.ElementAt(i).TourId },
-                                         new
-                                         {
-                                             @class = "btn btn-sm btn-info"
-                                         })
-                            </div>
-                            <div class="row top-buffer">
-                                @Html.ActionLink("Редактор прогнозов", "AddPredictions",
-                                         new { tourId = Model.ElementAt(i).TourId },
-                                         new { @class = "btn btn-sm btn-info" })
-                            </div>
-                            <div class="row top-buffer">
-                                @Html.ActionLink("Редактор результатов", "AddScores",
-                                         new { tourId = Model.ElementAt(i).TourId },
-                                         new { @class = "btn btn-sm btn-info" })
-                            </div>
-                            <div class="row top-buffer">
-                                @Html.ActionLink("Рассчитать тур", "Preresults",
-                                         new { tourId = Model.ElementAt(i).TourId },
-                                         new { @class = "btn btn-sm btn-info" })
-                            </div>
-                            <div class="row top-buffer">
-                                @Html.ActionLink("Откатить тур", "RestartTour",
-                                         new { tourId = Model.ElementAt(i).TourId },
-                                         new { @class = "btn btn-sm btn-info disabled" })
-                            </div>
-                        }
-                    </div>
+                    }
                 </div>
             </div>
         </div>
     </div>
-}
+}*@
+
+
+@*<link href="//cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css" rel="stylesheet" />
+@section Scripts{
+    <script src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#schedule').DataTable({
+                "paging": false,
+                "info": false,
+                "filter": false,
+                "order": false
+            });
+        });
+    </script>
+}*@
+
+
+
+
+
+@*<div class="btn-group-justified" role="group">
+        @if (Model.ElementAt(i).IsClosed)
+        {
+            <div class="row">
+                @Html.ActionLink("Редактор тура", "EditTour",
+                         new { tourId = Model.ElementAt(i).TourId },
+                         new { @class = "btn btn-sm btn-info disabled" })
+            </div>
+                <div class="row top-buffer">
+                    @Html.ActionLink("Редактор прогнозов", "AddPredictions",
+                         new { tourId = Model.ElementAt(i).TourId },
+                         new { @class = "btn btn-sm btn-info disabled" })
+                </div>
+                <div class="row top-buffer">
+                    @Html.ActionLink("Редактор результатов", "AddScores",
+                         new { tourId = Model.ElementAt(i).TourId },
+                         new { @class = "btn btn-sm btn-info disabled" })
+                </div>
+                <div class="row top-buffer">
+                    @Html.ActionLink("Рассчитать тур", "Preresults",
+                         new { tourId = Model.ElementAt(i).TourId },
+                         new { @class = "btn btn-sm btn-info disabled" })
+                </div>
+                <div class="row top-buffer">
+                    @Html.ActionLink("Откатить тур", "RestartTour",
+                         new { tourId = Model.ElementAt(i).TourId },
+                         new { @class = "btn btn-sm btn-info" })
+                </div>
+        }
+        else
+        {
+            <div class="row">
+                @Html.ActionLink("Редактор тура", "EditTour",
+                         new { tourId = Model.ElementAt(i).TourId },
+                         new
+                         {
+                             @class = "btn btn-sm btn-info"
+                         })
+            </div>
+                <div class="row top-buffer">
+                    @Html.ActionLink("Редактор прогнозов", "AddPredictions",
+                         new { tourId = Model.ElementAt(i).TourId },
+                         new { @class = "btn btn-sm btn-info" })
+                </div>
+                <div class="row top-buffer">
+                    @Html.ActionLink("Редактор результатов", "AddScores",
+                         new { tourId = Model.ElementAt(i).TourId },
+                         new { @class = "btn btn-sm btn-info" })
+                </div>
+                <div class="row top-buffer">
+                    @Html.ActionLink("Рассчитать тур", "Preresults",
+                         new { tourId = Model.ElementAt(i).TourId },
+                         new { @class = "btn btn-sm btn-info" })
+                </div>
+                <div class="row top-buffer">
+                    @Html.ActionLink("Откатить тур", "RestartTour",
+                         new { tourId = Model.ElementAt(i).TourId },
+                         new { @class = "btn btn-sm btn-info disabled" })
+                </div>
+        }
+    </div>*@
