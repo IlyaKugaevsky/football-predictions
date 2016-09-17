@@ -13,7 +13,7 @@
 
 </head>
 <body>
-    <div class="navbar navbar-custom navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -26,13 +26,13 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Общая информация<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
+                        @*<a class="dropdown-toggle" data-toggle="dropdown" href="#">Общая информация<span class="caret"></span></a>*@
+                        @*<ul class="dropdown-menu">
                             <li>@Html.ActionLink("Участники", "Index", "Experts")</li>
                             <li>@Html.ActionLink("Команды", "Index", "Teams")</li>
                             <li>@Html.ActionLink("Вывод", "Index", "SimpleOutput")</li>
                             <li>@Html.ActionLink("Тест", "TestAction", "Tours")</li>
-                        </ul>
+                        </ul>*@
                     </li>
                     @if (User.Identity.IsAuthenticated)
                     {
@@ -42,9 +42,10 @@
                         }
                     }
                     <li>@Html.ActionLink("Расписание", "Index", "Tours")</li>
-                    <li>@Html.ActionLink("Прогнозы", "PredictionsDisplay", "Predictions")</li>
-                    <li>@Html.ActionLink("О программе", "About", "Home")</li>
-                    <li>@Html.ActionLink("Контакт", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("База прогнозов", "PredictionsDisplay", "Predictions")</li>
+                    <li>@Html.ActionLink("Турнирная таблица", "Index", "Experts")</li>
+                    @*<li>@Html.ActionLink("О программе", "About", "Home")</li>
+                    <li>@Html.ActionLink("Контакт", "Contact", "Home")</li>*@
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

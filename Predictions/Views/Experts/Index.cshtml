@@ -49,8 +49,11 @@
         </div>
     </div>
 </div>
-@Html.ActionLink("Посмотреть расчеты", "Tours", "PredictionsDisplay", null, new { @class = "btn btn-primary" })
-
+<div class="panel panel-default">
+    <div class="panel-body">
+        @Html.ActionLink("Посмотреть расчеты", "PredictionsDisplay", "Predictions", new { selectedTourId = 1 }, new { @class = "btn btn-primary pull-right" })
+    </div>
+</div>
 
 @* Load datatable css *@
 <link href="//cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css" rel="stylesheet" />

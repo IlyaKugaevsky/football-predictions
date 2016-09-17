@@ -16,11 +16,6 @@
                 @Html.HiddenFor(model => Model.TourInfo.TourId)
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        @Html.PartialFor(m => m.MatchTable, "MatchTable")
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-body">
                         <div class="form-group">
                             @Html.DropDownListFor(model => model.SelectedExpertId, Model.Expertlist, new { @class = "selectpicker", @data_width = "auto", @title = "Выбрать эксперта" })
                             <input type="submit" class="btn btn-primary" name="action:ShowPredictions" value="Показать прогнозы">
@@ -28,6 +23,11 @@
                                 <input type="submit" class="btn btn-danger" name="action:AddPredictions" value="Сохранить">
                             </div>                        
                         </div>                    
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        @Html.PartialFor(m => m.MatchTable, "MatchTable")
                     </div>
                 </div>
             }

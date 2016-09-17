@@ -16,7 +16,7 @@
         && Model.Predictionlist.IsNullOrEmpty();
 }
 
-<table class="table table-hover table-inverse">
+<table class="table table-hover" id="evaluationDetails">
     <thead>
         <tr>
             <th class="col-xs-1">Дата</th>
@@ -33,7 +33,7 @@
             for (int i = 0; i < Model.Matchlist.Count(); i++)
             {
                 <tr>
-                    <td>@Model.Matchlist[i].Date</td>
+                    <td>@Html.DisplayFor(model => Model.Matchlist[i].Date)</td>
                     <td>@Model.Matchlist[i].HomeTeamTitle</td>
                     <td>@Model.Matchlist[i].AwayTeamTitle</td>
                     <td>@Model.Scorelist[i].Value</td>
@@ -47,3 +47,5 @@
 
 @if (!empty && Model.Sum > 0)
 { <div>Сумма = @Model.Sum</div>}
+
+
