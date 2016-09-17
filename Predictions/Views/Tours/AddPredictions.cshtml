@@ -23,7 +23,7 @@
                     <div class="panel-body">
                         <div class="form-group">
                             @Html.DropDownListFor(model => model.SelectedExpertId, Model.Expertlist, new { @class = "selectpicker", @data_width = "auto", @title = "Выбрать эксперта" })
-                            <input type="submit" class="btn btn-info" name="action:ShowPredictions" value="Показать прогнозы">
+                            <input type="submit" class="btn btn-primary" name="action:ShowPredictions" value="Показать прогнозы">
                             <div class="pull-right">
                                 <input type="submit" class="btn btn-danger" name="action:AddPredictions" value="Сохранить">
                             </div>                        
@@ -32,7 +32,7 @@
                 </div>
             }
             <div>
-                @Html.ActionLink("Назад к расписанию", "Index", new {}, new { @class = "btn btn-info" })
+                @Html.ActionLink("Назад к расписанию", "Index", new {}, new { @class = "btn btn-primary" })
             </div>
         </div>
     </div>
