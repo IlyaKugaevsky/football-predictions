@@ -33,7 +33,7 @@
             for (int i = 0; i < Model.Matchlist.Count(); i++)
             {
                 <tr>
-                    <td>@Model.Matchlist[i].Date</td>
+                    <td>@Html.DisplayFor(model => Model.Matchlist[i].Date)</td>
                     <td>@Model.Matchlist[i].HomeTeamTitle</td>
                     <td>@Model.Matchlist[i].AwayTeamTitle</td>
                     <td>
