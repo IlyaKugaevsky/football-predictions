@@ -51,8 +51,37 @@
 
             var teams = new List<Team>
             {
-                new Team { Title = "Спартак" },
-                new Team { Title = "Цска" }
+                new Team { Title = "Манчестер Сити" },
+                new Team { Title = "Боруссия М" },
+                new Team { Title = "Барселона" },
+                new Team { Title = "Селтик" },
+                new Team { Title = "Бенфика" },
+                new Team { Title = "Бешикташ" },
+                new Team { Title = "Динамо Киев" },
+                new Team { Title = "Наполи" },
+                new Team { Title = "ПСЖ" },
+                new Team { Title = "Арсенал" },
+                new Team { Title = "Базель" },
+                new Team { Title = "Лудогорец" },
+                new Team { Title = "Бавария" },
+                new Team { Title = "Ростов" },
+                new Team { Title = "ПСВ" },
+                new Team { Title = "Атлетико" },
+                new Team { Title = "Порту" },
+                new Team { Title = "Копенгаген" },
+                new Team { Title = "Брюгге" },
+                new Team { Title = "Лестер" },
+                new Team { Title = "Тоттенхэм" },
+                new Team { Title = "Монако" },
+                new Team { Title = "Байер" },
+                new Team { Title = "ЦСКА" },
+                new Team { Title = "Ювенус" },
+                new Team { Title = "Севилья" },
+                new Team { Title = "Лион" },
+                new Team { Title = "Динамо Загреб" },
+                new Team { Title = "Реал Мадрид" },
+                new Team { Title = "Легия" },
+                new Team { Title = "Боруссия Д" },
             };
             teams.ForEach(x => context.Teams.AddOrUpdate(z => z.Title, x));
 

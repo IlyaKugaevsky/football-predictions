@@ -11,9 +11,9 @@ namespace Predictions.Models
     {
         public int MatchId { get; set; }
         public string Title { get; set; }
-        public string Score { get; set; } = "не сыгран";
+        public string Score { get; set; } = "-";
 
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:MM.dd.yyyy | HH:mm}")]
         [Column(TypeName = "DateTime2")]
         public DateTime Date { get; set; }
 
