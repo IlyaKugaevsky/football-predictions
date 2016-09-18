@@ -34,6 +34,18 @@ textarea {
 /******************************************************************************/
 .top-buffer { margin-top:20px; }
 
+
+
+
+    .jumbotron-under-cnstr {
+        /* add bootstrap jumbotron background image */
+        /*background: url("http://www.rendertribe.com/wp-content/uploads/dark-analytics-guy.jpg");*/
+        /*background: url('images/bg-image.jpg');*/
+        background: url("http://previews.123rf.com/images/avesun/avesun0802/avesun080200001/2553960-Under-construction-symbol-on-dark-asphalt-surface-Stock-Photo.jpg");
+        background-size: cover;
+        background-position : center;
+    }
+
 /*external navbar*/
 /******************************************************************************/
 /*.navbar-custom {

@@ -2,28 +2,42 @@
     ViewBag.Title = "Home Page";
 }
 
+<style>
+    .jumbotron {
+    /* add bootstrap jumbotron background image */
+    background: url("http://www.rendertribe.com/wp-content/uploads/dark-analytics-guy.jpg");
+    /*background: url(content/images/bg-image.jpg);*/
+    background-size: cover;
+    min-height: 500px;
+
+
+}
+
+    h1 {
+        color:white !important;
+    }
+</style>
+
 <div class="jumbotron">
-    <h1>Конкурс прогнозов</h1>
-    <p class="lead">Соревнование диванных экспертов</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    <h1>Конкурсы прогнозов</h1>
+    <p style="color:white">Соревнование диванных аналитиков</p>
+    <p><a href="@Url.Action("Index", "Experts")" class="btn btn-primary btn-lg">Текущий рейтинг &raquo;</a></p>
 </div>
 
 <div class="row">
     <div class="col-md-4">
         <h2>Основной форум</h2>
-        <p>
-            Конкурсы рецензий и все такое прочее
-        </p>
-        <p><a class="btn btn-default" href="http://d-critics.ru/forum/index.php">Посетить форум &raquo;</a></p>
+        <p> Конкурсы рецензий для влюбленных в кино. Артхаус, фильмы не для всех, концепты, флудилка, травля, планки общения, редизайны и т.д.</p>
+        <p><a class="btn btn-default" href="http://d-critics.ru/forum/index.php">Основной форум &raquo;</a></p>
     </div>
     <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+        <h2>Статистика</h2>
+        <p>Самые непредсказуемые матчи, эксперты, которым не везет больше всех, любители играть по системе, а также другие невероятно интересные факты.</p>
+        <p><a class="btn btn-default" href="@Url.Action("Statistics", "Experts")">Статистика &raquo;</a></p>
     </div>
     <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+        <h2>Что-то еще</h2>
+        <p>Здесь обязательно что-то будет, в этом даже не стоит сомневаться, нужно просто подождать, совсем недолго.</p>
+        <p><a class="btn btn-default" href="http://sports.ru">Что-то еще &raquo;</a></p>
     </div>
 </div>

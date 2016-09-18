@@ -15,6 +15,11 @@ namespace Predictions.Controllers
     {
         private PredictionsContext db = new PredictionsContext();
 
+        public ActionResult Statistics()
+        {
+            return View();
+        }
+
         // GET: Experts
         public ActionResult Index()
         {
