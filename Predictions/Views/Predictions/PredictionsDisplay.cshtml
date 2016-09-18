@@ -26,15 +26,15 @@
                             @Html.HiddenFor(@model => Model.Tourlist[i].Value);
                         }
 
-                        <div class="row">
-                            <div class="input-group col-md-5 col-md-offset-7">
-                                @Html.DropDownListFor(model => model.SelectedExpertId, Model.Expertlist, new { @class = "selectpicker form-control", data_width = "auto", title = "Выбрать эксперта", Name = "expertId" })
-                                @Html.DropDownListFor(model => model.SelectedTourId, Model.Tourlist, new { @class = "selectpicker form-control", data_width = "auto", title = "Выбрать тур", Name = "tourId" })
+
+                            <div class="input-group col-md-12">
+                                @Html.DropDownListFor(model => model.SelectedExpertId, Model.Expertlist, new { @class = "form-control pull-right", data_width = 200, title = "Выбрать эксперта", Name = "expertId" })
+                                @Html.DropDownListFor(model => model.SelectedTourId, Model.Tourlist, new { @class = "form-control pull-right", data_width = 200, title = "Выбрать тур", Name = "tourId" })
                                 <span class="input-group-btn">
                                     <button class="btn btn-primary" type="submit">Показать прогноз</button>
                                 </span>
                             </div>
-                        </div>
+                        @*</div>*@
                     }
                 </div>
             </div>

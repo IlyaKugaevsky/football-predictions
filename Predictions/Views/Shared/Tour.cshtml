@@ -6,7 +6,7 @@
         @Html.DisplayFor(model => Model.StartDate) - @Html.DisplayFor(model => Model.EndDate)
     </div>
     <div class="panel-body">
-        <div class="col-md-10">
+        <div class="col-ms-12">
             <table class="table table-hover" id="schedule">
                 <thead>
                     <tr>
@@ -29,10 +29,10 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-md-2">
+        @*<div class="col-md-2">
             @if (Model.IsClosed)
             {
-                <div class="btn-group-vertical">
+                <div class="btn-group-vertical pull-left">
                     <a href="@Url.Action("EditTour", new  { tourId = Model.TourId })" class="btn btn-primary disabled">
                         Редактор тура
                     </a>
@@ -52,7 +52,7 @@
             }
             else
             {
-                <div class="btn-group-vertical">
+                <div class="btn-group-vertical pull-left">
 
                     <a href="@Url.Action("EditTour", new  { tourId = Model.TourId })" class="btn btn-primary">
                         Редактор тура
@@ -71,7 +71,7 @@
                     </a>
                 </div>
             }
-        </div>
+        </div>*@
     </div>
 </div>
 

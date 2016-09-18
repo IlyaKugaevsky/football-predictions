@@ -25,9 +25,12 @@ namespace Predictions
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
+                      //"~/Content/bootstrap.css",
+                      "~/Content/flatly.bootstrap.min.css",
                       "~/Content/site.css",
-                      "~/Content/bootstrap-select.css"));
+                      "~/Content/bootstrap-select.css"
+                      //"~/Content/business-casual.css"
+                      ));
         }
     }
 }
