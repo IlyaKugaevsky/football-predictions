@@ -13,6 +13,7 @@
                     <table class="table hover" id="results">
                         <thead>
                             <tr>
+                                <th></th>
                                 <th>Эксперт</th>
                                 <th>Угадан счет</th>
                                 <th>Угадана разница</th>
@@ -24,6 +25,9 @@
                             @foreach (var item in Model)
                             {
                                 <tr>
+                                    <td>
+                                    </td>
+
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Nickname)
                                     </td>
@@ -62,15 +66,38 @@
     @* Load DataTable js here *@
     <script src="//cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
     <script src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
-    <script>
+    @*<script>
         $(document).ready(function () {
             $('#results').DataTable({
                 "paging": false,
                 "info": false,
                 "filter": false,
+                "order": [[4, "desc"]]
             });
         });
-    </script>
+    </script>*@
+
+<script>
+        $(document).ready(function () {
+            var t = $('#results').DataTable({
+                "columnDefs": [ {
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": 0
+                } ],
+                "paging": false,
+                "info": false,
+                "filter": false,
+                "order": [[5, "desc"]]
+            });
+
+            t.on('order.dt search.dt', function () {
+                t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }).draw();
+        });
+</script>
 }
 
 
