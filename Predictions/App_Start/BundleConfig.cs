@@ -22,14 +22,15 @@ namespace Predictions
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/bootstrap-select.js",
-                      "~/Scripts/respond.js"));
+                      "~/Scripts/respond.js"
+                      ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      //"~/Content/bootstrap.css",
+                      //"~/Content/bootstrap.min.css",
                       "~/Content/flatly.bootstrap.min.css",
                       "~/Content/site.css",
                       "~/Content/bootstrap-select.css"
-                      //"~/Content/business-casual.css"
+                      //"~/Content/bootflat/bootflat.css"
                       ));
         }
     }
