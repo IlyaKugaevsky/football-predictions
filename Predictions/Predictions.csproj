@@ -224,6 +224,7 @@
     <Compile Include="Helpers\CustomAttributes.cs" />
     <Compile Include="Helpers\HtmlHelpers.cs" />
     <Compile Include="Helpers\PredictionEvaluator.cs" />
+    <Compile Include="Helpers\RegexExtensions.cs" />
     <Compile Include="Migrations\201609152253279_Tour IsClosed.cs" />
     <Compile Include="Migrations\201609152253279_Tour IsClosed.Designer.cs">
       <DependentUpon>201609152253279_Tour IsClosed.cs</DependentUpon>
@@ -239,6 +240,7 @@
     <Compile Include="Models\Tour.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ExpertService.cs" />
+    <Compile Include="Services\FileService.cs" />
     <Compile Include="Services\MatchService.cs" />
     <Compile Include="Services\PredictionService.cs" />
     <Compile Include="Services\TeamService.cs" />

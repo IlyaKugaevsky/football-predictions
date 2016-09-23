@@ -22,6 +22,7 @@ namespace Predictions.Controllers
         private readonly PredictionService _predictionService;
         private readonly MatchService _matchService;
         private readonly TeamService _teamService;
+        private readonly FileService _fileService;
 
         public ToursController()
         {
@@ -31,19 +32,16 @@ namespace Predictions.Controllers
             _predictionService = new PredictionService(_context);
             _matchService = new MatchService(_context);
             _teamService = new TeamService(_context);
+
+            //constructor with params?
+            _fileService = new FileService();
         }
 
         public ActionResult Index()
         {
             var tours = _tourService.LoadBasicsWith();
             if (tours == null) return HttpNotFound();
-            //foreach (var item in experts)
-            //{
-            //    item.Differences = 0;
-            //    item.Outcomes = 0;
-            //    item.Scores = 0;
-            //}
-            //_context.SaveChanges();
+            _fileService.TestWriteFile("test.txt");
             return View(tours);
         }
 
@@ -205,16 +203,5 @@ namespace Predictions.Controllers
             ViewBag.id = id;
             return View();
         }
-
-        //public ActionResult TestAction()
-        //{
-        //    var tour = _tourService.LoadBasicsWith(1);
-        //    var matches = tour.Matches.ToList();
-        //    var matchlist = _matchService.GenerateMatchlist(matches);
-        //    var scorelist = _matchService.GenerateScorelist(matches, true);
-        //    var headers = new List<string>(){"Дата", "Дома", "В гостях", "Счет"};
-        //    var table = new MatchTableViewModel(headers, matchlist, scorelist);
-        //    return View(table);
-        //}
     }
 }
