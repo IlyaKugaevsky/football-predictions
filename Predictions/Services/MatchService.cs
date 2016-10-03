@@ -88,11 +88,31 @@ namespace Predictions.Services
             return match;
         }
 
+        public List<Match> CreateMatches(List<MatchInfo> matches, int tourId)
+        {
+            var teams = _context.Teams.ToList();
+            return matches.Select(m => new Match()
+            {
+                Date = m.Date,
+                HomeTeam = teams.Single(t => t.Title == m.HomeTeamTitle),
+                AwayTeam = teams.Single(t => t.Title == m.AwayTeamTitle),
+                TourId = tourId,
+                Score = string.Empty
+            }).ToList();
+        }
+
         public void AddMatch(Match match)
         {
             _context.Matches.Add(match);
             _context.SaveChanges();
-        } 
+        }
+
+        public void AddMatches(List<Match> matches)
+        {
+            _context.Matches.AddRange(matches);
+            _context.SaveChanges();
+        }
+
 
         public int? GetTourId(int? matchId)
         {

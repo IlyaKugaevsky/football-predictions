@@ -40,8 +40,17 @@ namespace Predictions.Controllers
         public ActionResult Index()
         {
             var tours = _tourService.LoadBasicsWith();
+
+            for (var i = 0; i < tours.Count; i++)
+            {
+                if (tours[i].TourId > 1) tours[i].IsClosed = false;
+            }
+
             if (tours == null) return HttpNotFound();
             _fileService.TestWriteFile("test.txt");
+
+
+
             return View(tours);
         }
 
@@ -103,6 +112,39 @@ namespace Predictions.Controllers
             }
             return View(viewModel);
         }
+
+        [HttpPost]
+        [MultipleButton(Name = "action", Argument = "AddMatches")]
+        public ActionResult AddMatches(EditTourViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var input = viewModel.SubmitTextArea.InputText;
+                var matchlist = _fileService.TestReadString(input);
+                var scorelist = matchlist.Select(m => new FootballScore("-")).ToList();
+                var headers = new List<string>() { "Дата", "Дома", "В гостях", "Счет" };
+                var matchTable = new MatchTableViewModel(headers, matchlist, scorelist);
+                viewModel.MatchTable = matchTable;
+
+                var tourInfo = _tourService.GetTourInfo(viewModel.SubmitTextArea.TourId);
+                var teamlist = _teamService.GenerateSelectList();
+
+                viewModel.MatchTable.Matchlist = matchlist;
+                viewModel.TourInfo = tourInfo;
+                viewModel.Teamlist = teamlist;
+
+                _matchService.AddMatches(_matchService.CreateMatches(matchlist, tourInfo.TourId));
+
+                //var tour = _context.Tours.Include(t => t.Matches).Single(t => t.TourId == 2);
+                //var matches = tour.Matches.ToList();
+                //_context.Matches.RemoveRange(matches);
+                //_context.SaveChanges();
+
+                return View("~/Views/Tours/EditTour.cshtml", viewModel);
+            }
+            return HttpNotFound();
+        }
+
 
         public ActionResult AddPredictions(int? tourId, int? expertId)
         {

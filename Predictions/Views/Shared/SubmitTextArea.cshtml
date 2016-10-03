@@ -1,0 +1,15 @@
+﻿@model Predictions.ViewModels.SubmitTextAreaViewModel
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "addMatchesForm" }))
+{
+    @Html.HiddenFor(model => model.TourId)
+    <div class="form-group">
+        <div class="col-md-12 input-group">
+            <span class="input-group-addon"><span class="glyphicon glyphicon-pencil"></span></span>
+            @Html.TextAreaFor(Model => Model.InputText, new { @class = "form-control", @rows = 20, style = "max-width:80% !important;" })
+        </div>
+    </div>
+    <button type="submit" name="action:AddMatches" class="btn btn-info">Добавить матчи</button>
+}
+
+

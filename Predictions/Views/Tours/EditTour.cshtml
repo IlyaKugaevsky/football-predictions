@@ -3,6 +3,7 @@
     ViewBag.Title = "EditTour";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+ 
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -45,6 +46,19 @@
             </div>
             <div class="panel panel-default">
                 <div class="panel-body">
+                    @if (Model.SubmitTextArea != null)
+                    {
+                        @Html.PartialFor(m => m.SubmitTextArea, "SubmitTextArea")
+                    }
+                    else
+                    {
+                        <div>здесь ничего нет</div>
+                    }
+
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-body">
                     @Html.PartialFor(m => m.MatchTable, "MatchTable")
                 </div>
             </div>
@@ -56,16 +70,3 @@
 </div>
 
 
-@*<script>
-    $(document).ready(function () {
-        jQuery.validator.methods.date = function (value, element) {
-            var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-            if (isChrome) {
-                var d = new Date();
-                return this.optional(element) || !/Invalid|NaN/.test(new Date(d.toLocaleDateString(value)));
-            } else {
-                return this.optional(element) || !/Invalid|NaN/.test(new Date(value));
-            }
-        };
-    });
-</script>*@

@@ -10,10 +10,10 @@ namespace Predictions.Services
     public class FileService
     {
         private readonly string _defaultFolder = "~/App_Data/TextFiles";
-        private readonly string _tourSchedulePannern = @"^(?<date>\d\d\.\d\d\.\d\d\d\d)" + @"\|"
+        private readonly string _tourSchedulePattern = @"^(?<date>\d\d\.\d\d\.\d\d\d\d)" + @"\|"
                             + @"(?<time>\d\d:\d\d)" + @"(?<spaces>\s+)"
                             + @"(?<homeTeam>\w+(\s\w+)?)" + @"(?<trash>(\W|_)+)"
-                            + @"(?<awayTeam>(\w+)(\s\w*)?)$";
+                            + @"(?<awayTeam>(\w+)(\s\w*)?)$"; //
 
         public List<MatchInfo> ReadTourMatches(string localFilePath = "")
         {
@@ -23,7 +23,7 @@ namespace Predictions.Services
             var matchlist = new List<MatchInfo>();
             foreach (var line in lines)
             {
-                var match = System.Text.RegularExpressions.Regex.Match(line, _tourSchedulePannern);
+                var match = System.Text.RegularExpressions.Regex.Match(line, _tourSchedulePattern);
                 Console.WriteLine("date: " + match.Groups["date"].Value + "\n"
                     + "time: " + match.Groups["time"].Value + "\n"
                     + "spaces: " + "|" + match.Groups["spaces"].Value + "|" + "\n"
@@ -32,6 +32,22 @@ namespace Predictions.Services
                     + "awayTeam: " + match.Groups["awayTeam"].Value);
 
                 DateTime date = DateTime.Parse(match.Groups["date"].Value + " " + match.Groups["time"]);
+                string homeTeam = match.Groups["homeTeam"].Value;
+                string awayTeam = match.Groups["awayTeam"].Value;
+                matchlist.Add(new MatchInfo(date, homeTeam, awayTeam));
+            }
+            return matchlist;
+        }
+
+        public List<MatchInfo> TestReadString(string input)
+        {
+            var lines = input.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            var matchlist = new List<MatchInfo>();
+            foreach (var line in lines)
+            {
+                var match = System.Text.RegularExpressions.Regex.Match(line, _tourSchedulePattern);
+
+                DateTime date = DateTime.Parse(match.Groups["date"].Value + " " + match.Groups["time"].Value);
                 string homeTeam = match.Groups["homeTeam"].Value;
                 string awayTeam = match.Groups["awayTeam"].Value;
                 matchlist.Add(new MatchInfo(date, homeTeam, awayTeam));

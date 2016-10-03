@@ -18,14 +18,15 @@ namespace Predictions.ViewModels
             Teamlist = teamlist;
             TourInfo = tourInfo;
             MatchTable = matchTable;
+            SubmitTextArea = new SubmitTextAreaViewModel(tourInfo.TourId);
         }
 
         public TourInfo TourInfo { get; set; }
         public MatchTableViewModel MatchTable { get; set; }
-
         public List<SelectListItem> Teamlist { get; set; }
         public int SelectedHomeTeamId { get; set; }
         public int SelectedAwayTeamId { get; set; }
         public DateTime InputDate { get; set; }
+        public SubmitTextAreaViewModel SubmitTextArea { get; set; }
     }
 }
