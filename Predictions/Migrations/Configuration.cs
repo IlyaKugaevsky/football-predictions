@@ -45,7 +45,9 @@
                 new Expert { Nickname = "Pinkman"},
                 new Expert { Nickname = "SUBIC"},
                 new Expert { Nickname = "Alex McLydy"},
-                new Expert { Nickname = "Венцеслава"}
+                new Expert { Nickname = "Венцеслава"},
+                new Expert { Nickname = "SumarokovNC-17"},
+                new Expert { Nickname = "ginger-ti"}
             };
             experts.ForEach(x => context.Experts.AddOrUpdate(z => z.Nickname, x));
 

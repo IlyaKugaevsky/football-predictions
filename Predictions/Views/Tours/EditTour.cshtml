@@ -46,13 +46,10 @@
             </div>
             <div class="panel panel-default">
                 <div class="panel-body">
-                    @if (Model.SubmitTextArea != null)
+                    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "addMatchesForm" }))
                     {
                         @Html.PartialFor(m => m.SubmitTextArea, "SubmitTextArea")
-                    }
-                    else
-                    {
-                        <div>здесь ничего нет</div>
+                        <button type="submit" name="action:AddMatches" class="btn btn-info">Добавить матчи</button>
                     }
 
                 </div>

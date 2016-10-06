@@ -41,11 +41,6 @@ namespace Predictions.Controllers
         {
             var tours = _tourService.LoadBasicsWith();
 
-            for (var i = 0; i < tours.Count; i++)
-            {
-                if (tours[i].TourId > 1) tours[i].IsClosed = false;
-            }
-
             if (tours == null) return HttpNotFound();
             _fileService.TestWriteFile("test.txt");
 
