@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Predictions.DAL;
 using Predictions.Models;
 using Predictions.Services;
+using Predictions.ViewModels;
 
 namespace Predictions.Controllers
 {
@@ -39,10 +40,11 @@ namespace Predictions.Controllers
         // GET: Experts
         public ActionResult Index()
         {
+            var tourList = _tourService.GenerateSelectList();
             var results = _predictionService.GenerateExpertInfo(2);
+            var resultsTable = new ResultsTableViewModel(tourList, results);
 
-
-            return View(results);
+            return View(resultsTable);
         }
 
         // GET: Experts/Details/5

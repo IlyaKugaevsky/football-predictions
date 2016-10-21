@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Predictions.ViewModels.Basis.ExpertInfo>
+﻿@model Predictions.ViewModels.ResultsTableViewModel
 
 @{
     ViewBag.Title = "Index";
@@ -22,7 +22,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model)
+                            @foreach (var item in Model.ResultsTable)
                             {
                                 <tr>
                                     <td>
@@ -55,7 +55,16 @@
 </div>
 <div class="panel panel-default">
     <div class="panel-body">
-        @Html.ActionLink("Посмотреть расчеты", "PredictionsDisplay", "Predictions", new { selectedTourId = 1 }, new { @class = "btn btn-primary pull-right" })
+        @Html.ActionLink("Посмотреть расчеты", "PredictionsDisplay", "Predictions", new { selectedTourId = 1 }, new { @class = "btn btn-primary pull-left" })
+        <button class="btn btn-primary pull-right">Показать</button>
+        @Html.DropDownListFor(model => model.SelectedTourId, Model.Tourlist, new
+        {
+            @class = "selectpicker pull-right",
+            data_style = "btn-primary",
+            data_width = "auto",
+            title = "Выбрать тур",
+            Name = "tourId"
+        })
     </div>
 </div>
 

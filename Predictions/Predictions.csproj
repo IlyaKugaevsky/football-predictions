@@ -260,6 +260,7 @@
     <Compile Include="ViewModels\MatchTableViewModel.cs" />
     <Compile Include="ViewModels\PredictionsDisplayViewModel.cs" />
     <Compile Include="ViewModels\PreresultsViewModel.cs" />
+    <Compile Include="ViewModels\ResultsTableViewModel.cs" />
     <Compile Include="ViewModels\SubmitTextAreaViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
