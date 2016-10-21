@@ -40,10 +40,7 @@ namespace Predictions.Controllers
         public ActionResult Index()
         {
             var tours = _tourService.LoadBasicsWith();
-
             if (tours == null) return HttpNotFound();
-            _fileService.TestWriteFile("test.txt");
-
 
 
             return View(tours);
@@ -52,9 +49,6 @@ namespace Predictions.Controllers
         //404 after deleting
         public ActionResult EditTour(int tourId)
         {
-            //doesn't need
-            //Tour tour = _tourService.LoadBasicsWith(tourId);
-            //if (tour == null) return HttpNotFound();
             var tourInfo = _tourService.GetTourInfo(tourId);
             var teamlist = _teamService.GenerateSelectList();
             var headers = new List<string>() { "Дата", "Дома", "В гостях", "Счет" };
@@ -90,7 +84,6 @@ namespace Predictions.Controllers
         }
 
         //bind include
-        //TODO: real tour update
         [HttpPost]
         [MultipleButton(Name = "action", Argument = "AddMatch")]
         public ActionResult AddMatch(EditTourViewModel viewModel)
@@ -129,11 +122,6 @@ namespace Predictions.Controllers
                 viewModel.Teamlist = teamlist;
 
                 _matchService.AddMatches(_matchService.CreateMatches(matchlist, tourInfo.TourId));
-
-                //var tour = _context.Tours.Include(t => t.Matches).Single(t => t.TourId == 2);
-                //var matches = tour.Matches.ToList();
-                //_context.Matches.RemoveRange(matches);
-                //_context.SaveChanges();
 
                 return View("~/Views/Tours/EditTour.cshtml", viewModel);
             }
@@ -221,7 +209,7 @@ namespace Predictions.Controllers
             return RedirectToAction("Index");
         }
 
-        //404
+        //404 error
         public ActionResult DeleteMatch(int id)
         {
             //so~so, mb better
