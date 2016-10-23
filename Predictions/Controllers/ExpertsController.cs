@@ -47,6 +47,14 @@ namespace Predictions.Controllers
             return View(resultsTable);
         }
 
+        [HttpPost]
+        public ActionResult GetResultsTable(int tourId)
+        {
+            return PartialView("ResultsTable", _predictionService.GenerateExpertInfo(tourId));
+        }
+
+
+
         // GET: Experts/Details/5
         public ActionResult Details(int? id)
         {

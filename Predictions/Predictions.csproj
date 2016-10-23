@@ -450,6 +450,7 @@
     <Content Include="Views\Experts\Statistics.cshtml" />
     <Content Include="Views\Shared\SubmitTextArea.cshtml" />
     <Content Include="Views\Shared\ResultsTable.cshtml" />
+    <Content Include="Views\Shared\TestPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

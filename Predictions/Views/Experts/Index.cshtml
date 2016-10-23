@@ -5,85 +5,50 @@
 }
 
 <h1>Турнирная таблица</h1>
+
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <div class="panel">
+            @Html.AntiForgeryToken()
+            <div class="panel panel-default">
                 <div class="panel-body">
-                    @*<table class="table table-hover" id="results">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Эксперт</th>
-                                <th>Угадан счет</th>
-                                <th>Угадана разница</th>
-                                <th>Угадан исход</th>
-                                <th>Сумма</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model.ResultsTable)
-                            {
-                                <tr>
-                                    <td>
-                                    </td>
-
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Nickname)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Scores)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Differences)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Outcomes)
-                                    </td>
-                                    <td class="success">
-                                        @Html.DisplayFor(modelItem => item.Sum)
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>*@
-                    @Html.PartialFor(m => m.ResultsTable, "ResultsTable")
-
-
+                    @using (Ajax.BeginForm("GetResultsTable", new AjaxOptions { UpdateTargetId = "results", InsertionMode = InsertionMode.Replace }))
+                    {
+                        @Html.ActionLink("Посмотреть расчеты", "PredictionsDisplay", "Predictions", new { selectedTourId = 1 }, new { @class = "btn btn-primary pull-left" })
+                        <button class="btn btn-primary pull-right" type="submit">Показать</button>
+                        @Html.DropDownListFor(model => model.SelectedTourId, Model.Tourlist, new
+                           {
+                               @class = "selectpicker pull-right",
+                               data_style = "btn-primary",
+                               data_width = "auto",
+                               title = "Выбрать тур",
+                               Name = "tourId"
+                           })
+                    }
                 </div>
             </div>
-
+            <div class="panel panel-default">
+                <div class="panel-body" id="results">
+                    @Html.PartialFor(m => m.ResultsTable, "ResultsTable")
+                </div>
+            </div>
         </div>
     </div>
 </div>
-<div class="panel panel-default">
-    <div class="panel-body">
-        @Html.ActionLink("Посмотреть расчеты", "PredictionsDisplay", "Predictions", new { selectedTourId = 1 }, new { @class = "btn btn-primary pull-left" })
-        <button class="btn btn-primary pull-right">Показать</button>
-        @Html.DropDownListFor(model => model.SelectedTourId, Model.Tourlist, new
-        {
-            @class = "selectpicker pull-right",
-            data_style = "btn-primary",
-            data_width = "auto",
-            title = "Выбрать тур",
-            Name = "tourId"
-        })
-    </div>
-</div>
 
-@*<link href="//cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" rel="stylesheet"/>
+<link href="//cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" rel="stylesheet" />
 @section Scripts{
     <script src="//cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
     <script src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
 
-<script>
+    <script>
         $(document).ready(function () {
-            var t = $('#results').DataTable({
-                "columnDefs": [ {
+            var t = $('#resultsTable').DataTable({
+                "columnDefs": [{
                     "searchable": false,
                     "orderable": false,
                     "targets": 0
-                } ],
+                }],
                 "paging": false,
                 "info": false,
                 "filter": false,
@@ -96,7 +61,7 @@
                 });
             }).draw();
         });
-</script>
-}*@
+    </script>
+}
 
 
