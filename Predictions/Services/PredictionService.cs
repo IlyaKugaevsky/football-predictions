@@ -125,7 +125,8 @@ namespace Predictions.Services
         }
 
         //optimization! looks ugly
-        public List<ExpertInfo> GenerateExpertsInfo(int tourId)
+        // "0" for all tours
+        public List<ExpertInfo> GenerateExpertsInfo(int tourId = 0)
         {
             var results = new List<ExpertInfo>();
 

@@ -44,7 +44,7 @@ namespace Predictions.Controllers
             var tourlist = new List<SelectListItem>();
             tourlist.Add(new SelectListItem { Text = "За все туры", Value = "0"});
             tourlist.AddRange(_tourService.GenerateSelectList());
-            var results = _predictionService.GenerateExpertsInfo(2);
+            var results = _predictionService.GenerateExpertsInfo();
             var resultsTable = new ResultsTableViewModel(tourlist, results);
 
             return View(resultsTable);
