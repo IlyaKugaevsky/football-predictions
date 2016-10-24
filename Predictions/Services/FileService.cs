@@ -1,4 +1,5 @@
 ﻿using Predictions.ViewModels;
+using Predictions.ViewModels.Basis;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,10 +11,13 @@ namespace Predictions.Services
     public class FileService
     {
         private readonly string _defaultFolder = "~/App_Data/TextFiles";
-        private readonly string _tourSchedulePattern = @"^(?<date>\d\d\.\d\d\.\d\d\d\d)" + @"\|"
+        public readonly string TOUR_SCHEDULE_PATTERN = @"^(?<date>\d\d\.\d\d\.\d\d\d\d)" + @"\|"
                             + @"(?<time>\d\d:\d\d)" + @"(?<spaces>\s+)"
                             + @"(?<homeTeam>\w+(\s\w+)?)" + @"(?<trash>(\W|_)+)"
-                            + @"(?<awayTeam>(\w+)(\s\w*)?)$"; //
+                            + @"(?<awayTeam>(\w+)(\s\w*)?)$";
+
+        public readonly string PREDICTION_PATTERN = @"^(?<homeTeam>\w+(\s\w+)?)" + @"\s-\s"
+                                                + @"(?<awayTeam>(\w+)(\s\w+)?)" + @"\s" + @"?<score>\d\d?:\d\d?";
 
         public List<MatchInfo> ReadTourMatches(string localFilePath = "")
         {
@@ -23,7 +27,7 @@ namespace Predictions.Services
             var matchlist = new List<MatchInfo>();
             foreach (var line in lines)
             {
-                var match = System.Text.RegularExpressions.Regex.Match(line, _tourSchedulePattern);
+                var match = System.Text.RegularExpressions.Regex.Match(line, TOUR_SCHEDULE_PATTERN);
                 Console.WriteLine("date: " + match.Groups["date"].Value + "\n"
                     + "time: " + match.Groups["time"].Value + "\n"
                     + "spaces: " + "|" + match.Groups["spaces"].Value + "|" + "\n"
@@ -39,13 +43,13 @@ namespace Predictions.Services
             return matchlist;
         }
 
-        public List<MatchInfo> TestReadString(string input)
+        public List<MatchInfo> ParseTourSchedule(string input)
         {
             var lines = input.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
             var matchlist = new List<MatchInfo>();
             foreach (var line in lines)
             {
-                var match = System.Text.RegularExpressions.Regex.Match(line, _tourSchedulePattern);
+                var match = System.Text.RegularExpressions.Regex.Match(line, TOUR_SCHEDULE_PATTERN);
 
                 DateTime date = DateTime.Parse(match.Groups["date"].Value + " " + match.Groups["time"].Value);
                 string homeTeam = match.Groups["homeTeam"].Value;
@@ -54,6 +58,21 @@ namespace Predictions.Services
             }
             return matchlist;
         }
+
+        public List<MatchInfo> ParseExpertPredictions(string input)
+        {
+            var lines = input.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            var predictionlist = new List<PredictionInfo>();
+            foreach (var line in lines)
+            {
+                var match = System.Text.RegularExpressions.Regex.Match(line, PREDICTION_PATTERN);
+
+                string homeTeam = match.Groups["homeTeam"].Value;
+                string awayTeam = match.Groups["awayTeam"].Value;
+                matchlist.Add(new MatchInfo(date, homeTeam, awayTeam));
+            }
+            return matchlist;
+        } 
 
         public void TestWriteFile(string fileName)
         {

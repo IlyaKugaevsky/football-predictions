@@ -108,7 +108,7 @@ namespace Predictions.Controllers
             if (ModelState.IsValid)
             {
                 var input = viewModel.SubmitTextArea.InputText;
-                var matchlist = _fileService.TestReadString(input);
+                var matchlist = _fileService.ParseTourSchedule(input);
                 var scorelist = matchlist.Select(m => new FootballScore("-")).ToList();
                 var headers = new List<string>() { "Дата", "Дома", "В гостях", "Счет" };
                 var matchTable = new MatchTableViewModel(headers, matchlist, scorelist);

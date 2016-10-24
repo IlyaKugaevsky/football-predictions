@@ -251,6 +251,7 @@
     <Compile Include="ViewModels\Basis\ActionLinkParams.cs" />
     <Compile Include="ViewModels\Basis\ExpertInfo.cs" />
     <Compile Include="ViewModels\Basis\FootballScore.cs" />
+    <Compile Include="ViewModels\Basis\PredictionInfo.cs" />
     <Compile Include="ViewModels\Basis\PredictionResults.cs" />
     <Compile Include="ViewModels\Basis\TourInfo.cs" />
     <Compile Include="ViewModels\EditTourViewModel.cs" />
