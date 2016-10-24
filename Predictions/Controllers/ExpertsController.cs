@@ -10,6 +10,7 @@ using Predictions.DAL;
 using Predictions.Models;
 using Predictions.Services;
 using Predictions.ViewModels;
+using Predictions.ViewModels.Basis;
 
 namespace Predictions.Controllers
 {
@@ -40,9 +41,11 @@ namespace Predictions.Controllers
         // GET: Experts
         public ActionResult Index()
         {
-            var tourList = _tourService.GenerateSelectList();
-            var results = _predictionService.GenerateExpertInfo(2);
-            var resultsTable = new ResultsTableViewModel(tourList, results);
+            var tourlist = new List<SelectListItem>();
+            tourlist.Add(new SelectListItem { Text = "За все туры", Value = "0"});
+            tourlist.AddRange(_tourService.GenerateSelectList());
+            var results = _predictionService.GenerateExpertsInfo(2);
+            var resultsTable = new ResultsTableViewModel(tourlist, results);
 
             return View(resultsTable);
         }
@@ -50,7 +53,7 @@ namespace Predictions.Controllers
         [HttpPost]
         public ActionResult GetResultsTable(int tourId)
         {
-            return PartialView("ResultsTable", _predictionService.GenerateExpertInfo(tourId));
+            return PartialView("ResultsTable", _predictionService.GenerateExpertsInfo(tourId));
         }
 
 

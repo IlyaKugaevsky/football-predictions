@@ -125,8 +125,17 @@ namespace Predictions.Services
         }
 
         //optimization! looks ugly
-        public List<ExpertInfo> GenerateExpertInfo(int tourId)
+        public List<ExpertInfo> GenerateExpertsInfo(int tourId)
         {
+            var results = new List<ExpertInfo>();
+
+            if (tourId == 0)
+            {
+                var experts = _context.Experts.ToList();
+                experts.ForEach(e => results.Add(new ExpertInfo(e.Nickname, e.Sum, e.Scores, e.Differences, e.Outcomes)));
+                return results;
+            }
+
             var predictions = _context.Tours
                  .Include(t => t.Matches
                  .Select(m => m.Predictions
@@ -136,8 +145,6 @@ namespace Predictions.Services
                  .SelectMany(m => m.Predictions)
                  .GroupBy(p => p.Expert)
                  .ToList();
-
-            var results = new List<ExpertInfo>();
 
             foreach (IGrouping<Expert, Prediction> epGroup in predictions)
             {

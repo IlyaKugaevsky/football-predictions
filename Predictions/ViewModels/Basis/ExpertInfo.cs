@@ -10,13 +10,13 @@ namespace Predictions.ViewModels.Basis
         public ExpertInfo()
         { }
 
-        public ExpertInfo(string nickname, int sum, int score, int difference, int outcome)
+        public ExpertInfo(string nickname, int sum, int scores, int differences, int outcomes)
         {
             Nickname = nickname;
             Sum = sum;
-            Scores = score;
-            Differences = difference;
-            Outcomes = outcome;
+            Scores = scores;
+            Differences = differences;
+            Outcomes = outcomes;
         }
 
         public string  Nickname { get; set; }
