@@ -249,7 +249,9 @@
     <Compile Include="ViewModels\AddPredictionsViewModel.cs" />
     <Compile Include="ViewModels\AddScoresViewModel.cs" />
     <Compile Include="ViewModels\Basis\ActionLinkParams.cs" />
+    <Compile Include="ViewModels\Basis\ExpertInfo.cs" />
     <Compile Include="ViewModels\Basis\FootballScore.cs" />
+    <Compile Include="ViewModels\Basis\PredictionInfo.cs" />
     <Compile Include="ViewModels\Basis\PredictionResults.cs" />
     <Compile Include="ViewModels\Basis\TourInfo.cs" />
     <Compile Include="ViewModels\EditTourViewModel.cs" />
@@ -259,6 +261,7 @@
     <Compile Include="ViewModels\MatchTableViewModel.cs" />
     <Compile Include="ViewModels\PredictionsDisplayViewModel.cs" />
     <Compile Include="ViewModels\PreresultsViewModel.cs" />
+    <Compile Include="ViewModels\ResultsTableViewModel.cs" />
     <Compile Include="ViewModels\SubmitTextAreaViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -447,6 +450,8 @@
     <Content Include="Views\Tours\DeleteConfirmation.cshtml" />
     <Content Include="Views\Experts\Statistics.cshtml" />
     <Content Include="Views\Shared\SubmitTextArea.cshtml" />
+    <Content Include="Views\Shared\ResultsTable.cshtml" />
+    <Content Include="Views\Shared\TestPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

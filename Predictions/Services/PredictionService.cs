@@ -124,6 +124,47 @@ namespace Predictions.Services
                 .ToList();
         }
 
+        //optimization! looks ugly
+        // "0" for all tours
+        public List<ExpertInfo> GenerateExpertsInfo(int tourId = 0)
+        {
+            var results = new List<ExpertInfo>();
+
+            if (tourId == 0)
+            {
+                var experts = _context.Experts.ToList();
+                experts.ForEach(e => results.Add(new ExpertInfo(e.Nickname, e.Sum, e.Scores, e.Differences, e.Outcomes)));
+                return results;
+            }
+
+            var predictions = _context.Tours
+                 .Include(t => t.Matches
+                 .Select(m => m.Predictions
+                 .Select(p => p.Expert)))
+                 .Single(t => t.TourId == tourId)
+                 .Matches
+                 .SelectMany(m => m.Predictions)
+                 .GroupBy(p => p.Expert)
+                 .ToList();
+
+            foreach (IGrouping<Expert, Prediction> epGroup in predictions)
+            {
+                var info = new ExpertInfo();
+                info.Nickname = epGroup.Key.Nickname;
+                foreach (var prediction in epGroup)
+                {
+                    info.Sum += prediction.Sum;
+                    if (prediction.Score) info.Scores++;
+                    else if (prediction.Difference) info.Differences++;
+                    else if (prediction.Outcome) info.Outcomes++;
+                }
+                results.Add(info);
+            }
+
+            return results;
+                
+        }
+
         public Prediction CreatePrediction(int expertId, int matchId, string value)
         {
             return new Prediction() { ExpertId = expertId, MatchId = matchId, Value = value };

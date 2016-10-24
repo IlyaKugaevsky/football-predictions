@@ -8,12 +8,30 @@ using System.Web;
 using System.Web.Mvc;
 using Predictions.DAL;
 using Predictions.Models;
+using Predictions.Services;
+using Predictions.ViewModels;
+using Predictions.ViewModels.Basis;
 
 namespace Predictions.Controllers
 {
     public class ExpertsController : Controller
     {
-        private PredictionsContext db = new PredictionsContext();
+        private readonly PredictionsContext _context;
+        private readonly ExpertService _expertService;
+        private readonly TourService _tourService;
+        private readonly PredictionService _predictionService;
+        private readonly MatchService _matchService;
+        private readonly TeamService _teamService;
+        public ExpertsController()
+        {
+            _context = new PredictionsContext();
+            _expertService = new ExpertService(_context);
+            _tourService = new TourService(_context);
+            _predictionService = new PredictionService(_context);
+            _matchService = new MatchService(_context);
+            _teamService = new TeamService(_context);
+        }
+
 
         public ActionResult Statistics()
         {
@@ -23,8 +41,22 @@ namespace Predictions.Controllers
         // GET: Experts
         public ActionResult Index()
         {
-            return View(db.Experts.OrderBy(e => e.Sum).ToList());
+            var tourlist = new List<SelectListItem>();
+            tourlist.Add(new SelectListItem { Text = "За все туры", Value = "0"});
+            tourlist.AddRange(_tourService.GenerateSelectList());
+            var results = _predictionService.GenerateExpertsInfo();
+            var resultsTable = new ResultsTableViewModel(tourlist, results);
+
+            return View(resultsTable);
         }
+
+        [HttpPost]
+        public ActionResult GetResultsTable(int tourId)
+        {
+            return PartialView("ResultsTable", _predictionService.GenerateExpertsInfo(tourId));
+        }
+
+
 
         // GET: Experts/Details/5
         public ActionResult Details(int? id)
@@ -33,7 +65,7 @@ namespace Predictions.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Expert expert = db.Experts.Find(id);
+            Expert expert = _context.Experts.Find(id);
             if (expert == null)
             {
                 return HttpNotFound();
@@ -56,8 +88,8 @@ namespace Predictions.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Experts.Add(expert);
-                db.SaveChanges();
+                _context.Experts.Add(expert);
+                _context.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -71,7 +103,7 @@ namespace Predictions.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Expert expert = db.Experts.Find(id);
+            Expert expert = _context.Experts.Find(id);
             if (expert == null)
             {
                 return HttpNotFound();
@@ -88,8 +120,8 @@ namespace Predictions.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(expert).State = EntityState.Modified;
-                db.SaveChanges();
+                _context.Entry(expert).State = EntityState.Modified;
+                _context.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(expert);
@@ -102,7 +134,7 @@ namespace Predictions.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Expert expert = db.Experts.Find(id);
+            Expert expert = _context.Experts.Find(id);
             if (expert == null)
             {
                 return HttpNotFound();
@@ -115,9 +147,9 @@ namespace Predictions.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Expert expert = db.Experts.Find(id);
-            db.Experts.Remove(expert);
-            db.SaveChanges();
+            Expert expert = _context.Experts.Find(id);
+            _context.Experts.Remove(expert);
+            _context.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -125,7 +157,7 @@ namespace Predictions.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _context.Dispose();
             }
             base.Dispose(disposing);
         }
