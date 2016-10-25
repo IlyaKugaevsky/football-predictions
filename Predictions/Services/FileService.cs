@@ -59,7 +59,7 @@ namespace Predictions.Services
             return matchlist;
         }
 
-        public List<MatchInfo> ParseExpertPredictions(string input)
+        public List<PredictionInfo> ParseExpertPredictions(string input)
         {
             var lines = input.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
             var predictionlist = new List<PredictionInfo>();
@@ -69,10 +69,11 @@ namespace Predictions.Services
 
                 string homeTeam = match.Groups["homeTeam"].Value;
                 string awayTeam = match.Groups["awayTeam"].Value;
-                matchlist.Add(new MatchInfo(date, homeTeam, awayTeam));
+                string predictionValue = match.Groups["score"].Value;
+                predictionlist.Add(new PredictionInfo(homeTeam, awayTeam, predictionValue));
             }
-            return matchlist;
-        } 
+            return predictionlist;
+        }
 
         public void TestWriteFile(string fileName)
         {

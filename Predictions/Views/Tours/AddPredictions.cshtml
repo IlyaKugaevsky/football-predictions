@@ -30,6 +30,13 @@
                         @Html.PartialFor(m => m.MatchTable, "MatchTable")
                     </div>
                 </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        @*@Html.PartialFor(m => m.SubmitTextArea, "SubmitTextArea")*@
+                        <button type="submit" name="action:Predictions" class="btn btn-info">Добавить прогнозы</button>
+
+                    </div>
+                </div>
             }
             <div>
                 @Html.ActionLink("Назад к расписанию", "Index", new {}, new { @class = "btn btn-primary" })

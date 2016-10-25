@@ -18,8 +18,6 @@ namespace Predictions.ViewModels
             TourInfo = tourInfo;
             Expertlist = expertlist;
             MatchTable = matchTable;
-            //Matchlist = matchlist;
-            //EditPredictionsValuelist = editPredictionsValuelist;
         }
 
         //display
@@ -31,12 +29,8 @@ namespace Predictions.ViewModels
 
         //input
         public int SelectedExpertId { get; set; }
-        //public Tour Tour { get; set; }
 
-        //public List<MatchInfo> Matchlist { get; set; }
-
-        ////input and display
-        //public List<FootballScore> EditPredictionsValuelist { get; set; }
+        public SubmitTextAreaViewModel SubmitTextArea { get; set; }
 
     }
 }
