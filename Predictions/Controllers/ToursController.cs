@@ -125,11 +125,12 @@ namespace Predictions.Controllers
 
                 return View("~/Views/Tours/EditTour.cshtml", viewModel);
             }
+            //fix
             return HttpNotFound();
         }
 
 
-        public ActionResult AddPredictions(int? tourId, int? expertId)
+        public ActionResult EditPredictions(int? tourId, int? expertId, bool addPredictionSuccess = false) 
         {
             if (tourId == null) return HttpNotFound();
             var expertlist = _expertService.GenerateSelectList();
@@ -140,32 +141,50 @@ namespace Predictions.Controllers
             var scorelist = _predictionService.GeneratePredictionlist(tourId, expertId, true);
 
             var matchTable = new MatchTableViewModel(headers, matchlist, scorelist);
-            var viewModel = new AddPredictionsViewModel(expertlist, tourInfo, matchTable);
+            var viewModel = new EditPredictionsViewModel(expertlist, tourInfo, matchTable);
+            
             viewModel.SelectedExpertId = expertId ?? 0;
+            viewModel.SubmitTextArea.TourId = viewModel.TourInfo.TourId;
+            viewModel.AddPredictionsSuccess = addPredictionSuccess;
+
             return View(viewModel);
         }
 
         //bind
         [HttpPost]
         [MultipleButton(Name = "action", Argument = "ShowPredictions")]
-        public ActionResult ShowPredictions(AddPredictionsViewModel viewModel)
+        public ActionResult ShowPredictions(EditPredictionsViewModel viewModel)
         {
-            return RedirectToAction("AddPredictions", new { tourId = viewModel.TourInfo.TourId, expertId = viewModel.SelectedExpertId });
+            return RedirectToAction("EditPredictions", new { tourId = viewModel.TourInfo.TourId, expertId = viewModel.SelectedExpertId });
+        }
+
+        //bind
+        [HttpPost]
+        [MultipleButton(Name = "action", Argument = "EditPredictions")]
+        public ActionResult EditPredictions(EditPredictionsViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                _predictionService.AddExpertPredictions(viewModel.SelectedExpertId, viewModel.TourInfo.TourId, viewModel.MatchTable.Scorelist);
+                return RedirectToAction("EditPredictions", new { tourId = viewModel.TourInfo.TourId, expertId = viewModel.SelectedExpertId });
+            }
+            return View(viewModel);
+
         }
 
         //bind
         [HttpPost]
         [MultipleButton(Name = "action", Argument = "AddPredictions")]
-        public ActionResult AddPredictions(AddPredictionsViewModel viewModel)
+        public ActionResult AddPredictions(EditPredictionsViewModel viewModel)
         {
-            if (ModelState.IsValid)
-            {
-                _predictionService.AddExpertPredictions(viewModel.SelectedExpertId, viewModel.TourInfo.TourId, viewModel.MatchTable.Scorelist);
-                return RedirectToAction("AddPredictions", new { tourId = viewModel.TourInfo.TourId, expertId = viewModel.SelectedExpertId });
-            }
-            return View(viewModel);
+            var teamlist = _teamService.GenerateOrderedTeamTitlelist(viewModel.SubmitTextArea.TourId);
+            var scorelist = _fileService.ParseExpertPredictions(viewModel.SubmitTextArea.InputText, teamlist);
+            if (!scorelist.IsNullOrEmpty()) _predictionService.AddExpertPredictions(viewModel.SelectedExpertId, viewModel.SubmitTextArea.TourId, scorelist);
 
+            return RedirectToAction("EditPredictions", new { tourId = viewModel.SubmitTextArea.TourId, expertId = viewModel.SelectedExpertId, addPredictionSuccess = !scorelist.IsNullOrEmpty()
+        });
         }
+
 
         public ActionResult AddScores(int? tourId)
         {

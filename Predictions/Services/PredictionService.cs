@@ -171,6 +171,7 @@ namespace Predictions.Services
         }
 
 
+        //why Football score? mb strings?
         public void AddExpertPredictions(int expertId, int tourId, List<FootballScore> scorelist)
         {
             var tour = _context.Tours

@@ -17,7 +17,7 @@ namespace Predictions.Services
                             + @"(?<awayTeam>(\w+)(\s\w*)?)$";
 
         public readonly string PREDICTION_PATTERN = @"^(?<homeTeam>\w+(\s\w+)?)" + @"\s-\s"
-                                                + @"(?<awayTeam>(\w+)(\s\w+)?)" + @"\s" + @"?<score>\d\d?:\d\d?";
+                                                + @"(?<awayTeam>(\w+)(\s\w+)?)" + @"\s" + @"(?<score>\d\d?:\d\d?)" + @"(?<spaces>\s*)$";
 
         public List<MatchInfo> ReadTourMatches(string localFilePath = "")
         {
@@ -59,20 +59,35 @@ namespace Predictions.Services
             return matchlist;
         }
 
-        public List<PredictionInfo> ParseExpertPredictions(string input)
+        //rewrite!!!
+        public List<FootballScore> ParseExpertPredictions(string input, List<string> orderedTeamTitlelist)
         {
-            var lines = input.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-            var predictionlist = new List<PredictionInfo>();
+            var isCorrect = true; 
+
+            var lines = input.Split(new string[] { Environment.NewLine }, StringSplitOptions.None).ToList();
+            lines = lines.Where(l => !string.IsNullOrWhiteSpace(l)).Distinct().ToList();
+            if (2 * lines.Count() != orderedTeamTitlelist.Count()) isCorrect = false;
+
+            var predictionlist = new List<FootballScore>();
+            var i = 0;
+
             foreach (var line in lines)
             {
                 var match = System.Text.RegularExpressions.Regex.Match(line, PREDICTION_PATTERN);
+                var teamplateCorrect = match.Success;
+                var homeTeamCorrect = match.Groups["homeTeam"].Value.Equals(orderedTeamTitlelist[i]);
+                var awayTeamCorerct = match.Groups["awayTeam"].Value.Equals(orderedTeamTitlelist[i + 1]);
 
-                string homeTeam = match.Groups["homeTeam"].Value;
-                string awayTeam = match.Groups["awayTeam"].Value;
-                string predictionValue = match.Groups["score"].Value;
-                predictionlist.Add(new PredictionInfo(homeTeam, awayTeam, predictionValue));
+                if (!match.Success || !homeTeamCorrect || !awayTeamCorerct)
+                {
+                    isCorrect = false;
+                    break;
+                }
+                
+                predictionlist.Add(new FootballScore(match.Groups["score"].Value));
+                i += 2;
             }
-            return predictionlist;
+            return isCorrect ? predictionlist : new List<FootballScore>();
         }
 
         public void TestWriteFile(string fileName)

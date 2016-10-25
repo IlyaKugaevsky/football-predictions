@@ -8,16 +8,17 @@ using System.Web.Mvc;
 
 namespace Predictions.ViewModels
 {
-    public class AddPredictionsViewModel
+    public class EditPredictionsViewModel
     {
-        public AddPredictionsViewModel()
+        public EditPredictionsViewModel()
         { }
 
-        public AddPredictionsViewModel(List<SelectListItem> expertlist, TourInfo tourInfo, MatchTableViewModel matchTable /*List<MatchInfo> matchlist, List<FootballScore> editPredictionsValuelist = null*/)
+        public EditPredictionsViewModel(List<SelectListItem> expertlist, TourInfo tourInfo, MatchTableViewModel matchTable /*List<MatchInfo> matchlist, List<FootballScore> editPredictionsValuelist = null*/)
         {
             TourInfo = tourInfo;
             Expertlist = expertlist;
             MatchTable = matchTable;
+            SubmitTextArea = new SubmitTextAreaViewModel();
         }
 
         //display
@@ -32,5 +33,6 @@ namespace Predictions.ViewModels
 
         public SubmitTextAreaViewModel SubmitTextArea { get; set; }
 
+        public bool AddPredictionsSuccess { get; set; } = false;
     }
 }

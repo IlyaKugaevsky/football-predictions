@@ -438,7 +438,7 @@
     <Content Include="Views\Matches\Index.cshtml" />
     <Content Include="Views\Tours\Index.cshtml" />
     <Content Include="Views\Tours\EditTour.cshtml" />
-    <Content Include="Views\Tours\AddPredictions.cshtml" />
+    <Content Include="Views\Tours\EditPredictions.cshtml" />
     <Content Include="Views\Predictions\PredictionsDisplay.cshtml" />
     <Content Include="Views\Tours\AddScores.cshtml" />
     <Content Include="Views\Shared\AddMatch.cshtml" />

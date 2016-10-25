@@ -1,4 +1,4 @@
-﻿@model Predictions.ViewModels.AddPredictionsViewModel
+﻿@model Predictions.ViewModels.EditPredictionsViewModel
 
 @{
     ViewBag.Title = "AddPrediction";
@@ -11,16 +11,24 @@
         <div class="col-md-12">
             @Html.AntiForgeryToken()
             <h2>@Model.TourInfo.TourId Тур</h2>
+             
+            @if (Model.AddPredictionsSuccess)
+            {
+                <div class="alert alert-success">
+                    <strong>Прогноз принят!</strong>
+                </div>
+            }
+
             @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "addPredictionsForm" }))
             {
                 @Html.HiddenFor(model => Model.TourInfo.TourId)
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <div class="form-group">
-                            @Html.DropDownListFor(model => model.SelectedExpertId, Model.Expertlist, new { @class = "selectpicker", @data_width = "auto", @title = "Выбрать эксперта" })
+                            @Html.DropDownListFor(model => model.SelectedExpertId, Model.Expertlist, new { @class = "selectpicker", @data_width = "auto", @title = "Выбрать эксперта", data_style = "btn-primary" })
                             <input type="submit" class="btn btn-primary" name="action:ShowPredictions" value="Показать прогнозы">
                             <div class="pull-right">
-                                <input type="submit" class="btn btn-danger" name="action:AddPredictions" value="Сохранить">
+                                <input type="submit" class="btn btn-danger" name="action:EditPredictions" value="Сохранить">
                             </div>                        
                         </div>                    
                     </div>
@@ -30,14 +38,23 @@
                         @Html.PartialFor(m => m.MatchTable, "MatchTable")
                     </div>
                 </div>
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        @*@Html.PartialFor(m => m.SubmitTextArea, "SubmitTextArea")*@
-                        <button type="submit" name="action:Predictions" class="btn btn-info">Добавить прогнозы</button>
-
-                    </div>
-                </div>
             }
+
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "addMatchesForm" }))
+                    {
+                        @Html.PartialFor(m => m.SubmitTextArea, "SubmitTextArea")
+                        <div class="form-group">
+                            @Html.DropDownListFor(model => model.SelectedExpertId, Model.Expertlist, new { @class = "selectpicker", @data_width = "auto", @title = "Выбрать эксперта", data_style = "btn-primary" })
+                            <button type="submit" name="action:AddPredictions" class="btn btn-danger">Добавить прогнозы</button>
+                        </div>
+                    }
+                </div>
+            </div>
+
+
             <div>
                 @Html.ActionLink("Назад к расписанию", "Index", new {}, new { @class = "btn btn-primary" })
             </div>
