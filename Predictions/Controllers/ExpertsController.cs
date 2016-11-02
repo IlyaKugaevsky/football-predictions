@@ -53,6 +53,7 @@ namespace Predictions.Controllers
         [HttpPost]
         public ActionResult GetResultsTable(int tourId)
         {
+
             return PartialView("ResultsTable", _predictionService.GenerateExpertsInfo(tourId));
         }
 

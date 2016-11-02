@@ -34,53 +34,52 @@
 
 
         @*EditButtons*@
-        @*<div class="row">
-            <div class="col-md-3 pull-left">
-                @if (Model.IsClosed)
-            {
-                    <div class="btn-group-vertical pull-left">
-                        <a href="@Url.Action("EditTour", new  { tourId = Model.TourId })" class="btn btn-primary disabled">
-                            Редактор тура
-                        </a>
-                        <a href="@Url.Action("EditPredictions", new  { tourId = Model.TourId })" class="btn btn-primary disabled">
-                            Редактор прогнозов
-                        </a>
-                        <a href="@Url.Action("AddScores", new  { tourId = Model.TourId })" class="btn btn-primary disabled">
-                            Редактор результатов
-                        </a>
-                        <a href="@Url.Action("SubmitTourPredictions", new  { tourId = Model.TourId })" class="btn btn-success disabled top-buffer">
-                            Рассчитать тур
-                        </a>
-                        <a href="@Url.Action("RestartTour", new  { tourId = Model.TourId })" class="btn btn-danger">
-                            Откатить тур
-                        </a>
-                    </div>
-                }
-                else
-                {
-                    <div class="btn-group-vertical pull-left">
-                        <a href="@Url.Action("EditTour", new  { tourId = Model.TourId })" class="btn btn-primary">
-                            Редактор тура
-                        </a>
-                        <a href="@Url.Action("EditPredictions", new  { tourId = Model.TourId })" class="btn btn-primary">
-                            Редактор прогнозов
-                        </a>
-                        <a href="@Url.Action("AddScores", new  { tourId = Model.TourId })" class="btn btn-primary">
-                            Редактор результатов
-                        </a>
-                        <a href="@Url.Action("SubmitTourPredictions", new  { tourId = Model.TourId })" class="btn btn-success">
-                            Рассчитать тур
-                        </a>
-                        <a href="@Url.Action("RestartTour", new  { tourId = Model.TourId })" class="btn btn-danger disabled">
-                            Откатить тур
-                        </a>
-                    </div>
-                }
+        @if (HttpContext.Current.Request.IsAuthenticated)
+        {
+            <div class="row">
+                <div class="col-md-3 pull-left">
+                    @if (Model.IsClosed)
+                    {
+                        <div class="btn-group-vertical pull-left">
+                            <a href="@Url.Action("EditTour", new  { tourId = Model.TourId })" class="btn btn-primary disabled">
+                                Редактор тура
+                            </a>
+                            <a href="@Url.Action("EditPredictions", new  { tourId = Model.TourId })" class="btn btn-primary disabled">
+                                Редактор прогнозов
+                            </a>
+                            <a href="@Url.Action("AddScores", new  { tourId = Model.TourId })" class="btn btn-primary disabled">
+                                Редактор результатов
+                            </a>
+                            <a href="@Url.Action("SubmitTourPredictions", new  { tourId = Model.TourId })" class="btn btn-success disabled top-buffer">
+                                Рассчитать тур
+                            </a>
+                            <a href="@Url.Action("RestartTour", new  { tourId = Model.TourId })" class="btn btn-danger">
+                                Откатить тур
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="btn-group-vertical pull-left">
+                            <a href="@Url.Action("EditTour", new  { tourId = Model.TourId })" class="btn btn-primary">
+                                Редактор тура
+                            </a>
+                            <a href="@Url.Action("EditPredictions", new  { tourId = Model.TourId })" class="btn btn-primary">
+                                Редактор прогнозов
+                            </a>
+                            <a href="@Url.Action("AddScores", new  { tourId = Model.TourId })" class="btn btn-primary">
+                                Редактор результатов
+                            </a>
+                            <a href="@Url.Action("SubmitTourPredictions", new  { tourId = Model.TourId })" class="btn btn-success">
+                                Рассчитать тур
+                            </a>
+                            <a href="@Url.Action("RestartTour", new  { tourId = Model.TourId })" class="btn btn-danger disabled">
+                                Откатить тур
+                            </a>
+                        </div>
+                    }
+                </div>
             </div>
-        </div>*@
+        }
     </div>
 </div>
-
-
-
-

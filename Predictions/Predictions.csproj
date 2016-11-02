@@ -305,8 +305,10 @@
     <None Include="Properties\PublishProfiles\cherocky-stuff - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\cherocky-stuff - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\dcritics-tools - FTP %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\dcritics-tools - FTP %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\dcritics-tools - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\dcritics-tools - Web Deploy %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\dcritics-tools - Web Deploy %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\dcritics-tools - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\Somee.com.pubxml" />
     <Content Include="Scripts\bootstrap.js" />

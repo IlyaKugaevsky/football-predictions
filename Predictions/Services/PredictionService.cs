@@ -161,7 +161,7 @@ namespace Predictions.Services
                 results.Add(info);
             }
 
-            return results;
+            return results.OrderByDescending(expert => expert.Sum).ToList();
                 
         }
 

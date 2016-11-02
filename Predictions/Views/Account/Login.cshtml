@@ -1,4 +1,4 @@
-﻿@*@using Predictions.Models
+﻿@using Predictions.Models
     @model LoginViewModel
     @{
         ViewBag.Title = "Выполнить вход";
@@ -44,7 +44,6 @@
                     <p>
                         @Html.ActionLink("Регистрация нового пользователя", "Register")
                     </p>
-                     Включите, когда будет включено подтверждение учетной записи для функции сброса пароля
                         <p>
                             @Html.ActionLink("Забыли пароль?", "ForgotPassword")
                         </p>
@@ -60,9 +59,9 @@
 
     @section Scripts {
         @Scripts.Render("~/bundles/jqueryval")
-    }*@
+    }
 
-<style>
+@*<style>
     h1 {
         color:white !important;
     }
@@ -75,4 +74,4 @@
         <p><a href="@Url.Action("Index", "Home")" class="btn btn-primary btn-lg">Вернуться на главную &raquo;</a></p>
 
     </div>
-</div>
+</div>*@
