@@ -278,7 +278,6 @@
     <Content Include="Content\flat.bootstrap.min.css" />
     <Content Include="Content\flatly.bootstrap.min.css" />
     <Content Include="Content\images\dark-analytics.jpg" />
-    <Content Include="Content\knight.bootstrap.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

@@ -32,7 +32,6 @@ namespace Predictions.Controllers
 
         public ActionResult PredictionsDisplay()
         {
-            var headers = new List<string>() { "Дата", "Дома", "В гостях", "Прогноз" };
             var evaluationDetails = new EvaluationDetailsViewModel();
             var expertlist = _expertService.GenerateSelectList();
             var tourlist = _tourService.GenerateSelectList();

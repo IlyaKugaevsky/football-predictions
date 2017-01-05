@@ -147,7 +147,7 @@ namespace Predictions.Services
                  .GroupBy(p => p.Expert)
                  .ToList();
 
-            foreach (IGrouping<Expert, Prediction> epGroup in predictions)
+            foreach (var epGroup in predictions)
             {
                 var info = new ExpertInfo();
                 info.Nickname = epGroup.Key.Nickname;
