@@ -13,12 +13,12 @@ namespace Predictions.Controllers
 {
     public class TeamsController : Controller
     {
-        private PredictionsContext db = new PredictionsContext();
+        private readonly  PredictionsContext _db = new PredictionsContext();
 
         // GET: Teams
         public ActionResult Index()
         {
-            return View(db.Teams.ToList());
+            return View(_db.Teams.ToList());
         }
 
         // GET: Teams/Details/5
@@ -28,7 +28,7 @@ namespace Predictions.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Team team = db.Teams.Find(id);
+            Team team = _db.Teams.Find(id);
             if (team == null)
             {
                 return HttpNotFound();
@@ -51,8 +51,8 @@ namespace Predictions.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Teams.Add(team);
-                db.SaveChanges();
+                _db.Teams.Add(team);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -66,7 +66,7 @@ namespace Predictions.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Team team = db.Teams.Find(id);
+            Team team = _db.Teams.Find(id);
             if (team == null)
             {
                 return HttpNotFound();
@@ -83,8 +83,8 @@ namespace Predictions.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(team).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(team).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(team);
@@ -97,7 +97,7 @@ namespace Predictions.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Team team = db.Teams.Find(id);
+            Team team = _db.Teams.Find(id);
             if (team == null)
             {
                 return HttpNotFound();
@@ -110,9 +110,9 @@ namespace Predictions.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Team team = db.Teams.Find(id);
-            db.Teams.Remove(team);
-            db.SaveChanges();
+            Team team = _db.Teams.Find(id);
+            _db.Teams.Remove(team);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -120,7 +120,7 @@ namespace Predictions.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

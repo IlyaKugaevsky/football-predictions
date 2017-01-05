@@ -11,12 +11,12 @@ namespace Predictions.Services
     public class FileService
     {
         private readonly string _defaultFolder = "~/App_Data/TextFiles";
-        public readonly string TOUR_SCHEDULE_PATTERN = @"^(?<date>\d\d\.\d\d\.\d\d\d\d)" + @"\|"
+        public readonly string TourSchedulePattern = @"^(?<date>\d\d\.\d\d\.\d\d\d\d)" + @"\|"
                             + @"(?<time>\d\d:\d\d)" + @"(?<spaces>\s+)"
                             + @"(?<homeTeam>\w+(\s\w+)?)" + @"(?<trash>(\W|_)+)"
                             + @"(?<awayTeam>(\w+)(\s\w*)?)$";
 
-        public readonly string PREDICTION_PATTERN = @"^(?<homeTeam>\w+(\s\w+)?)" + @"\s-\s"
+        public readonly string PredictionPattern = @"^(?<homeTeam>\w+(\s\w+)?)" + @"\s-\s"
                                                 + @"(?<awayTeam>(\w+)(\s\w+)?)" + @"\s" + @"(?<score>\d\d?:\d\d?)" + @"(?<spaces>\s*)$";
 
         public List<MatchInfo> ReadTourMatches(string localFilePath = "")
@@ -27,7 +27,7 @@ namespace Predictions.Services
             var matchlist = new List<MatchInfo>();
             foreach (var line in lines)
             {
-                var match = System.Text.RegularExpressions.Regex.Match(line, TOUR_SCHEDULE_PATTERN);
+                var match = System.Text.RegularExpressions.Regex.Match(line, TourSchedulePattern);
                 Console.WriteLine("date: " + match.Groups["date"].Value + "\n"
                     + "time: " + match.Groups["time"].Value + "\n"
                     + "spaces: " + "|" + match.Groups["spaces"].Value + "|" + "\n"
@@ -49,7 +49,7 @@ namespace Predictions.Services
             var matchlist = new List<MatchInfo>();
             foreach (var line in lines)
             {
-                var match = System.Text.RegularExpressions.Regex.Match(line, TOUR_SCHEDULE_PATTERN);
+                var match = System.Text.RegularExpressions.Regex.Match(line, TourSchedulePattern);
 
                 DateTime date = DateTime.Parse(match.Groups["date"].Value + " " + match.Groups["time"].Value);
                 string homeTeam = match.Groups["homeTeam"].Value;
@@ -73,7 +73,7 @@ namespace Predictions.Services
 
             foreach (var line in lines)
             {
-                var match = System.Text.RegularExpressions.Regex.Match(line, PREDICTION_PATTERN);
+                var match = System.Text.RegularExpressions.Regex.Match(line, PredictionPattern);
                 var teamplateCorrect = match.Success;
                 var homeTeamCorrect = match.Groups["homeTeam"].Value.Equals(orderedTeamTitlelist[i]);
                 var awayTeamCorerct = match.Groups["awayTeam"].Value.Equals(orderedTeamTitlelist[i + 1]);

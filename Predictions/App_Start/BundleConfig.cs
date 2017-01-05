@@ -26,12 +26,13 @@ namespace Predictions
                       ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      //"~/Content/bootstrap.min.css",
+                      "~/Content/bootstrap.min.css",
                       "~/Content/flatly.bootstrap.min.css",
                       "~/Content/site.css",
                       "~/Content/bootstrap-select.css"
                       //"~/Content/bootflat/bootflat.css"
                       ));
+            BundleTable.EnableOptimizations = true;
         }
     }
 }

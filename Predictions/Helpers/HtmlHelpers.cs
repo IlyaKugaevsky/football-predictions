@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 
-namespace Predictions.Helpers.HtmlHelpers
+namespace Predictions.Helpers
 {
     public static class HtmlHelpers
     {
