@@ -20,8 +20,8 @@ namespace Predictions
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
-                      "~/Scripts/bootstrap-select.js",
+                      "~/Scripts/bootstrap.min.js",
+                      "~/Scripts/bootstrap-select.min.js",
                       "~/Scripts/respond.js"
                       ));
 

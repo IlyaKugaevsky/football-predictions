@@ -42,7 +42,6 @@ namespace Predictions.Controllers
             var tours = _tourService.LoadBasicsWith();
             if (tours == null) return HttpNotFound();
 
-
             return View(tours);
         }
 

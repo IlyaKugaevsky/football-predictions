@@ -8,20 +8,14 @@ namespace Predictions.Helpers
 {
     public static class PredictionEvaluator
     {
-        public static int GetHomeGoals(string expression)
-        {
-            return Convert.ToInt32(expression.Substring(0, expression.IndexOf(':')));
-        }
+        public static int GetHomeGoals(string expression) => 
+            Convert.ToInt32(expression.Substring(0, expression.IndexOf(':')));
 
-        public static int GetAwayGoals(string expression)
-        {
-            return Convert.ToInt32(expression.Substring(expression.IndexOf(':') + 1, expression.Length  - expression.IndexOf(':') - 1));
-        }
+        public static int GetAwayGoals(string expression) => 
+            Convert.ToInt32(expression.Substring(expression.IndexOf(':') + 1, expression.Length  - expression.IndexOf(':') - 1));
 
-        public static int GetDifference(string expression)
-        {
-            return GetHomeGoals(expression) - GetAwayGoals(expression);
-        }
+        public static int GetDifference(string expression) => 
+            GetHomeGoals(expression) - GetAwayGoals(expression);
 
         public static bool PredictOutcome(string prediction, string score)
         {
