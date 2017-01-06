@@ -29,7 +29,7 @@ namespace Predictions
                       "~/Content/bootstrap.min.css",
                       "~/Content/flatly.bootstrap.min.css",
                       "~/Content/site.css",
-                      "~/Content/bootstrap-select.css"
+                      "~/Content/bootstrap-select.min.css"
                       //"~/Content/bootflat/bootflat.css"
                       ));
             BundleTable.EnableOptimizations = true;

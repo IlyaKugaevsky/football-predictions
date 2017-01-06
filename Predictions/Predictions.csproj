@@ -266,16 +266,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\images\bg-image.jpg" />
-    <Content Include="Content\bootflat\bootflat.css" />
-    <Content Include="Content\bootflat\bootflat.min.css" />
-    <Content Include="Content\bootflat\img\check_flat\default.png" />
-    <Content Include="Content\bootstrap-select.css" />
     <Content Include="Content\bootstrap-select.min.css" />
-    <Content Include="Content\bootstrap-theme.css" />
-    <Content Include="Content\bootstrap-theme.min.css" />
-    <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\flat.bootstrap.min.css" />
     <Content Include="Content\flatly.bootstrap.min.css" />
     <Content Include="Content\images\dark-analytics.jpg" />
     <Content Include="favicon.ico" />
@@ -293,14 +285,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\bootstrap-select.js.map" />
-    <Content Include="Content\bootstrap-select.css.map" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Content\bootstrap-theme.css.map" />
-    <Content Include="Content\bootflat\img\check_flat\default.psd" />
-    <Content Include="Content\bootflat\bootflat.css.map" />
     <None Include="Properties\PublishProfiles\cherocky-stuff - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\cherocky-stuff - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\dcritics-tools - FTP %282%29.pubxml" />
