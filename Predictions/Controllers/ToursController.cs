@@ -9,6 +9,7 @@ using Predictions.ViewModels;
 using Predictions.Services;
 using System.Net;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using Predictions.ViewModels.Basis;
 using Predictions.Helpers;
 
@@ -39,6 +40,10 @@ namespace Predictions.Controllers
 
         public ActionResult Index()
         {
+            //var tour = new Tour() {TourId = 10, IsClosed = false} ;
+            //_context.Tours.AddOrUpdate(tour);
+            //_context.SaveChanges();
+
             var tours = _tourService.LoadBasicsWith();
             if (tours == null) return HttpNotFound();
 
