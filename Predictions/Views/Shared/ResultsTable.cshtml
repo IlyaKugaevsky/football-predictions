@@ -36,7 +36,13 @@
     </tbody>
 </table>
 
+
+@*<link href="//cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<script src="//cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+<script src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>*@
+
 <script>
+    
     var setDataTables = function () {
         var t = $('#resultsTable').DataTable({
             "columnDefs": [{
@@ -63,6 +69,7 @@
 
     $(document).ready(setDataTables);
 </script>
+
 
 
 

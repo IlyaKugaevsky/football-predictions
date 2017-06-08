@@ -9,13 +9,14 @@ namespace Predictions.DAL
 {
     public static class EntityFrameworkExtensions
     {
-        public static IQueryable<T> IncludeMultiple<T>(this IQueryable<T> query, params Expression<Func<T, object>>[] includes)
+        public static IQueryable<T> IncludeMultiple<T>(this IQueryable<T> query,
+            params Expression<Func<T, object>>[] includes)
             where T : class
         {
             if (includes != null)
             {
                 query = includes.Aggregate(query,
-                          (current, include) => current.Include(include));
+                    (current, include) => current.Include(include));
             }
             return query;
         }
@@ -36,5 +37,4 @@ namespace Predictions.DAL
             return !enumerable.Any();
         }
     }
-
 }
