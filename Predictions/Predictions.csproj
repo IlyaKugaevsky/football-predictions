@@ -217,6 +217,9 @@
     <Compile Include="Controllers\TeamsController.cs" />
     <Compile Include="Controllers\ToursController.cs" />
     <Compile Include="DAL\EntityFrameworkExtensions.cs" />
+    <Compile Include="DAL\FetchStrategies\FetchStrategies.cs" />
+    <Compile Include="DAL\FetchStrategies\IFetchStrategy.cs" />
+    <Compile Include="DAL\FetchStrategies\MatchFetchStrategies.cs" />
     <Compile Include="DAL\PredictionsContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -431,6 +434,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Dtos\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

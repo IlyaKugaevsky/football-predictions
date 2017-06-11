@@ -7,6 +7,7 @@ using Predictions.DAL;
 using Predictions.ViewModels;
 using Predictions.ViewModels.Basis;
 using System.Data.Entity;
+using Predictions.DAL.FetchStrategies;
 
 namespace Predictions.Services
 {
@@ -19,15 +20,15 @@ namespace Predictions.Services
             _context = context;
         }
 
-        public List<MatchInfo> GenerateEmptyMatchlist()
-        {
-            return new List<MatchInfo>();
-        }
 
         public List<MatchInfo> GenerateMatchlist(int? tourId)
         {
             if (tourId == null) return null;
 
+            var fs = new HomeTeamFetchStrategy();
+
+            var test = _context.Tours.IncludeMultiple(new HomeTeamFetchStrategy().Fetch());
+
             var tour = _context.Tours
                     .Include(t => t.Matches
                         .Select(m => m.HomeTeam))
@@ -36,16 +37,17 @@ namespace Predictions.Services
                     .ToList()
                     .Single(t => t.TourId == tourId);
 
-            if (tour == null) return null;
-            return tour.Matches.Select(m => new MatchInfo(m.Date, m.HomeTeam.Title, m.AwayTeam.Title)).ToList();
+
+            return tour?.Matches.Select(m => new MatchInfo(m.Date, m.HomeTeam.Title, m.AwayTeam.Title)).ToList();
         }
 
-        public List<MatchInfo> GenerateMatchlist(List<Match> matches)
+        public IList<MatchInfo> GenerateMatchlist(IList<Match> matches)
         {
-            return matches.Select(m => new MatchInfo(m.Date, m.HomeTeam.Title, m.AwayTeam.Title)).ToList();
+            //return matches.Select(m => new MatchInfo(m.Date, m.HomeTeam.Title, m.AwayTeam.Title)).ToList();
+            return matches.Select(m => m.GetMatchInfo()).ToList();
         }
 
-        public List<FootballScore> GenerateScorelist(int? tourId, bool editable = false, string emptyDisplay = "-")
+        public IList<FootballScore> GenerateScorelist(int? tourId, bool editable = false, string emptyDisplay = "-")
         {
             if (tourId == null) return null;
 
@@ -54,27 +56,33 @@ namespace Predictions.Services
                         .Select(m => m.HomeTeam))
                     .Include(t => t.Matches
                         .Select(m => m.AwayTeam))
-                    .ToList()
+                    //.ToList()
                     .Single(t => t.TourId == tourId);
 
             if (tour == null) return null;
-            return tour.Matches.Select(m => new FootballScore
-            {
-                Value = (String.IsNullOrEmpty(m.Score) && editable == false) ? emptyDisplay : m.Score,
-                Editable = editable 
-            }).ToList();
+            //return tour.Matches.Select(m => new FootballScore
+            //{
+            //    Value = (String.IsNullOrEmpty(m.Score) && editable == false) ? emptyDisplay : m.Score,
+            //    Editable = editable 
+            //}).ToList();
+
+            return tour.Matches.Select(m => m.GetFootballScore(editable, emptyDisplay)).ToList();
 
         }
 
         public List<FootballScore> GenerateScorelist(List<Match> matches, bool editable = false, string emptyDisplay = "-")
         {
-            return matches.Select(m => new FootballScore
-            {
-                Value = (String.IsNullOrEmpty(m.Score) && editable == false) ? emptyDisplay : m.Score,
-                Editable = editable
-            }).ToList();
+            //return matches.Select(m => new FootballScore
+            //{
+            //    Value = (String.IsNullOrEmpty(m.Score) && editable == false) ? emptyDisplay : m.Score,
+            //    Editable = editable
+            //}).ToList();
+
+            return matches.Select(m => m.GetFootballScore(editable, emptyDisplay)).ToList();
         }
 
+        //comand + query
+        //move to Model
         public Match CreateMatch(DateTime date, int homeId, int awayId, int tourId)
         {
             var match = new Match()
@@ -130,7 +138,7 @@ namespace Predictions.Services
             _context.SaveChanges();
         }
 
-        public void AddScores(List<Match> matches, List<FootballScore> scorelist)
+        public void AddScores(List<Match> matches, IList<FootballScore> scorelist)
         {
             for (var i = 0; i < matches.Count(); i++)
             {

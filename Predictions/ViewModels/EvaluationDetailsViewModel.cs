@@ -13,7 +13,7 @@ namespace Predictions.ViewModels
         {
         }
 
-        public EvaluationDetailsViewModel(List<MatchInfo> matchlist, List<FootballScore> scorelist, List<FootballScore> predictionlist, List<string> tempResultlist)
+        public EvaluationDetailsViewModel(List<MatchInfo> matchlist, IList<FootballScore> scorelist, List<FootballScore> predictionlist, List<string> tempResultlist)
         {
             Matchlist = matchlist ?? new List<MatchInfo>();
             Scorelist = scorelist ?? new List<FootballScore>();
@@ -22,7 +22,7 @@ namespace Predictions.ViewModels
             if (!tempResultlist.IsNullOrEmpty() && !tempResultlist.Contains("-")) Sum = tempResultlist.Select(tr => Convert.ToInt32(tr)).Sum();
         }
         public List<MatchInfo> Matchlist { get; set; }
-        public List<FootballScore> Scorelist { get; set; }
+        public IList<FootballScore> Scorelist { get; set; }
         public List<FootballScore> Predictionlist { get; set; }
         public List<string> TempResultlist { get; set; }
 

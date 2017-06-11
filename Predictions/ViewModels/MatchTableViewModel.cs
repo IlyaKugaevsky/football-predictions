@@ -11,7 +11,7 @@ namespace Predictions.ViewModels
         public MatchTableViewModel()
         { }
 
-        public MatchTableViewModel (List<string> headers, List<MatchInfo> matchlist = null, List<FootballScore> scorelist = null, List<ActionLinkParams> actionLinklist = null)
+        public MatchTableViewModel (List<string> headers, List<MatchInfo> matchlist = null, IList<FootballScore> scorelist = null, List<ActionLinkParams> actionLinklist = null)
         {
             Headers = headers;
             Matchlist = matchlist ?? new List<MatchInfo>();
@@ -19,10 +19,23 @@ namespace Predictions.ViewModels
             ActionLinklist = actionLinklist ?? new List<ActionLinkParams>();
         }
 
+        public MatchTableViewModel(List<string> headers, bool isEditable, string emptyScoreSymbol, List<MatchInfo> matchlist = null, IList<FootballScore> scorelist = null, List<ActionLinkParams> actionLinklist = null)
+        {
+            Headers = headers;
+            Matchlist = matchlist ?? new List<MatchInfo>();
+            Scorelist = scorelist ?? new List<FootballScore>();
+            ActionLinklist = actionLinklist ?? new List<ActionLinkParams>();
+            IsEditable = isEditable;
+            EmptyScoreSymbol = emptyScoreSymbol;
+        }
+
         public List<string> Headers { get; set; }
         public List<MatchInfo> Matchlist { get; set; }
-        public List<FootballScore> Scorelist { get; set; }
-        public List<ActionLinkParams> ActionLinklist { get; set; } 
+        public IList<FootballScore> Scorelist { get; set; }
+        public IList<ActionLinkParams> ActionLinklist { get; set; }
+
+        public bool IsEditable { get; set; }
+        public string EmptyScoreSymbol { get; set; }
 
     }
 }

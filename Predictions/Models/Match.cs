@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Predictions.ViewModels.Basis;
 
 namespace Predictions.Models
 {
@@ -21,8 +22,28 @@ namespace Predictions.Models
         public Team AwayTeam { get; set; }
 
         public int TourId { get; set; }
-        public Tour Tour { get; set;  }
+        public Tour Tour { get; set; }
 
         public virtual List<Prediction> Predictions { get; set; }
+
+        public MatchInfo GetMatchInfo()
+        {
+            if (HomeTeam == null)
+                throw new ArgumentNullException("HomeTeam");
+
+            if (AwayTeam == null)
+                throw new ArgumentNullException("AwayTeam");
+
+            return new MatchInfo(Date, HomeTeam.Title, AwayTeam.Title);
+        }
+
+        public FootballScore GetFootballScore(bool editable, string emptyDisplay)
+        {
+            return new FootballScore
+            {
+                Value = (String.IsNullOrEmpty(Score) && editable == false) ? emptyDisplay : Score,
+                Editable = editable
+            };
+        }
     }
 }
