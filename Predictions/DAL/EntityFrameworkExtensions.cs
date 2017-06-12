@@ -4,13 +4,25 @@ using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
+using Predictions.Models;
 
 namespace Predictions.DAL
 {
     public static class EntityFrameworkExtensions
     {
+        public static IQueryable<Tour> ToursWithMatches(this PredictionsContext context)
+        {
+            return context.Tours
+                    .Include(t => t.Matches
+                        .Select(m => m.HomeTeam))
+                    .Include(t => t.Matches
+                        .Select(m => m.AwayTeam));
+        }
+
+
+
         public static IQueryable<T> IncludeMultiple<T>(this IQueryable<T> query,
-            params Expression<Func<T, object>>[] includes)
+            params Expression<Func<T, object>>[] includes) 
             where T : class
         {
             if (includes != null)

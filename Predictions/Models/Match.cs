@@ -26,6 +26,21 @@ namespace Predictions.Models
 
         public virtual List<Prediction> Predictions { get; set; }
 
+        //public Match(DateTime date, Team homeTeam, Team awayTeam, int tourId)
+        //{
+        //    if (homeTeam == null)
+        //        throw new ArgumentNullException("HomeTeam");
+
+        //    if (awayTeam == null)
+        //        throw new ArgumentNullException("AwayTeam");
+
+        //    Date = date;
+        //    HomeTeam = homeTeam;
+        //    AwayTeam = awayTeam;
+        //    TourId = tourId;
+        //    Score = String.Empty;
+        //}
+
         public MatchInfo GetMatchInfo()
         {
             if (HomeTeam == null)

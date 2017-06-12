@@ -32,45 +32,45 @@ namespace Predictions.Services
 
 
         //same order as matches, because of include
-        public List<Prediction> LoadPredictions(List<Match> matches, int? expertId)
-        {
-            if (expertId == null || !matches.Any()) return null;
-            var matchesIds = matches
-                .Select(m => m.MatchId);
+        //public List<Prediction> LoadPredictions(List<Match> matches, int? expertId)
+        //{
+        //    if (expertId == null || !matches.Any()) return null;
+        //    var matchesIds = matches
+        //        .Select(m => m.MatchId);
 
-            matches = _context.Matches
-                .Where(m => matchesIds.Contains(m.MatchId))
-                .Include(m => m.Predictions)
-                .ToList();
+        //    matches = _context.Matches
+        //        .Where(m => matchesIds.Contains(m.MatchId))
+        //        .Include(m => m.Predictions)
+        //        .ToList();
 
-            return matches
-                .SelectMany(m => m.Predictions)
-                .Where(p => p.ExpertId == expertId)
-                .ToList();
-        }
+        //    return matches
+        //        .SelectMany(m => m.Predictions)
+        //        .Where(p => p.ExpertId == expertId)
+        //        .ToList();
+        //}
 
-        //same order as matches, because of include
-        public List<Prediction> LoadTourPredictions(int? tourId, int? expertId)
-        {
-            if (expertId == null || tourId == null) return null;
+        ////same order as matches, because of include
+        //public List<Prediction> LoadTourPredictions(int? tourId, int? expertId)
+        //{
+        //    if (expertId == null || tourId == null) return null;
 
-            var matches = LoadTour(tourId).Matches;
+        //    var matches = LoadTour(tourId).Matches;
 
-            return matches
-                .SelectMany(m => m.Predictions)
-                .Where(p => p.ExpertId == expertId)
-                .ToList();
-        }
+        //    return matches
+        //        .SelectMany(m => m.Predictions)
+        //        .Where(p => p.ExpertId == expertId)
+        //        .ToList();
+        //}
 
-        public List<FootballScore> GenerateStraightScorelist(int length, string value = "-", bool editable = false)
-        {
-            var scorelist = new List<FootballScore>();
-            for (var i = 0; i < length; i++)
-            {
-                scorelist.Add(new FootballScore(value, editable));
-            }
-            return scorelist;
-        }
+        //public List<FootballScore> GenerateStraightScorelist(int length, string value = "-", bool editable = false)
+        //{
+        //    var scorelist = new List<FootballScore>();
+        //    for (var i = 0; i < length; i++)
+        //    {
+        //        scorelist.Add(new FootballScore(value, editable));
+        //    }
+        //    return scorelist;
+        //}
 
         public List<FootballScore> GeneratePredictionlist(int? tourId, int? expertId = null, bool editable = false, string emptyDisplay = "-")
         {
@@ -197,6 +197,7 @@ namespace Predictions.Services
             _context.SaveChanges();
         }
 
+        //mb needs IPredictionEvaluator
         void SubmitPrediction (Prediction prediction)
         {
             var predictionResults = PredictionEvaluator.GetPredictionResults(prediction.Value, prediction.Match.Score);
