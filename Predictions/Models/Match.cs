@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Web.UI;
 using Predictions.ViewModels.Basis;
 
 namespace Predictions.Models
@@ -18,7 +19,13 @@ namespace Predictions.Models
         [Column(TypeName = "DateTime2")]
         public DateTime Date { get; set; }
 
+        public int HomeTeamId { get; set; }
+        public int AwayTeamId { get; set; }
+
+        [ForeignKey("HomeTeamId")]
         public Team HomeTeam { get; set; }
+
+        [ForeignKey("AwayTeamId")]
         public Team AwayTeam { get; set; }
 
         public int TourId { get; set; }
@@ -26,7 +33,7 @@ namespace Predictions.Models
 
         public virtual List<Prediction> Predictions { get; set; }
 
-        //public Match(DateTime date, Team homeTeam, Team awayTeam, int tourId)
+        //public Match(DateTime date, Team homeTeam, Team awayTeam, Tour tour)
         //{
         //    if (homeTeam == null)
         //        throw new ArgumentNullException("HomeTeam");
@@ -37,7 +44,7 @@ namespace Predictions.Models
         //    Date = date;
         //    HomeTeam = homeTeam;
         //    AwayTeam = awayTeam;
-        //    TourId = tourId;
+        //    Tour = tour;
         //    Score = String.Empty;
         //}
 

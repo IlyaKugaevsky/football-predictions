@@ -37,7 +37,7 @@ namespace Predictions.Services
             //        .ToList()
             //        .Single(t => t.TourId == tourId);
 
-            var tour = _context.ToursWithMatches().Single(t => t.TourId == tourId);
+            var tour = _context.ToursWithMatchesWithTeams().Single(t => t.TourId == tourId);
 
 
             return tour?.Matches.Select(m => new MatchInfo(m.Date, m.HomeTeam.Title, m.AwayTeam.Title)).ToList();
@@ -60,7 +60,7 @@ namespace Predictions.Services
             //            .Select(m => m.AwayTeam))
             //        .Single(t => t.TourId == tourId);
 
-            var tour = _context.ToursWithMatches().Single(t => t.TourId == tourId);
+            var tour = _context.ToursWithMatchesWithTeams().Single(t => t.TourId == tourId);
 
             if (tour == null) return null;
             //return tour.Matches.Select(m => new FootballScore
@@ -86,18 +86,18 @@ namespace Predictions.Services
 
         //comand + query
         //move to Model
-        public Match CreateMatch(DateTime date, int homeId, int awayId, int tourId)
-        {
-            var match = new Match()
-            {
-                Date = date,
-                HomeTeam = _context.Teams.Find(homeId),
-                AwayTeam = _context.Teams.Find(awayId),
-                TourId = tourId, 
-                Score = string.Empty
-            };
-            return match;
-        }
+        //public Match CreateMatch(DateTime date, int homeId, int awayId, int tourId)
+        //{
+        //    var match = new Match()
+        //    {
+        //        Date = date,
+        //        HomeTeam = _context.Teams.Find(homeId),
+        //        AwayTeam = _context.Teams.Find(awayId),
+        //        TourId = tourId, 
+        //        Score = string.Empty
+        //    };
+        //    return match;
+        //}
 
         public List<Match> CreateMatches(List<MatchInfo> matches, int tourId)
         {

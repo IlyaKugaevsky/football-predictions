@@ -10,13 +10,13 @@ namespace Predictions.DAL
 {
     public static class EntityFrameworkExtensions
     {
-        public static IQueryable<Tour> ToursWithMatches(this PredictionsContext context)
+        public static IQueryable<Tour> ToursWithMatchesWithTeams(this PredictionsContext context)
         {
             return context.Tours
-                    .Include(t => t.Matches
-                        .Select(m => m.HomeTeam))
-                    .Include(t => t.Matches
-                        .Select(m => m.AwayTeam));
+                .Include(t => t.Matches
+                    .Select(m => m.HomeTeam))
+                .Include(t => t.Matches
+                    .Select(m => m.AwayTeam));
         }
 
 

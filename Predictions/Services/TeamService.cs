@@ -31,13 +31,15 @@ namespace Predictions.Services
         {
             var teamlist = new List<string>();
 
-            var tour = _context.Tours
-                    .Include(t => t.Matches
-                        .Select(m => m.HomeTeam))
-                    .Include(t => t.Matches
-                        .Select(m => m.AwayTeam))
-                    .ToList()
-                    .Single(t => t.TourId == tourId);
+            //var tour = _context.Tours
+            //        .Include(t => t.Matches
+            //            .Select(m => m.HomeTeam))
+            //        .Include(t => t.Matches
+            //            .Select(m => m.AwayTeam))
+            //        .ToList()
+            //        .Single(t => t.TourId == tourId);
+
+            var tour = _context.ToursWithMatchesWithTeams().Single(t => t.TourId == tourId);
 
             var matches = tour.Matches;
 

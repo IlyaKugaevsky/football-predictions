@@ -16,11 +16,13 @@ namespace Predictions.Services
     {
         private readonly PredictionsContext _context;
 
+        //move to EF
         public int MatchesCount(int tourId)
         {
             return _context.Tours.Single(t => t.TourId == tourId).Matches.Count();
         }
 
+        //move to EF
         public bool AllResultsReady(int tourId)
         {
             return !EagerLoad(tourId, t => t.Matches).Matches.Any(m => m.Score.IsNullOrEmpty());
@@ -66,24 +68,24 @@ namespace Predictions.Services
                 .Single(t => t.TourId == id);
         }
 
-        public List<Tour> EagerLoad(params Expression<Func<Tour, object>>[] includes)
-        {
-            return _context.Tours.IncludeMultiple(includes)
-                .ToList();
-        }
+        //public List<Tour> EagerLoad(params Expression<Func<Tour, object>>[] includes)
+        //{
+        //    return _context.Tours.IncludeMultiple(includes)
+        //        .ToList();
+        //}
 
-        public Tour LoadBasicsWith(int? id, params Expression<Func<Tour, object>>[] includes)
-        {
-            if (id == null) return null;
-            return _context.Tours
-                    .Include(t => t.Matches
-                        .Select(m => m.HomeTeam))
-                    .Include(t => t.Matches
-                        .Select(m => m.AwayTeam))
-                    .IncludeMultiple(includes)
-                    .ToList()
-                    .Single(t => t.TourId == id);
-        }
+        //public Tour LoadBasicsWith(int? id, params Expression<Func<Tour, object>>[] includes)
+        //{
+        //    if (id == null) return null;
+        //    return _context.Tours
+        //            .Include(t => t.Matches
+        //                .Select(m => m.HomeTeam))
+        //            .Include(t => t.Matches
+        //                .Select(m => m.AwayTeam))
+        //            .IncludeMultiple(includes)
+        //            .ToList()
+        //            .Single(t => t.TourId == id);
+        //}
 
         public List<Tour> LoadBasicsWith(params Expression<Func<Tour, object>>[] includes)
         {

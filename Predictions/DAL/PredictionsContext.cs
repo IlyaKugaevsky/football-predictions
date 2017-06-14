@@ -11,6 +11,7 @@ namespace Predictions.DAL
             this.Configuration.LazyLoadingEnabled = false;
         }
 
+        public DbSet<Tournament> Tournaments { get; set; }
         public DbSet<Expert> Experts { get; set; }
         public DbSet<Team> Teams { get; set;  }
         public DbSet<Match> Matches { get; set; }

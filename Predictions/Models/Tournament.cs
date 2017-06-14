@@ -4,34 +4,23 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
-using Predictions.Models;
 
 namespace Predictions.Models
 {
-    public class Tour
+    public class Tournament
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int TourId { get; set; }
-
-
-        public Tournament Tournament { get; set; }
         public int TournamentId { get; set; }
 
-        public int TourNumber { get; set; }
+        public string Title { get; set; }
 
-        public bool IsClosed { get; set; }
-
-        //[DisplayFormat(DataFormatString = "{0:yyyy.MM.dd}", ApplyFormatInEditMode = false)]
         [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:dd.MM.yyyy HH:mm}")]
         [Column(TypeName = "DateTime2")]
         public DateTime StartDate { get; set; }
 
-        //[DisplayFormat(DataFormatString = "{0:yyyy.MM.dd}", ApplyFormatInEditMode = false)]
         [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:dd.MM.yyyy HH:mm}")]
         [Column(TypeName = "DateTime2")]
         public DateTime EndDate { get; set; }
 
-        public virtual List<Match> Matches { get; set; }
+        public virtual List<Tour> Tours { get; set; }
     }
 }

@@ -62,15 +62,15 @@ namespace Predictions.Services
         //        .ToList();
         //}
 
-        //public List<FootballScore> GenerateStraightScorelist(int length, string value = "-", bool editable = false)
-        //{
-        //    var scorelist = new List<FootballScore>();
-        //    for (var i = 0; i < length; i++)
-        //    {
-        //        scorelist.Add(new FootballScore(value, editable));
-        //    }
-        //    return scorelist;
-        //}
+        public List<FootballScore> GenerateStraightScorelist(int length, string value = "-", bool editable = false)
+        {
+            var scorelist = new List<FootballScore>();
+            for (var i = 0; i < length; i++)
+            {
+                scorelist.Add(new FootballScore(value, editable));
+            }
+            return scorelist;
+        }
 
         public List<FootballScore> GeneratePredictionlist(int? tourId, int? expertId = null, bool editable = false, string emptyDisplay = "-")
         {

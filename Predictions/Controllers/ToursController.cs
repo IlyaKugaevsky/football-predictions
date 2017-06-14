@@ -44,6 +44,16 @@ namespace Predictions.Controllers
             //_context.Tours.AddOrUpdate(tour);
             //_context.SaveChanges();
 
+            var tournament = _context.Tournaments.Find(1);
+
+            //_context.Tours
+            //    .ToList()
+            //    .ForEach(t => t.TournamentId = 1);
+
+            _context.Tours.ToList().ForEach(t => t.TourNumber = t.TourId);
+
+            _context.SaveChanges();
+
             var tours = _tourService.LoadBasicsWith();
             if (tours == null) return HttpNotFound();
 
@@ -94,11 +104,19 @@ namespace Predictions.Controllers
         {
             if (ModelState.IsValid)
             {
-                var match = _matchService.CreateMatch(
-                    viewModel.InputDate,
-                    viewModel.SelectedHomeTeamId,
-                    viewModel.SelectedAwayTeamId,
-                    viewModel.TourInfo.TourId);
+                var match = new Match()
+                {
+                    Date = viewModel.InputDate,
+                    HomeTeamId = viewModel.SelectedHomeTeamId,
+                    AwayTeamId = viewModel.SelectedAwayTeamId,
+                    TourId = viewModel.TourInfo.TourId
+                };
+                //var match = _matchService.CreateMatch(
+                //    viewModel.InputDate,
+                //    viewModel.SelectedHomeTeamId,
+                //    viewModel.SelectedAwayTeamId,
+                //    viewModel.TourInfo.TourId);
+
                 _matchService.AddMatch(match);
                 return RedirectToAction("EditTour", new {tourId = viewModel.TourInfo.TourId });
             }
