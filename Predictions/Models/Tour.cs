@@ -10,8 +10,6 @@ namespace Predictions.Models
 {
     public class Tour
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int TourId { get; set; }
 
 

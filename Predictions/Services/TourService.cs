@@ -89,13 +89,21 @@ namespace Predictions.Services
 
         public List<Tour> LoadBasicsWith(params Expression<Func<Tour, object>>[] includes)
         {
-            return _context.Tours
-                    .Include(t => t.Matches
-                        .Select(m => m.HomeTeam))
-                    .Include(t => t.Matches
-                        .Select(m => m.AwayTeam))
-                    .IncludeMultiple(includes)
-                    .ToList();
+            //var tours = _context.Tournaments.Last().Tours;
+            //       return tours.Include(t => t.Matches
+            //            .Select(m => m.HomeTeam))
+            //        .Include(t => t.Matches
+            //            .Select(m => m.AwayTeam))
+            //        .IncludeMultiple(includes)
+            //        .ToList();
+
+
+            //return _context.Tournaments.Include(trn => trn.Tours).Last().Tours;
+
+            var trnm = _context.Tournaments.Find(1);
+            var tours = trnm.Tours.ToList();
+
+            return tours;
         }
 
         public List<Match> GetMatchesByTour(int? id)

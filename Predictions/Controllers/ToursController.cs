@@ -40,21 +40,27 @@ namespace Predictions.Controllers
 
         public ActionResult Index()
         {
-            //var tour = new Tour() {TourId = 10, IsClosed = false} ;
-            //_context.Tours.AddOrUpdate(tour);
-            //_context.SaveChanges();
+            //var tours = _context.Tours.Where(t => t.TournamentId == 1)
+            //    .Include(t => t.Matches
+            //        .Select(m => m.HomeTeam))
+            //    .Include(t => t.Matches
+            //        .Select(m => m.AwayTeam))
+            //    .ToList();
+            //var tours = _tourService.LoadBasicsWith();
 
-            var tournament = _context.Tournaments.Find(1);
+            //var trbm = _context.Tournaments.Include(t => t.Tours).OrderByDescending(t => t.TournamentId).First();
 
-            //_context.Tours
-            //    .ToList()
-            //    .ForEach(t => t.TournamentId = 1);
+            var tours = _context.Tournaments
+                            .Include(trnm => trnm.Tours
+                                .Select(tr => tr.Matches
+                                    .Select(m => m.HomeTeam)))
+                            .Include(trnm => trnm.Tours
+                                .Select(tr => tr.Matches
+                                    .Select(m => m.HomeTeam)))
+                            .OrderByDescending(t => t.TournamentId)
+                            .First()
+                            .Tours;
 
-            _context.Tours.ToList().ForEach(t => t.TourNumber = t.TourId);
-
-            _context.SaveChanges();
-
-            var tours = _tourService.LoadBasicsWith();
             if (tours == null) return HttpNotFound();
 
             return View(tours);

@@ -248,6 +248,10 @@
     <Compile Include="Migrations\201706142118124_TourDeleteNullable.Designer.cs">
       <DependentUpon>201706142118124_TourDeleteNullable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706142354100_TourIdGeneration.cs" />
+    <Compile Include="Migrations\201706142354100_TourIdGeneration.Designer.cs">
+      <DependentUpon>201706142354100_TourIdGeneration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Expert.cs" />
@@ -472,6 +476,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706142118124_TourDeleteNullable.resx">
       <DependentUpon>201706142118124_TourDeleteNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706142354100_TourIdGeneration.resx">
+      <DependentUpon>201706142354100_TourIdGeneration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
