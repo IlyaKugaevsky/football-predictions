@@ -40,23 +40,13 @@ namespace Predictions.Controllers
 
         public ActionResult Index()
         {
-            //var tours = _context.Tours.Where(t => t.TournamentId == 1)
-            //    .Include(t => t.Matches
-            //        .Select(m => m.HomeTeam))
-            //    .Include(t => t.Matches
-            //        .Select(m => m.AwayTeam))
-            //    .ToList();
-            //var tours = _tourService.LoadBasicsWith();
-
-            //var trbm = _context.Tournaments.Include(t => t.Tours).OrderByDescending(t => t.TournamentId).First();
-
             var tours = _context.Tournaments
                             .Include(trnm => trnm.Tours
                                 .Select(tr => tr.Matches
                                     .Select(m => m.HomeTeam)))
                             .Include(trnm => trnm.Tours
                                 .Select(tr => tr.Matches
-                                    .Select(m => m.HomeTeam)))
+                                    .Select(m => m.AwayTeam)))
                             .OrderByDescending(t => t.TournamentId)
                             .First()
                             .Tours;
