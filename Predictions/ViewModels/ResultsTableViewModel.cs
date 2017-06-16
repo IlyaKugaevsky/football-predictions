@@ -12,9 +12,15 @@ namespace Predictions.ViewModels
         public ResultsTableViewModel()
         { }
 
-        public ResultsTableViewModel(List<SelectListItem> tourList, List<ExpertInfo> resultsTable)
+        //public ResultsTableViewModel(List<SelectListItem> tourList, List<ExpertInfo> resultsTable)
+        //{
+        //    Tourlist = tourList;
+        //    ResultsTable = resultsTable;
+        //}
+
+        public ResultsTableViewModel(List<TourInfo> tours, List<ExpertInfo> resultsTable)
         {
-            Tourlist = tourList;
+            Tourlist = GenerateSelectList(tours);
             ResultsTable = resultsTable;
         }
 
@@ -23,5 +29,21 @@ namespace Predictions.ViewModels
 
         public List<ExpertInfo> ResultsTable { get; set; }
 
+        public List<SelectListItem> GenerateSelectList(List<TourInfo> tours)
+        {
+            var tourlist = new List<SelectListItem>()
+            {
+                new SelectListItem { Text = "За все туры", Value = "0" }
+            };
+
+            tours.ForEach(t => tourlist.Add(
+                   new SelectListItem()
+                   {
+                       Text = t.TourNumber.ToString(),
+                       Value = t.TourNumber.ToString()
+                   }));
+
+            return tourlist;
+        }
     }
 }

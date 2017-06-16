@@ -1,0 +1,19 @@
+	Эксперт	Угадан счет	Угадана разница	Угадан исход	Сумма
+1	fuliver	19	18	39	132
+2	Ibrahim Loza	18	12	34	112
+3	Андреа БазиЛеоник	14	11	45	109
+4	Chester	12	14	44	108
+5	cherocky	9	17	45	106
+6	Pinkman	11	15	41	104
+7	SUBIC	8	16	45	101
+8	Alex McLydy	6	16	42	92
+9	Nightmare	10	11	38	90
+10	Polidevk	8	9	45	87
+11	Gwynbleidd	8	11	36	82
+12	Венцеслава	10	23	0	76
+13	поручик Киже	9	10	27	74
+14	SumarokovNC-17	3	3	11	26
+15	Iv1oWitch	4	2	0	16
+16	ginger-ti	2	2	2	12
+17	EnotSty	0	1	7	9
+18	Rigosha	0	0	0	0

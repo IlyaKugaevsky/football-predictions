@@ -217,9 +217,10 @@
     <Compile Include="Controllers\TeamsController.cs" />
     <Compile Include="Controllers\ToursController.cs" />
     <Compile Include="DAL\EntityFrameworkExtensions.cs" />
-    <Compile Include="DAL\FetchStrategies\FetchStrategies.cs" />
     <Compile Include="DAL\FetchStrategies\IFetchStrategy.cs" />
-    <Compile Include="DAL\FetchStrategies\MatchFetchStrategies.cs" />
+    <Compile Include="DAL\FetchStrategies\TournamentFetchStrategies\ToursWithMatchesWithAwayTeam.cs" />
+    <Compile Include="DAL\FetchStrategies\TournamentFetchStrategies\ToursWithMatchesWithHomeTeam.cs" />
+    <Compile Include="DAL\FetchStrategies\TournamentFetchStrategies\ToursWithMatchesWithPredictionsWIthExperts.cs" />
     <Compile Include="DAL\PredictionsContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

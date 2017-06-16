@@ -6,6 +6,8 @@ using Predictions.DAL;
 using Predictions.Models;
 using Predictions.Helpers;
 using System.Data.Entity;
+using Predictions.DAL.FetchStrategies;
+using Predictions.DAL.FetchStrategies.TournamentFetchStrategies;
 using Predictions.Services;
 using Predictions.ViewModels.Basis;
 
@@ -126,26 +128,44 @@ namespace Predictions.Services
 
         //optimization! looks ugly
         // "0" for all tours
-        public List<ExpertInfo> GenerateExpertsInfo(int tourId = 0)
+        public List<ExpertInfo> GenerateExpertsInfo(int tourNumber = 0)
         {
             var results = new List<ExpertInfo>();
 
-            if (tourId == 0)
+            if (tourNumber == 0)
             {
                 var experts = _context.Experts.ToList();
                 experts.ForEach(e => results.Add(new ExpertInfo(e.Nickname, e.Sum, e.Scores, e.Differences, e.Outcomes)));
                 return results;
             }
 
-            var predictions = _context.Tours
-                 .Include(t => t.Matches
-                 .Select(m => m.Predictions
-                 .Select(p => p.Expert)))
-                 .Single(t => t.TourId == tourId)
-                 .Matches
+            var fStrategy = new ToursWithMatchesWithPredictionsWIthExperts();
+            var strategies = new List<IFetchStrategy<Tournament>>();
+            strategies.Add(fStrategy);
+
+            var tours = _context.GetLastTournamentTours(strategies.ToArray());
+
+            //var tours = _context.LastTournamentToursWithMatchesPredictionsExperts();
+
+            var matches = tours
+                .Single(t => t.TourNumber == tourNumber)
+                .Matches;
+
+            var predictions = matches
                  .SelectMany(m => m.Predictions)
                  .GroupBy(p => p.Expert)
                  .ToList();
+
+
+            //var predictions = _context.Tours
+            //     .Include(t => t.Matches
+            //     .Select(m => m.Predictions
+            //     .Select(p => p.Expert)))
+            //     .Single(t => t.TourId == tourId)
+            //     .Matches
+            //     .SelectMany(m => m.Predictions)
+            //     .GroupBy(p => p.Expert)
+            //     .ToList();
 
             foreach (var epGroup in predictions)
             {

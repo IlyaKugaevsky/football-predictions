@@ -37,7 +37,7 @@ namespace Predictions.Services
         {
             if (tourId == null) return null;
             var tour = _context.Tours.Find(tourId);
-            return new TourInfo(tour.TourId, tour.StartDate, tour.EndDate);
+            return new TourInfo(tour.TourId, tour.TourNumber, tour.StartDate, tour.EndDate);
         }
 
         public void UpdateTour(TourInfo tourInfo)

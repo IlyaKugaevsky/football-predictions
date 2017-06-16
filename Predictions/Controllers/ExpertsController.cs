@@ -41,11 +41,18 @@ namespace Predictions.Controllers
         // GET: Experts
         public ActionResult Index()
         {
-            var tourlist = new List<SelectListItem>();
-            tourlist.Add(new SelectListItem { Text = "За все туры", Value = "0"});
-            tourlist.AddRange(_tourService.GenerateSelectList());
+            //var tourlist = new List<SelectListItem>();
+            //tourlist.Add(new SelectListItem { Text = "За все туры", Value = "0"});
+            //tourlist.AddRange(_tourService.GenerateSelectList());
+
+            var tours = _context.Tournaments
+                .Include(t => t.Tours)
+                .OrderByDescending(t => t.TournamentId)
+                .First()
+                .Tours;
+
             var results = _predictionService.GenerateExpertsInfo();
-            var resultsTable = new ResultsTableViewModel(tourlist, results);
+            var resultsTable = new ResultsTableViewModel(tours.Select(t => t.GetTourInfo()).ToList(), results);
 
             return View(resultsTable);
         }

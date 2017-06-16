@@ -21,23 +21,28 @@ namespace Predictions.Services
         }
 
 
-        public List<MatchInfo> GenerateMatchlist(int? tourId)
+        public List<MatchInfo> GenerateMatchlist(int? tourNumber)
         {
-            if (tourId == null) return null;
+            if (tourNumber == null) return null;
 
-            var fs = new HomeTeamFetchStrategy();
+            //var fs = new HomeTeamFetchStrategy();
 
-            var test = _context.Tours.IncludeMultiple(new HomeTeamFetchStrategy().Fetch());
+            //var test = _context.Tours.IncludeMultiple(new HomeTeamFetchStrategy().Apply());
 
-            //var tour = _context.Tours
-            //        .Include(t => t.Matches
-            //            .Select(m => m.HomeTeam))
-            //        .Include(t => t.Matches
-            //            .Select(m => m.AwayTeam))
-            //        .ToList()
-            //        .Single(t => t.TourId == tourId);
+            var tours = _context.Tournaments
+                    .Include(trnm => trnm.Tours
+                        .Select(tr => tr.Matches
+                            .Select(m => m.HomeTeam)))
+                    .Include(trnm => trnm.Tours
+                        .Select(tr => tr.Matches
+                            .Select(m => m.AwayTeam)))
+                    .OrderByDescending(t => t.TournamentId)
+                    .First()
+                    .Tours
+                    .AsQueryable();
 
-            var tour = _context.ToursWithMatchesWithTeams().Single(t => t.TourId == tourId);
+
+            var tour = tours.Single(t => t.TourNumber == tourNumber.Value);
 
 
             return tour?.Matches.Select(m => new MatchInfo(m.Date, m.HomeTeam.Title, m.AwayTeam.Title)).ToList();

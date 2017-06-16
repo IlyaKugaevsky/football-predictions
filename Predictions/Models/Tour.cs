@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using Predictions.Models;
+using Predictions.ViewModels.Basis;
 
 namespace Predictions.Models
 {
@@ -31,5 +32,10 @@ namespace Predictions.Models
         public DateTime EndDate { get; set; }
 
         public virtual List<Match> Matches { get; set; }
+
+        public TourInfo GetTourInfo()
+        {
+            return new TourInfo(TourId, TourNumber, StartDate, EndDate);
+        }
     }
 }

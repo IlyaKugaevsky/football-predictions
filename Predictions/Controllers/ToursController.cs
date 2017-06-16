@@ -57,17 +57,23 @@ namespace Predictions.Controllers
         }
 
         //404 after deleting
-        public ActionResult EditTour(int tourId)
+        //totally fucked up
+        /// <summary>
+        /// Id or number? mess
+        /// </summary>
+        /// <param name="tourNumber"></param>
+        /// <returns></returns>
+        public ActionResult EditTour(int tourNumber)
         {
-            var tourInfo = _tourService.GetTourInfo(tourId);
+            var tourInfo = _tourService.GetTourInfo(tourNumber);
             var teamlist = _teamService.GenerateSelectList();
             var headers = new List<string>() { "Дата", "Дома", "В гостях", "Счет" };
-            var matchlist = _matchService.GenerateMatchlist(tourId);
-            var scorelist = _matchService.GenerateScorelist(tourId);
+            var matchlist = _matchService.GenerateMatchlist(tourNumber);
+            var scorelist = _matchService.GenerateScorelist(tourNumber);
 
             //to some service
             var actionLinklist = new List<ActionLinkParams>();
-            var matches = _tourService.GetMatchesByTour(tourId);
+            var matches = _tourService.GetMatchesByTour(tourNumber);
             for (var i = 0; i < matches.Count; i++)
             {
                 var actionLink = new ActionLinkParams("Удалить", "DeleteConfirmation", null, new { id = matches[i].MatchId }, new { @class = "btn btn-default" });

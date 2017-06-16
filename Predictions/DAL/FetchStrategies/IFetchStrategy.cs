@@ -11,14 +11,14 @@ namespace Predictions.DAL.FetchStrategies
 {
     public interface IFetchStrategy<T>
     {
-        Expression<Func<T, object>> Fetch();
+        Expression<Func<T, object>> Apply();
     }
 
-    public class HomeTeamFetchStrategy : IFetchStrategy<Tour>
-    {
-        public Expression<Func<Tour, object>> Fetch()
-        {
-            return x => x.Matches.Select(m => m.HomeTeam);
-        }
-    }
+    //public class HomeTeamFetchStrategy : IFetchStrategy<Tour>
+    //{
+    //    public Expression<Func<Tour, object>> Apply()
+    //    {
+    //        return x => x.Matches.Select(m => m.HomeTeam);
+    //    }
+    //}
 }
