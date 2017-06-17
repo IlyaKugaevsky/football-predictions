@@ -13,11 +13,11 @@ namespace Predictions.ViewModels
         public EditTourViewModel()
         { }
 
-        public EditTourViewModel(List<SelectListItem> teamlist, TourInfo tourInfo, MatchTableViewModel matchTable)
+        public EditTourViewModel(List<Team> teams, List<Match> matches, List<FootballScore> scorelist,  TourInfo tourInfo)
         {
-            Teamlist = teamlist;
+            Teamlist = GenerateSelectList(teams);
             TourInfo = tourInfo;
-            MatchTable = matchTable;
+            MatchTable = GenerateMatchTable(matches, scorelist);
             SubmitTextArea = new SubmitTextAreaViewModel(tourInfo.TourId);
         }
 
@@ -28,5 +28,30 @@ namespace Predictions.ViewModels
         public int SelectedAwayTeamId { get; set; }
         public DateTime InputDate { get; set; }
         public SubmitTextAreaViewModel SubmitTextArea { get; set; }
+
+        private List<SelectListItem> GenerateSelectList(List<Team> teams)
+        {
+            return teams.Select(t => new SelectListItem()
+            {
+                Text = t.Title,
+                Value = t.TeamId.ToString()
+            }).ToList();
+        }
+
+        private MatchTableViewModel GenerateMatchTable(List<Match> matches, List<FootballScore> scorelist)
+        {
+            var headers = new List<string>() { "Дата", "Дома", "В гостях", "Счет" };
+            var matchlist = matches.Select(m => m.GetMatchInfo()).ToList();
+
+            var actionLinklist = matches.Select(t => 
+                new ActionLinkParams(
+                    "Удалить", 
+                    "DeleteConfirmation", 
+                    null, 
+                    new { id = t.MatchId }, 
+                    new { @class = "btn btn-default" })).ToList();
+
+            return new MatchTableViewModel(headers, matchlist, scorelist, actionLinklist);
+        }
     }
 }

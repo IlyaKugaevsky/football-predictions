@@ -8,6 +8,8 @@ using System.Web.Mvc;
 using System.Data.Entity;
 using System.Linq.Expressions;
 using System.Net;
+using Predictions.DAL.FetchStrategies;
+using Predictions.DAL.FetchStrategies.TournamentFetchStrategies;
 using Predictions.ViewModels.Basis;
 
 namespace Predictions.Services
@@ -68,43 +70,35 @@ namespace Predictions.Services
                 .Single(t => t.TourId == id);
         }
 
-        //public List<Tour> EagerLoad(params Expression<Func<Tour, object>>[] includes)
-        //{
-        //    return _context.Tours.IncludeMultiple(includes)
-        //        .ToList();
-        //}
 
-        //public Tour LoadBasicsWith(int? id, params Expression<Func<Tour, object>>[] includes)
-        //{
-        //    if (id == null) return null;
-        //    return _context.Tours
-        //            .Include(t => t.Matches
-        //                .Select(m => m.HomeTeam))
-        //            .Include(t => t.Matches
-        //                .Select(m => m.AwayTeam))
-        //            .IncludeMultiple(includes)
-        //            .ToList()
-        //            .Single(t => t.TourId == id);
-        //}
-
-        public List<Tour> LoadBasicsWith(params Expression<Func<Tour, object>>[] includes)
+        public List<Tour> GetLastTournamentSchedule()
         {
-            //var tours = _context.Tournaments.Last().Tours;
-            //       return tours.Include(t => t.Matches
-            //            .Select(m => m.HomeTeam))
-            //        .Include(t => t.Matches
-            //            .Select(m => m.AwayTeam))
-            //        .IncludeMultiple(includes)
-            //        .ToList();
-
-
-            //return _context.Tournaments.Include(trn => trn.Tours).Last().Tours;
-
-            var trnm = _context.Tournaments.Find(1);
-            var tours = trnm.Tours.ToList();
-
-            return tours;
+            var fetchStrategies = new IFetchStrategy<Tournament>[]
+            {
+                new ToursWithMatchesWithHomeTeam(),
+                new ToursWithMatchesWithAwayTeam()
+            };
+            return _context.GetLastTournamentTours(fetchStrategies).ToList();
         }
+
+        //public List<Tour> LoadBasicsWith(params Expression<Func<Tour, object>>[] includes)
+        //{
+        //    //var tours = _context.Tournaments.Last().Tours;
+        //    //       return tours.Include(t => t.Matches
+        //    //            .Select(m => m.HomeTeam))
+        //    //        .Include(t => t.Matches
+        //    //            .Select(m => m.AwayTeam))
+        //    //        .IncludeMultiple(includes)
+        //    //        .ToList();
+
+
+        //    //return _context.Tournaments.Include(trn => trn.Tours).Last().Tours;
+
+        //    var trnm = _context.Tournaments.Find(1);
+        //    var tours = trnm.Tours.ToList();
+
+        //    return tours;
+        //}
 
         public List<Match> GetMatchesByTour(int? id)
         {

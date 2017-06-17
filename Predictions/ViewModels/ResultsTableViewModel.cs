@@ -29,7 +29,7 @@ namespace Predictions.ViewModels
 
         public List<ExpertInfo> ResultsTable { get; set; }
 
-        public List<SelectListItem> GenerateSelectList(List<TourInfo> tours)
+        private List<SelectListItem> GenerateSelectList(List<TourInfo> tours)
         {
             var tourlist = new List<SelectListItem>()
             {

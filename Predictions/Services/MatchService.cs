@@ -8,6 +8,7 @@ using Predictions.ViewModels;
 using Predictions.ViewModels.Basis;
 using System.Data.Entity;
 using Predictions.DAL.FetchStrategies;
+using Predictions.DAL.FetchStrategies.TournamentFetchStrategies;
 
 namespace Predictions.Services
 {
@@ -21,40 +22,37 @@ namespace Predictions.Services
         }
 
 
-        public List<MatchInfo> GenerateMatchlist(int? tourNumber)
+        public List<Match> GetLastTournamentMatchesByTourId(int? tourId)
         {
-            if (tourNumber == null) return null;
+            if (tourId == null) return null;
 
-            //var fs = new HomeTeamFetchStrategy();
+            var fetchStrategies = new IFetchStrategy<Tournament>[]
+            {
+                new ToursWithMatchesWithHomeTeam(),
+                new ToursWithMatchesWithAwayTeam()
+            };
 
-            //var test = _context.Tours.IncludeMultiple(new HomeTeamFetchStrategy().Apply());
+            var tours = _context.GetLastTournamentTours(fetchStrategies);
+            var tour = tours.Single(t => t.TourId == tourId.Value);
 
-            var tours = _context.Tournaments
-                    .Include(trnm => trnm.Tours
-                        .Select(tr => tr.Matches
-                            .Select(m => m.HomeTeam)))
-                    .Include(trnm => trnm.Tours
-                        .Select(tr => tr.Matches
-                            .Select(m => m.AwayTeam)))
-                    .OrderByDescending(t => t.TournamentId)
-                    .First()
-                    .Tours
-                    .AsQueryable();
-
-
-            var tour = tours.Single(t => t.TourNumber == tourNumber.Value);
-
-
-            return tour?.Matches.Select(m => new MatchInfo(m.Date, m.HomeTeam.Title, m.AwayTeam.Title)).ToList();
+            return tour.Matches.ToList();
         }
 
-        public IList<MatchInfo> GenerateMatchlist(IList<Match> matches)
+        public List<MatchInfo> GenerateMatchlist(int tournamentId, int tourId)
         {
-            //return matches.Select(m => new MatchInfo(m.Date, m.HomeTeam.Title, m.AwayTeam.Title)).ToList();
-            return matches.Select(m => m.GetMatchInfo()).ToList();
+            var fetchStrategies = new IFetchStrategy<Tournament>[]
+            {
+                new ToursWithMatchesWithHomeTeam(),
+                new ToursWithMatchesWithAwayTeam()
+            };
+
+            var tours = _context.GetLastTournamentTours(fetchStrategies);
+            var tour = tours.Single(t => t.TourId == tourId);
+
+            return tour.Matches.Select(m => m.GetMatchInfo()).ToList();
         }
 
-        public IList<FootballScore> GenerateScorelist(int? tourId, bool editable = false, string emptyDisplay = "-")
+        public List<FootballScore> GenerateScorelist(int? tourId, bool editable = false, string emptyDisplay = "-")
         {
             if (tourId == null) return null;
 

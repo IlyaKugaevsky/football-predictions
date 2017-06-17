@@ -15,7 +15,7 @@ using Predictions.Helpers;
 
 namespace Predictions.Controllers
 {
-    public class ToursController : Controller
+    public class CurrentTournamentToursController : Controller
     {
         private readonly PredictionsContext _context;
         private readonly ExpertService _expertService;
@@ -24,8 +24,10 @@ namespace Predictions.Controllers
         private readonly MatchService _matchService;
         private readonly TeamService _teamService;
         private readonly FileService _fileService;
+        private readonly TournamentService _tournamentService;
+        private readonly int _currentTournamentId;
 
-        public ToursController()
+        public CurrentTournamentToursController()
         {
             _context = new PredictionsContext();
             _expertService = new ExpertService(_context);
@@ -33,27 +35,17 @@ namespace Predictions.Controllers
             _predictionService = new PredictionService(_context);
             _matchService = new MatchService(_context);
             _teamService = new TeamService(_context);
+            _tournamentService = new TournamentService(_context);
 
             //constructor with params?
             _fileService = new FileService();
+
+            _currentTournamentId = _tournamentService.GetCurrentTournamentId();
         }
 
         public ActionResult Index()
         {
-            var tours = _context.Tournaments
-                            .Include(trnm => trnm.Tours
-                                .Select(tr => tr.Matches
-                                    .Select(m => m.HomeTeam)))
-                            .Include(trnm => trnm.Tours
-                                .Select(tr => tr.Matches
-                                    .Select(m => m.AwayTeam)))
-                            .OrderByDescending(t => t.TournamentId)
-                            .First()
-                            .Tours;
-
-            if (tours == null) return HttpNotFound();
-
-            return View(tours);
+            return View(_tourService.GetLastTournamentSchedule());
         }
 
         //404 after deleting
@@ -61,28 +53,26 @@ namespace Predictions.Controllers
         /// <summary>
         /// Id or number? mess
         /// </summary>
-        /// <param name="tourNumber"></param>
+        /// <param name="tourId"></param>
         /// <returns></returns>
-        public ActionResult EditTour(int tourNumber)
+        public ActionResult EditTour(int tourId)
         {
-            var tourInfo = _tourService.GetTourInfo(tourNumber);
-            var teamlist = _teamService.GenerateSelectList();
+            var tourInfo = _tourService.GetTourInfo(tourId);
+            var teams = _teamService.GetLastTournamentTeams();
+
+            
+            var matches = _matchService.GetLastTournamentMatchesByTourId(tourId);
+            var scorelist = _matchService.GenerateScorelist(tourId);
+
+
+
             var headers = new List<string>() { "Дата", "Дома", "В гостях", "Счет" };
-            var matchlist = _matchService.GenerateMatchlist(tourNumber);
-            var scorelist = _matchService.GenerateScorelist(tourNumber);
+            var actionLinklist = matches.Select(t => new ActionLinkParams("Удалить", "DeleteConfirmation", null, new {id = t.MatchId}, new {@class = "btn btn-default"})).ToList();
+            //var matches = _tourService.GetMatchesByTour(tourId);
 
-            //to some service
-            var actionLinklist = new List<ActionLinkParams>();
-            var matches = _tourService.GetMatchesByTour(tourNumber);
-            for (var i = 0; i < matches.Count; i++)
-            {
-                var actionLink = new ActionLinkParams("Удалить", "DeleteConfirmation", null, new { id = matches[i].MatchId }, new { @class = "btn btn-default" });
-                actionLinklist.Add(actionLink);
-            }
+            //var matchTable = new MatchTableViewModel(headers, matches, scorelist, actionLinklist);
 
-            var matchTable = new MatchTableViewModel(headers, matchlist, scorelist, actionLinklist);
-
-            return View(new EditTourViewModel(teamlist, tourInfo, matchTable));
+            return View(new EditTourViewModel(teams, matches, scorelist, tourInfo));
         }
 
         [HttpPost]
@@ -161,7 +151,7 @@ namespace Predictions.Controllers
             var tourInfo = _tourService.GetTourInfo(tourId);
 
             var headers = new List<string>() { "Дата", "Дома", "В гостях", "Прогноз" };
-            var matchlist = _matchService.GenerateMatchlist(tourId);
+            var matchlist = _matchService.GetLastTournamentMatchesByTourId(tourId).Select(m => m.GetMatchInfo()).ToList();
             var scorelist = _predictionService.GeneratePredictionlist(tourId, expertId, true);
 
             var matchTable = new MatchTableViewModel(headers, matchlist, scorelist);
@@ -212,7 +202,7 @@ namespace Predictions.Controllers
 
         public ActionResult AddScores(int? tourId)
         {
-            var matchlist = _matchService.GenerateMatchlist(tourId);
+            var matchlist = _matchService.GetLastTournamentMatchesByTourId(tourId).Select(m => m.GetMatchInfo()).ToList();
             var scorelist = _matchService.GenerateScorelist(tourId, true);
             if (matchlist == null || scorelist == null) return HttpNotFound();
             var headers = new List<string>() { "Дата", "Дома", "В гостях", "Счет" };

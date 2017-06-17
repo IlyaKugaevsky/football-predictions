@@ -139,13 +139,12 @@ namespace Predictions.Services
                 return results;
             }
 
-            var fStrategy = new ToursWithMatchesWithPredictionsWIthExperts();
-            var strategies = new List<IFetchStrategy<Tournament>>();
-            strategies.Add(fStrategy);
+            var fetchStrategies = new IFetchStrategy<Tournament>[]
+            {
+                new ToursWithMatchesWithPredictionsWIthExperts()
+            };
 
-            var tours = _context.GetLastTournamentTours(strategies.ToArray());
-
-            //var tours = _context.LastTournamentToursWithMatchesPredictionsExperts();
+            var tours = _context.GetLastTournamentTours(fetchStrategies);
 
             var matches = tours
                 .Single(t => t.TourNumber == tourNumber)
@@ -155,17 +154,6 @@ namespace Predictions.Services
                  .SelectMany(m => m.Predictions)
                  .GroupBy(p => p.Expert)
                  .ToList();
-
-
-            //var predictions = _context.Tours
-            //     .Include(t => t.Matches
-            //     .Select(m => m.Predictions
-            //     .Select(p => p.Expert)))
-            //     .Single(t => t.TourId == tourId)
-            //     .Matches
-            //     .SelectMany(m => m.Predictions)
-            //     .GroupBy(p => p.Expert)
-            //     .ToList();
 
             foreach (var epGroup in predictions)
             {

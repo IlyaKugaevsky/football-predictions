@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
@@ -29,6 +30,16 @@ namespace Predictions.DAL
                     .First();
 
             return lastTournament.Tours.AsQueryable();
+        }
+
+        public static IQueryable<Tour> GetToursByTournamentId(this PredictionsContext context, int tournamentId, IFetchStrategy<Tournament>[] fetchStrategies)
+        {
+            var appliedStrategies = fetchStrategies.Select(fs => fs.Apply()).ToArray();
+            var tournaments = context.Tournaments.IncludeMultiple<Tournament>(appliedStrategies);
+            var tournament = tournaments
+                .Single(t => t.TournamentId == tournamentId);
+
+            return tournament.Tours.AsQueryable();
         }
 
         public static IQueryable<Tour> LastTournamentToursWithMatchesTeams(this PredictionsContext context)

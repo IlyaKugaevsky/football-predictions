@@ -7,7 +7,7 @@ using Predictions.Models;
 
 namespace Predictions.DAL.FetchStrategies.TournamentFetchStrategies
 {
-    public class ToursWithMatchesWithTeams : IFetchStrategy<Tournament>
+    public class ToursWithMatchesWithHomeTeam : IFetchStrategy<Tournament>
     {
         public Expression<Func<Models.Tournament, object>> Apply()
         {

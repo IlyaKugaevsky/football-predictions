@@ -5,7 +5,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
-
+using Predictions.Models;
+using Predictions.DAL.FetchStrategies;
+using Predictions.DAL.FetchStrategies.TournamentFetchStrategies;
 
 namespace Predictions.Services
 {
@@ -25,6 +27,24 @@ namespace Predictions.Services
                 ForEach(e => teamlist.Add(
                     new SelectListItem() { Text = e.Title, Value = e.TeamId.ToString() }));
             return teamlist;
+        }
+
+        public List<Team> GetLastTournamentTeams()
+        {
+            var teams = new List<Team>();
+            var fetchStrategies = new IFetchStrategy<Tournament>[]
+            {
+                new ToursWithMatchesWithHomeTeam(),
+                new ToursWithMatchesWithAwayTeam()
+            };
+            var firstTour = _context.GetLastTournamentTours(fetchStrategies).First();
+
+            firstTour.Matches.ForEach(m =>
+            {
+                teams.Add(m.HomeTeam);
+                teams.Add(m.AwayTeam);
+            });
+            return teams;
         }
 
         public List<string> GenerateOrderedTeamTitlelist (int tourId)
