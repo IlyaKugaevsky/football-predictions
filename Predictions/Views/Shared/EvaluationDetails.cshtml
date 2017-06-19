@@ -34,8 +34,8 @@
             {
                 <tr>
                     <td>@Html.DisplayFor(model => Model.Matchlist[i].Date)</td>
-                    <td>@Model.Matchlist[i].HomeTeamTitle</td>
-                    <td>@Model.Matchlist[i].AwayTeamTitle</td>
+                    <td>@Model.Matchlist[i].HomeTeam.Title</td>
+                    <td>@Model.Matchlist[i].AwayTeam.Title</td>
                     <td>@Model.Scorelist[i].Value</td>
                     <td>@Model.Predictionlist[i].Value</td>
                     <td>@Model.TempResultlist[i]</td>
