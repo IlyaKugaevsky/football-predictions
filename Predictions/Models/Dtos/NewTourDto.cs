@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
-namespace Predictions.ViewModels.Basis
+namespace Predictions.Models.Dtos
 {
-    public class TourInfo
+    public class NewTourDto
     {
-        public TourInfo()
+        public NewTourDto()
         { }
 
-        public TourInfo(int id, int number, DateTime startDate, DateTime endDate)
+        public NewTourDto(int id, int number, DateTime startDate, DateTime endDate)
         {
             TourId = id;
             TourNumber = number;

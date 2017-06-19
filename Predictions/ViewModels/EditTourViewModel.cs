@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Predictions.Models.Dtos;
 
 namespace Predictions.ViewModels
 {
@@ -13,15 +14,15 @@ namespace Predictions.ViewModels
         public EditTourViewModel()
         { }
 
-        public EditTourViewModel(List<Team> teams, List<Match> matches, List<FootballScore> scorelist,  TourInfo tourInfo)
+        public EditTourViewModel(List<Team> teams, List<Match> matches, List<FootballScore> scorelist,  NewTourDto newTourDto)
         {
             Teamlist = GenerateSelectList(teams);
-            TourInfo = tourInfo;
+            NewTourDto = newTourDto;
             MatchTable = GenerateMatchTable(matches, scorelist);
-            SubmitTextArea = new SubmitTextAreaViewModel(tourInfo.TourId);
+            SubmitTextArea = new SubmitTextAreaViewModel(newTourDto.TourId);
         }
 
-        public TourInfo TourInfo { get; set; }
+        public NewTourDto NewTourDto { get; set; }
         public MatchTableViewModel MatchTable { get; set; }
         public List<SelectListItem> Teamlist { get; set; }
         public int SelectedHomeTeamId { get; set; }
@@ -41,7 +42,7 @@ namespace Predictions.ViewModels
         private MatchTableViewModel GenerateMatchTable(List<Match> matches, List<FootballScore> scorelist)
         {
             var headers = new List<string>() { "Дата", "Дома", "В гостях", "Счет" };
-            var matchlist = matches.Select(m => m.GetMatchInfo()).ToList();
+            var matchlist = matches.Select(m => m.GetDto()).ToList();
 
             var actionLinklist = matches.Select(t => 
                 new ActionLinkParams(

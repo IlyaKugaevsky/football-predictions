@@ -25,7 +25,7 @@ namespace Predictions.Controllers
         private readonly TeamService _teamService;
         private readonly FileService _fileService;
         private readonly TournamentService _tournamentService;
-        private readonly int _currentTournamentId;
+        //private readonly int _currentTournamentId;
 
         public CurrentTournamentToursController()
         {
@@ -40,39 +40,45 @@ namespace Predictions.Controllers
             //constructor with params?
             _fileService = new FileService();
 
-            _currentTournamentId = _tournamentService.GetCurrentTournamentId();
+            //_currentTournamentId = _tournamentService.GetCurrentTournamentId();
         }
 
         public ActionResult Index()
         {
+            //var newTour1 = new NewTour(3, 1, false);
+            //var newTour2 = new NewTour(3, 2, false);
+            //_context.NewTours.Add(newTour1);
+            //_context.NewTours.Add(newTour2);
+            //_context.SaveChanges();
+
+
+            //var newTours = _context.NewTours.ToList();
+            //var tours = _context.Tours.Include(t => t.Matches).ToList();
+
+            //var tournament = _context.Tournaments.Find(1);
+            //tournament.NewTours = newTours;
+
+
+            //newTours.ForEach(nt => nt.Matches = tours.Find(t => t.TourId == nt.NewTourId).Matches);
+            //_context.NewTours.AddRange(newTours);
+            //_context.SaveChanges();
+
+            //var tournament = _context.Tournaments.Include(t => t.NewTours).First();
+
             return View(_tourService.GetLastTournamentSchedule());
         }
 
         //404 after deleting
-        //totally fucked up
-        /// <summary>
-        /// Id or number? mess
-        /// </summary>
-        /// <param name="tourId"></param>
-        /// <returns></returns>
+        //model or Dto?
         public ActionResult EditTour(int tourId)
         {
-            var tourInfo = _tourService.GetTourInfo(tourId);
+            //optimization: tour with matches
+            var tourDto = _tourService.GetTourDto(tourId);
             var teams = _teamService.GetLastTournamentTeams();
-
-            
             var matches = _matchService.GetLastTournamentMatchesByTourId(tourId);
             var scorelist = _matchService.GenerateScorelist(tourId);
 
-
-
-            var headers = new List<string>() { "Дата", "Дома", "В гостях", "Счет" };
-            var actionLinklist = matches.Select(t => new ActionLinkParams("Удалить", "DeleteConfirmation", null, new {id = t.MatchId}, new {@class = "btn btn-default"})).ToList();
-            //var matches = _tourService.GetMatchesByTour(tourId);
-
-            //var matchTable = new MatchTableViewModel(headers, matches, scorelist, actionLinklist);
-
-            return View(new EditTourViewModel(teams, matches, scorelist, tourInfo));
+            return View(new EditTourViewModel(teams, matches, scorelist, tourDto));
         }
 
         [HttpPost]
@@ -82,10 +88,10 @@ namespace Predictions.Controllers
             //id nullcheck
             if (ModelState.IsValid)
             {
-                _tourService.UpdateTour(viewModel.TourInfo);
+                _tourService.UpdateTour(viewModel.NewTourDto);
                 return RedirectToAction("Index");
             }
-            return EditTour(viewModel.TourInfo.TourId);
+            return EditTour(viewModel.NewTourDto.TourId);
 
         }
 
@@ -96,69 +102,57 @@ namespace Predictions.Controllers
         {
             if (ModelState.IsValid)
             {
-                var match = new Match()
-                {
-                    Date = viewModel.InputDate,
-                    HomeTeamId = viewModel.SelectedHomeTeamId,
-                    AwayTeamId = viewModel.SelectedAwayTeamId,
-                    TourId = viewModel.TourInfo.TourId
-                };
-                //var match = _matchService.CreateMatch(
-                //    viewModel.InputDate,
-                //    viewModel.SelectedHomeTeamId,
-                //    viewModel.SelectedAwayTeamId,
-                //    viewModel.TourInfo.TourId);
+                var match = new Match(
+                    viewModel.InputDate,
+                    viewModel.SelectedHomeTeamId,
+                    viewModel.SelectedAwayTeamId,
+                    viewModel.NewTourDto.TourId);
 
                 _matchService.AddMatch(match);
-                return RedirectToAction("EditTour", new {tourId = viewModel.TourInfo.TourId });
+                return RedirectToAction("EditTour", new {tourId = viewModel.NewTourDto.TourId });
             }
             return View(viewModel);
         }
 
+        //IParsingResult, error messages
         [HttpPost]
         [MultipleButton(Name = "action", Argument = "AddMatches")]
         public ActionResult AddMatches(EditTourViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                var input = viewModel.SubmitTextArea.InputText;
-                var matchlist = _fileService.ParseTourSchedule(input);
-                var scorelist = matchlist.Select(m => new FootballScore("-")).ToList();
-                var headers = new List<string>() { "Дата", "Дома", "В гостях", "Счет" };
-                var matchTable = new MatchTableViewModel(headers, matchlist, scorelist);
-                viewModel.MatchTable = matchTable;
+                //already in viewModel?
+                var possibleTeams = _teamService.GetLastTournamentTeams();
 
-                var tourInfo = _tourService.GetTourInfo(viewModel.SubmitTextArea.TourId);
-                var teamlist = _teamService.GenerateSelectList();
+                var inputMatchesInfo = viewModel.SubmitTextArea.InputText;
+                var parsingResult = _fileService.ParseTourSchedule(inputMatchesInfo);
 
-                viewModel.MatchTable.Matchlist = matchlist;
-                viewModel.TourInfo = tourInfo;
-                viewModel.Teamlist = teamlist;
+                var matches = _matchService.CreateMatches(parsingResult, possibleTeams, viewModel.SubmitTextArea.TourId);
 
-                _matchService.AddMatches(_matchService.CreateMatches(matchlist, tourInfo.TourId));
+                _matchService.AddMatches(matches);
 
-                return View("~/Views/Tours/EditTour.cshtml", viewModel);
+                //return View("~/Views/CurrentTournamentTours/EditTour.cshtml", viewModel);
+                return EditTour(viewModel.SubmitTextArea.TourId);
             }
             //fix
-            return HttpNotFound();
+            return EditTour(viewModel.SubmitTextArea.TourId);
         }
 
 
-        public ActionResult EditPredictions(int? tourId, int? expertId, bool addPredictionSuccess = false) 
+        public ActionResult EditPredictions(int tourId, int? expertId, bool addPredictionSuccess = false) 
         {
-            if (tourId == null) return HttpNotFound();
             var expertlist = _expertService.GenerateSelectList();
-            var tourInfo = _tourService.GetTourInfo(tourId);
+            var tourInfo = _tourService.GetTourDto(tourId);
 
             var headers = new List<string>() { "Дата", "Дома", "В гостях", "Прогноз" };
-            var matchlist = _matchService.GetLastTournamentMatchesByTourId(tourId).Select(m => m.GetMatchInfo()).ToList();
+            var matchlist = _matchService.GetLastTournamentMatchesByTourId(tourId).Select(m => m.GetDto()).ToList();
             var scorelist = _predictionService.GeneratePredictionlist(tourId, expertId, true);
 
             var matchTable = new MatchTableViewModel(headers, matchlist, scorelist);
             var viewModel = new EditPredictionsViewModel(expertlist, tourInfo, matchTable);
             
             viewModel.SelectedExpertId = expertId ?? 0;
-            viewModel.SubmitTextArea.TourId = viewModel.TourInfo.TourId;
+            viewModel.SubmitTextArea.TourId = viewModel.NewTourDto.TourId;
             viewModel.AddPredictionsSuccess = addPredictionSuccess;
 
             return View(viewModel);
@@ -169,7 +163,7 @@ namespace Predictions.Controllers
         [MultipleButton(Name = "action", Argument = "ShowPredictions")]
         public ActionResult ShowPredictions(EditPredictionsViewModel viewModel)
         {
-            return RedirectToAction("EditPredictions", new { tourId = viewModel.TourInfo.TourId, expertId = viewModel.SelectedExpertId });
+            return RedirectToAction("EditPredictions", new { tourId = viewModel.NewTourDto.TourId, expertId = viewModel.SelectedExpertId });
         }
 
         //bind
@@ -179,8 +173,8 @@ namespace Predictions.Controllers
         {
             if (ModelState.IsValid)
             {
-                _predictionService.AddExpertPredictions(viewModel.SelectedExpertId, viewModel.TourInfo.TourId, viewModel.MatchTable.Scorelist);
-                return RedirectToAction("EditPredictions", new { tourId = viewModel.TourInfo.TourId, expertId = viewModel.SelectedExpertId });
+                _predictionService.AddExpertPredictions(viewModel.SelectedExpertId, viewModel.NewTourDto.TourId, viewModel.MatchTable.Scorelist);
+                return RedirectToAction("EditPredictions", new { tourId = viewModel.NewTourDto.TourId, expertId = viewModel.SelectedExpertId });
             }
             return View(viewModel);
 
@@ -200,15 +194,15 @@ namespace Predictions.Controllers
         }
 
 
-        public ActionResult AddScores(int? tourId)
+        public ActionResult AddScores(int tourId)
         {
-            var matchlist = _matchService.GetLastTournamentMatchesByTourId(tourId).Select(m => m.GetMatchInfo()).ToList();
+            var matchlist = _matchService.GetLastTournamentMatchesByTourId(tourId).Select(m => m.GetDto()).ToList();
             var scorelist = _matchService.GenerateScorelist(tourId, true);
             if (matchlist == null || scorelist == null) return HttpNotFound();
             var headers = new List<string>() { "Дата", "Дома", "В гостях", "Счет" };
             var matchTable = new MatchTableViewModel(headers, matchlist, scorelist);
 
-            return View(new AddScoresViewModel(tourId.Value, matchTable));
+            return View(new AddScoresViewModel(tourId, matchTable));
         }
 
         [HttpPost]

@@ -25,7 +25,7 @@ namespace Predictions.Services
         //add custom includes
         public Tour LoadTour(int? tourId)
         {
-            return _context.Tours
+            return _context.NewTours
                 .Include(t => t.Matches
                     .Select(m => m.Predictions
                         .Select(p => p.Expert)))
@@ -77,7 +77,7 @@ namespace Predictions.Services
         public List<FootballScore> GeneratePredictionlist(int? tourId, int? expertId = null, bool editable = false, string emptyDisplay = "-")
         {
             if (tourId == null || expertId == null) return null;
-            var tour = _context.Tours
+            var tour = _context.NewTours
                    .Include(t => t.Matches
                    .Select(m => m.Predictions
                    .Select(p => p.Expert)))
@@ -107,7 +107,7 @@ namespace Predictions.Services
             //return predictions.Select(p => p.IsClosed ? p.Sum.ToString() : "-").ToList();
 
             if (tourId == null || expertId == null) return null;
-            var tour = _context.Tours
+            var tour = _context.NewTours
                    .Include(t => t.Matches
                    .Select(m => m.Predictions
                    .Select(p => p.Expert)))
@@ -128,14 +128,14 @@ namespace Predictions.Services
 
         //optimization! looks ugly
         // "0" for all tours
-        public List<ExpertInfo> GenerateExpertsInfo(int tourNumber = 0)
+        public List<ExpertDto> GenerateExpertsInfo(int tourNumber = 0)
         {
-            var results = new List<ExpertInfo>();
+            var results = new List<ExpertDto>();
 
             if (tourNumber == 0)
             {
                 var experts = _context.Experts.ToList();
-                experts.ForEach(e => results.Add(new ExpertInfo(e.Nickname, e.Sum, e.Scores, e.Differences, e.Outcomes)));
+                experts.ForEach(e => results.Add(new ExpertDto(e.Nickname, e.Sum, e.Scores, e.Differences, e.Outcomes)));
                 return results;
             }
 
@@ -157,7 +157,7 @@ namespace Predictions.Services
 
             foreach (var epGroup in predictions)
             {
-                var info = new ExpertInfo();
+                var info = new ExpertDto();
                 info.Nickname = epGroup.Key.Nickname;
                 foreach (var prediction in epGroup)
                 {
@@ -182,7 +182,7 @@ namespace Predictions.Services
         //why Football score? mb strings?
         public void AddExpertPredictions(int expertId, int tourId, IList<FootballScore> scorelist)
         {
-            var tour = _context.Tours
+            var tour = _context.NewTours
                   .Include(t => t.Matches
                   .Select(m => m.Predictions))
                   .Single(t => t.TourId == tourId);

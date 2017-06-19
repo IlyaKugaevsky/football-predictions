@@ -39,6 +39,9 @@ namespace Predictions.Services
             };
             var firstTour = _context.GetLastTournamentTours(fetchStrategies).First();
 
+            //can be better
+            if (firstTour.Matches.IsNullOrEmpty()) return _context.Teams.ToList();
+
             firstTour.Matches.ForEach(m =>
             {
                 teams.Add(m.HomeTeam);

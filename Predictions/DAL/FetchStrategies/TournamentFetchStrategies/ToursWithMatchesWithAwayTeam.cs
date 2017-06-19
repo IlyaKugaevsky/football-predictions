@@ -11,7 +11,7 @@ namespace Predictions.DAL.FetchStrategies.TournamentFetchStrategies
     {
         public Expression<Func<Tournament, object>> Apply()
         {
-            return t => t.Tours.
+            return t => t.NewTours.
                 Select(tr => tr.Matches
                     .Select(m => m.AwayTeam));
         }

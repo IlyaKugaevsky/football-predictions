@@ -10,6 +10,7 @@ using System.Linq.Expressions;
 using System.Net;
 using Predictions.DAL.FetchStrategies;
 using Predictions.DAL.FetchStrategies.TournamentFetchStrategies;
+using Predictions.Models.Dtos;
 using Predictions.ViewModels.Basis;
 
 namespace Predictions.Services
@@ -21,7 +22,7 @@ namespace Predictions.Services
         //move to EF
         public int MatchesCount(int tourId)
         {
-            return _context.Tours.Single(t => t.TourId == tourId).Matches.Count();
+            return _context.NewTours.Single(t => t.TourId == tourId).Matches.Count();
         }
 
         //move to EF
@@ -35,20 +36,18 @@ namespace Predictions.Services
             _context = context;
         }
 
-        public TourInfo GetTourInfo(int? tourId)
+        public NewTourDto GetTourDto(int tourId)
         {
-            if (tourId == null) return null;
-            var tour = _context.Tours.Find(tourId);
-            return new TourInfo(tour.TourId, tour.TourNumber, tour.StartDate, tour.EndDate);
+            return _context.NewTours.Single(t => t.TourId == tourId).GetDto();
         }
 
-        public void UpdateTour(TourInfo tourInfo)
+        public void UpdateTour(NewTourDto newTourDto)
         {
-            var tour = _context.Tours.Find(tourInfo.TourId);
+            var tour = _context.NewTours.Find(newTourDto.TourId);
             if (tour != null)
             {
-                tour.StartDate = tourInfo.StartDate;
-                tour.EndDate = tourInfo.EndDate;
+                tour.StartDate = newTourDto.StartDate;
+                tour.EndDate = newTourDto.EndDate;
                 _context.SaveChanges();
             }
         }
@@ -56,7 +55,7 @@ namespace Predictions.Services
         public List<SelectListItem> GenerateSelectList()
         {
             var tourlist = new List<SelectListItem>();
-            _context.Tours.ToList()
+            _context.NewTours.ToList()
                 .ForEach(t => tourlist.Add( new SelectListItem() { Text = t.TourId.ToString(), Value = t.TourId.ToString() }));
             return tourlist;
         }
@@ -65,7 +64,7 @@ namespace Predictions.Services
         public Tour EagerLoad(int? id, params Expression<Func<Tour, object>>[] includes)
         {
             if (id == null) return null;
-            return _context.Tours.IncludeMultiple(includes)
+            return _context.NewTours.IncludeMultiple(includes)
                 .ToList()
                 .Single(t => t.TourId == id);
         }

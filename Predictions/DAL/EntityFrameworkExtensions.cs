@@ -14,11 +14,17 @@ namespace Predictions.DAL
     {
         public static IQueryable<Tour> ToursWithMatchesWithTeams(this PredictionsContext context)
         {
-            return context.Tours
+            return context.NewTours
                 .Include(t => t.Matches
                     .Select(m => m.HomeTeam))
                 .Include(t => t.Matches
                     .Select(m => m.AwayTeam));
+        }
+
+        public static IQueryable<Tour> GetTours(this PredictionsContext context, IFetchStrategy<Tour>[] fetchStrategies)
+        {
+            var appliedStrategies = fetchStrategies.Select(fs => fs.Apply()).ToArray();
+            return context.NewTours.IncludeMultiple<Tour>(appliedStrategies);
         }
 
         public static IQueryable<Tour> GetLastTournamentTours(this PredictionsContext context, IFetchStrategy<Tournament>[] fetchStrategies)
@@ -29,7 +35,7 @@ namespace Predictions.DAL
                     .OrderByDescending(t => t.TournamentId)
                     .First();
 
-            return lastTournament.Tours.AsQueryable();
+            return lastTournament.NewTours.AsQueryable();
         }
 
         public static IQueryable<Tour> GetToursByTournamentId(this PredictionsContext context, int tournamentId, IFetchStrategy<Tournament>[] fetchStrategies)
@@ -39,37 +45,8 @@ namespace Predictions.DAL
             var tournament = tournaments
                 .Single(t => t.TournamentId == tournamentId);
 
-            return tournament.Tours.AsQueryable();
+            return tournament.NewTours.AsQueryable();
         }
-
-        public static IQueryable<Tour> LastTournamentToursWithMatchesTeams(this PredictionsContext context)
-        {
-            return context.Tournaments
-                    .Include(trnm => trnm.Tours
-                        .Select(tr => tr.Matches
-                            .Select(m => m.HomeTeam)))
-                    .Include(trnm => trnm.Tours
-                        .Select(tr => tr.Matches
-                            .Select(m => m.AwayTeam)))
-                    .OrderByDescending(t => t.TournamentId)
-                    .First()
-                    .Tours
-                    .AsQueryable();
-        }
-        public static IQueryable<Tour> LastTournamentToursWithMatchesPredictionsExperts(this PredictionsContext context)
-        {
-            return context.Tournaments
-                    .Include(trnm => trnm.Tours
-                        .Select(tr => tr.Matches
-                            .Select(m => m.Predictions
-                                .Select(p => p.Expert))))
-                    .OrderByDescending(t => t.TournamentId)
-                    .First()
-                    .Tours
-                    .AsQueryable();
-        }
-
-
 
         public static IQueryable<T> IncludeMultiple<T>(this IQueryable<T> query,
             params Expression<Func<T, object>>[] includes) 

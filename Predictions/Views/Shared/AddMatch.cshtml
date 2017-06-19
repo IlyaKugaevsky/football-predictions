@@ -3,7 +3,7 @@
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "addMatchForm", @class = "form-inline" }))
 {
     <div class="control-group">
-        @Html.HiddenFor(model => model.TourInfo.TourId, Model.TourInfo.TourId)
+        @Html.HiddenFor(model => model.NewTourDto.TourId, Model.NewTourDto.TourId)
         @Html.TextBoxFor(model => model.InputDate, new { @class = "form-control datepicker", data_width = "auto" })
         @Html.DropDownListFor(model => model.SelectedHomeTeamId, Model.Teamlist, new { @class = "selectpicker", data_width = "auto", @title = "Дома" })
         @Html.DropDownListFor(model => model.SelectedAwayTeamId, Model.Teamlist, new { @class = "selectpicker", data_width = "auto", @title = "В гостях" })

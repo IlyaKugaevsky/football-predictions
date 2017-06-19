@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Predictions.Models.Dtos;
 
 namespace Predictions.ViewModels
 {
@@ -12,13 +13,7 @@ namespace Predictions.ViewModels
         public ResultsTableViewModel()
         { }
 
-        //public ResultsTableViewModel(List<SelectListItem> tourList, List<ExpertInfo> resultsTable)
-        //{
-        //    Tourlist = tourList;
-        //    ResultsTable = resultsTable;
-        //}
-
-        public ResultsTableViewModel(List<TourInfo> tours, List<ExpertInfo> resultsTable)
+        public ResultsTableViewModel(List<NewTourDto> tours, List<ExpertDto> resultsTable)
         {
             Tourlist = GenerateSelectList(tours);
             ResultsTable = resultsTable;
@@ -27,9 +22,9 @@ namespace Predictions.ViewModels
         public List<SelectListItem> Tourlist { get; set; }
         public int SelectedTourId { get; set; }
 
-        public List<ExpertInfo> ResultsTable { get; set; }
+        public List<ExpertDto> ResultsTable { get; set; }
 
-        private List<SelectListItem> GenerateSelectList(List<TourInfo> tours)
+        private List<SelectListItem> GenerateSelectList(List<NewTourDto> tours)
         {
             var tourlist = new List<SelectListItem>()
             {

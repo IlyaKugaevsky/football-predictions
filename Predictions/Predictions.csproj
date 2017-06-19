@@ -218,6 +218,8 @@
     <Compile Include="Controllers\CurrentTournamentToursController.cs" />
     <Compile Include="DAL\EntityFrameworkExtensions.cs" />
     <Compile Include="DAL\FetchStrategies\IFetchStrategy.cs" />
+    <Compile Include="DAL\FetchStrategies\TourFetchStrategies\MatchesWithAwayTeam.cs" />
+    <Compile Include="DAL\FetchStrategies\TourFetchStrategies\MatchesWithHomeTeam.cs" />
     <Compile Include="DAL\FetchStrategies\TournamentFetchStrategies\ToursWithMatchesWithAwayTeam.cs" />
     <Compile Include="DAL\FetchStrategies\TournamentFetchStrategies\ToursWithMatchesWithHomeTeam.cs" />
     <Compile Include="DAL\FetchStrategies\TournamentFetchStrategies\ToursWithMatchesWithPredictionsWIthExperts.cs" />
@@ -253,15 +255,72 @@
     <Compile Include="Migrations\201706142354100_TourIdGeneration.Designer.cs">
       <DependentUpon>201706142354100_TourIdGeneration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706181549326_TourId autogenerate.cs" />
+    <Compile Include="Migrations\201706181549326_TourId autogenerate.Designer.cs">
+      <DependentUpon>201706181549326_TourId autogenerate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706181612466_TourId computed.cs" />
+    <Compile Include="Migrations\201706181612466_TourId computed.Designer.cs">
+      <DependentUpon>201706181612466_TourId computed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706181615517_TourId identity.cs" />
+    <Compile Include="Migrations\201706181615517_TourId identity.Designer.cs">
+      <DependentUpon>201706181615517_TourId identity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706182047095_NewTour.cs" />
+    <Compile Include="Migrations\201706182047095_NewTour.Designer.cs">
+      <DependentUpon>201706182047095_NewTour.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706182109212_NewTour relations.cs" />
+    <Compile Include="Migrations\201706182109212_NewTour relations.Designer.cs">
+      <DependentUpon>201706182109212_NewTour relations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706182132300_wtf.cs" />
+    <Compile Include="Migrations\201706182132300_wtf.Designer.cs">
+      <DependentUpon>201706182132300_wtf.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706182345502_delete Tournament.Tours property.cs" />
+    <Compile Include="Migrations\201706182345502_delete Tournament.Tours property.Designer.cs">
+      <DependentUpon>201706182345502_delete Tournament.Tours property.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706190024019_not-nullable Match-NewTourId.cs" />
+    <Compile Include="Migrations\201706190024019_not-nullable Match-NewTourId.Designer.cs">
+      <DependentUpon>201706190024019_not-nullable Match-NewTourId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706190057577_delete Match-Tour relation.cs" />
+    <Compile Include="Migrations\201706190057577_delete Match-Tour relation.Designer.cs">
+      <DependentUpon>201706190057577_delete Match-Tour relation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706191334538_rename Tour.cs" />
+    <Compile Include="Migrations\201706191334538_rename Tour.Designer.cs">
+      <DependentUpon>201706191334538_rename Tour.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706191347346_rename NewTour.cs" />
+    <Compile Include="Migrations\201706191347346_rename NewTour.Designer.cs">
+      <DependentUpon>201706191347346_rename NewTour.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706191416141_rename NewTourId.cs" />
+    <Compile Include="Migrations\201706191416141_rename NewTourId.Designer.cs">
+      <DependentUpon>201706191416141_rename NewTourId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706191442057_rename new mapping.cs" />
+    <Compile Include="Migrations\201706191442057_rename new mapping.Designer.cs">
+      <DependentUpon>201706191442057_rename new mapping.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Dtos\MatchDto.cs" />
+    <Compile Include="Models\Dtos\ParsingMatchInfo.cs" />
+    <Compile Include="Models\Dtos\TeamDto.cs" />
+    <Compile Include="Models\Dtos\NewTourDto.cs" />
     <Compile Include="Models\Expert.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Match.cs" />
+    <Compile Include="Models\Tour.cs" />
     <Compile Include="Models\Prediction.cs" />
     <Compile Include="Models\Team.cs" />
-    <Compile Include="Models\Tour.cs" />
+    <Compile Include="Models\OldTour.cs" />
     <Compile Include="Models\Tournament.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ExpertService.cs" />
@@ -275,15 +334,13 @@
     <Compile Include="ViewModels\AddPredictionsViewModel.cs" />
     <Compile Include="ViewModels\AddScoresViewModel.cs" />
     <Compile Include="ViewModels\Basis\ActionLinkParams.cs" />
-    <Compile Include="ViewModels\Basis\ExpertInfo.cs" />
+    <Compile Include="ViewModels\Basis\ExpertDto.cs" />
     <Compile Include="ViewModels\Basis\FootballScore.cs" />
     <Compile Include="ViewModels\Basis\PredictionInfo.cs" />
     <Compile Include="ViewModels\Basis\PredictionResults.cs" />
-    <Compile Include="ViewModels\Basis\TourInfo.cs" />
     <Compile Include="ViewModels\EditTourViewModel.cs" />
     <Compile Include="ViewModels\EvaluationDetailsViewModel.cs" />
     <Compile Include="ViewModels\MatchesViewModel.cs" />
-    <Compile Include="ViewModels\Basis\MatchInfo.cs" />
     <Compile Include="ViewModels\MatchTableViewModel.cs" />
     <Compile Include="ViewModels\PredictionsDisplayViewModel.cs" />
     <Compile Include="ViewModels\PreresultsViewModel.cs" />
@@ -481,6 +538,45 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706142354100_TourIdGeneration.resx">
       <DependentUpon>201706142354100_TourIdGeneration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706181549326_TourId autogenerate.resx">
+      <DependentUpon>201706181549326_TourId autogenerate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706181612466_TourId computed.resx">
+      <DependentUpon>201706181612466_TourId computed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706181615517_TourId identity.resx">
+      <DependentUpon>201706181615517_TourId identity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706182047095_NewTour.resx">
+      <DependentUpon>201706182047095_NewTour.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706182109212_NewTour relations.resx">
+      <DependentUpon>201706182109212_NewTour relations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706182132300_wtf.resx">
+      <DependentUpon>201706182132300_wtf.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706182345502_delete Tournament.Tours property.resx">
+      <DependentUpon>201706182345502_delete Tournament.Tours property.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706190024019_not-nullable Match-NewTourId.resx">
+      <DependentUpon>201706190024019_not-nullable Match-NewTourId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706190057577_delete Match-Tour relation.resx">
+      <DependentUpon>201706190057577_delete Match-Tour relation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706191334538_rename Tour.resx">
+      <DependentUpon>201706191334538_rename Tour.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706191347346_rename NewTour.resx">
+      <DependentUpon>201706191347346_rename NewTour.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706191416141_rename NewTourId.resx">
+      <DependentUpon>201706191416141_rename NewTourId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706191442057_rename new mapping.resx">
+      <DependentUpon>201706191442057_rename new mapping.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

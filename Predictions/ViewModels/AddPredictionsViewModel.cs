@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web.Mvc;
+using Predictions.Models.Dtos;
 
 namespace Predictions.ViewModels
 {
@@ -13,16 +14,16 @@ namespace Predictions.ViewModels
         public EditPredictionsViewModel()
         { }
 
-        public EditPredictionsViewModel(List<SelectListItem> expertlist, TourInfo tourInfo, MatchTableViewModel matchTable /*List<MatchInfo> matchlist, List<FootballScore> editPredictionsValuelist = null*/)
+        public EditPredictionsViewModel(List<SelectListItem> expertlist, NewTourDto newTourDto, MatchTableViewModel matchTable /*List<MatchInfo> matchlist, List<FootballScore> editPredictionsValuelist = null*/)
         {
-            TourInfo = tourInfo;
+            NewTourDto = newTourDto;
             Expertlist = expertlist;
             MatchTable = matchTable;
             SubmitTextArea = new SubmitTextAreaViewModel();
         }
 
         //display
-        public TourInfo TourInfo { get; set; }
+        public NewTourDto NewTourDto { get; set; }
 
         public List<SelectListItem> Expertlist { get; set; }
 

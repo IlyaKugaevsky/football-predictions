@@ -46,13 +46,13 @@ namespace Predictions.Controllers
             //tourlist.AddRange(_tourService.GenerateSelectList());
 
             var tours = _context.Tournaments
-                .Include(t => t.Tours)
+                .Include(t => t.NewTours)
                 .OrderByDescending(t => t.TournamentId)
                 .First()
-                .Tours;
+                .NewTours;
 
             var results = _predictionService.GenerateExpertsInfo();
-            var resultsTable = new ResultsTableViewModel(tours.Select(t => t.GetTourInfo()).ToList(), results);
+            var resultsTable = new ResultsTableViewModel(tours.Select(t => t.GetDto()).ToList(), results);
 
             return View(resultsTable);
         }
