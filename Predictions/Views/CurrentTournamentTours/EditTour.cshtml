@@ -67,3 +67,19 @@
 </div>
 
 
+
+<script src="/Scripts/jquery.validate.js"></script>
+<script src="/Scripts/globalize.js"></script>
+<script src="/Scripts/globalize/date.js"></script>
+<script src="/Scripts/jquery.validate.globalize.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $.validator.methods.date = function (value, element) {
+            Globalize.culture("en-AU");
+            // you can alternatively pass the culture to parseDate instead of
+            // setting the culture above, like so:
+            // parseDate(value, null, "en-AU")
+            return this.optional(element) || Globalize.parseDate(value) !== null;
+        }
+    });
+</script>

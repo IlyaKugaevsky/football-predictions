@@ -45,25 +45,9 @@ namespace Predictions.Controllers
 
         public ActionResult Index()
         {
-            //var newTour1 = new NewTour(3, 1, false);
-            //var newTour2 = new NewTour(3, 2, false);
+            //var newTour1 = new Tour(3, 3, false);
             //_context.NewTours.Add(newTour1);
-            //_context.NewTours.Add(newTour2);
             //_context.SaveChanges();
-
-
-            //var newTours = _context.NewTours.ToList();
-            //var tours = _context.Tours.Include(t => t.Matches).ToList();
-
-            //var tournament = _context.Tournaments.Find(1);
-            //tournament.NewTours = newTours;
-
-
-            //newTours.ForEach(nt => nt.Matches = tours.Find(t => t.TourId == nt.NewTourId).Matches);
-            //_context.NewTours.AddRange(newTours);
-            //_context.SaveChanges();
-
-            //var tournament = _context.Tournaments.Include(t => t.NewTours).First();
 
             return View(_tourService.GetLastTournamentSchedule());
         }
@@ -88,8 +72,9 @@ namespace Predictions.Controllers
             //id nullcheck
             if (ModelState.IsValid)
             {
+                //tourNumber in TourDto
                 _tourService.UpdateTour(viewModel.NewTourDto);
-                return RedirectToAction("Index");
+                return RedirectToAction("EditTour", new { tourId = viewModel.NewTourDto.TourId});
             }
             return EditTour(viewModel.NewTourDto.TourId);
 
