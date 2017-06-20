@@ -1,9 +1,13 @@
 ﻿@using Predictions.Models
-    @*@model LoginViewModel
+    @model LoginViewModel
     @{
         ViewBag.Title = "Выполнить вход";
+        var onDeploy = false;
     }
 
+
+@if (!onDeploy)
+{
     <h2>@ViewBag.Title.</h2>
     <div class="row">
         <div class="col-md-8">
@@ -44,9 +48,9 @@
                     <p>
                         @Html.ActionLink("Регистрация нового пользователя", "Register")
                     </p>
-                        <p>
-                            @Html.ActionLink("Забыли пароль?", "ForgotPassword")
-                        </p>
+                    <p>
+                        @Html.ActionLink("Забыли пароль?", "ForgotPassword")
+                    </p>
                 }
             </section>
         </div>
@@ -57,21 +61,20 @@
         </div>
     </div>
 
-    @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-    }*@
-
-<style>
-    h1 {
-        color:white !important;
-    }
+    @section Scripts { @Scripts.Render("~/bundles/jqueryval") }
+}
+else
+{
+    <style>
+        h1 { color: white !important;}
     </style>
 
-<div class="jumbotron jumbotron-under-cnstr">
-    <div class="container" style="height: 500px;">
-        <h1>Раздел в разработке</h1>
-        <p style="color:white">Скоро откроемся</p>
-        <p><a href="@Url.Action("Index", "Home")" class="btn btn-primary btn-lg">Вернуться на главную &raquo;</a></p>
+    <div class="jumbotron jumbotron-under-cnstr">
+        <div class="container" style="height: 500px;">
+            <h1>Раздел в разработке</h1>
+            <p style="color:white">Скоро откроемся</p>
+            <p><a href="@Url.Action("Index", "Home")" class="btn btn-primary btn-lg">Вернуться на главную &raquo;</a></p>
 
+        </div>
     </div>
-</div>
+}
