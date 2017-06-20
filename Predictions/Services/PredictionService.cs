@@ -7,6 +7,7 @@ using Predictions.Models;
 using Predictions.Helpers;
 using System.Data.Entity;
 using Predictions.DAL.FetchStrategies;
+using Predictions.DAL.FetchStrategies.TourFetchStrategies;
 using Predictions.DAL.FetchStrategies.TournamentFetchStrategies;
 using Predictions.Services;
 using Predictions.ViewModels.Basis;
@@ -74,9 +75,14 @@ namespace Predictions.Services
             return scorelist;
         }
 
-        public List<FootballScore> GeneratePredictionlist(int? tourId, int? expertId = null, bool editable = false, string emptyDisplay = "-")
+        public List<FootballScore> GeneratePredictionlist(int tourId, int expertId, bool editable = false, string emptyDisplay = "-")
         {
-            if (tourId == null || expertId == null) return null;
+
+           // var fetchStrategies = new IFetchStrategy<Tour>[]
+           //{
+           //     new MatchesWithPredictionsWIthExperts()
+           //};
+
             var tour = _context.NewTours
                    .Include(t => t.Matches
                    .Select(m => m.Predictions

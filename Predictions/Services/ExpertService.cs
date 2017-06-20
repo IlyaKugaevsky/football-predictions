@@ -16,6 +16,11 @@ namespace Predictions.Services
         {
             _context = context;
         }
+
+        public List<Expert> GetExpertList()
+        {
+            return _context.Experts.ToList();
+        }
  
         public List<SelectListItem> GenerateSelectList()
         {

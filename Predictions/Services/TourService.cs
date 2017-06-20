@@ -70,6 +70,16 @@ namespace Predictions.Services
         }
 
 
+        public List<Tour> GetLastTournamentTours()
+        {
+            return _context.Tournaments
+                .Include(t => t.NewTours)
+                .OrderByDescending(t => t.TournamentId)
+                .First()
+                .NewTours
+                .ToList();
+        }
+
         public List<Tour> GetLastTournamentSchedule()
         {
             var fetchStrategies = new IFetchStrategy<Tournament>[]

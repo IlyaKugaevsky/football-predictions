@@ -45,10 +45,6 @@ namespace Predictions.Controllers
 
         public ActionResult Index()
         {
-            //var newTour1 = new Tour(3, 3, false);
-            //_context.NewTours.Add(newTour1);
-            //_context.SaveChanges();
-
             return View(_tourService.GetLastTournamentSchedule());
         }
 
@@ -116,29 +112,35 @@ namespace Predictions.Controllers
 
                 _matchService.AddMatches(matches);
 
-                //return View("~/Views/CurrentTournamentTours/EditTour.cshtml", viewModel);
-                return EditTour(viewModel.SubmitTextArea.TourId);
+                return RedirectToAction("EditTour", new { tourId = viewModel.SubmitTextArea.TourId});
             }
             //fix
             return EditTour(viewModel.SubmitTextArea.TourId);
         }
 
 
-        public ActionResult EditPredictions(int tourId, int? expertId, bool addPredictionSuccess = false) 
+        public ActionResult EditPredictions(int tourId, int expertId = 1, bool addPredictionSuccess = false) 
         {
-            var expertlist = _expertService.GenerateSelectList();
-            var tourInfo = _tourService.GetTourDto(tourId);
 
-            var headers = new List<string>() { "Дата", "Дома", "В гостях", "Прогноз" };
-            var matchlist = _matchService.GetLastTournamentMatchesByTourId(tourId).Select(m => m.GetDto()).ToList();
+            //var expertlist = _expertService.GenerateSelectList();
+            var experts = _expertService.GetExpertList();
+
+            var tourDto = _tourService.GetTourDto(tourId);
+
+            //var headers = new List<string>() { "Дата", "Дома", "В гостях", "Прогноз" };
+
+            var matches = _matchService.GetLastTournamentMatchesByTourId(tourId).ToList();
+
             var scorelist = _predictionService.GeneratePredictionlist(tourId, expertId, true);
 
-            var matchTable = new MatchTableViewModel(headers, matchlist, scorelist);
-            var viewModel = new EditPredictionsViewModel(expertlist, tourInfo, matchTable);
-            
-            viewModel.SelectedExpertId = expertId ?? 0;
-            viewModel.SubmitTextArea.TourId = viewModel.NewTourDto.TourId;
-            viewModel.AddPredictionsSuccess = addPredictionSuccess;
+            //var matchTable = new MatchTableViewModel(headers, matchlist, scorelist);
+
+            var viewModel = new EditPredictionsViewModel(matches, experts,  scorelist, tourDto,expertId, addPredictionSuccess);
+
+            //viewModel.SelectedExpertId = expertId;
+
+            //viewModel.SubmitTextArea.TourId = viewModel.NewTourDto.TourId;
+            //viewModel.AddPredictionsSuccess = addPredictionSuccess;
 
             return View(viewModel);
         }
@@ -183,7 +185,6 @@ namespace Predictions.Controllers
         {
             var matchlist = _matchService.GetLastTournamentMatchesByTourId(tourId).Select(m => m.GetDto()).ToList();
             var scorelist = _matchService.GenerateScorelist(tourId, true);
-            if (matchlist == null || scorelist == null) return HttpNotFound();
             var headers = new List<string>() { "Дата", "Дома", "В гостях", "Счет" };
             var matchTable = new MatchTableViewModel(headers, matchlist, scorelist);
 

@@ -34,8 +34,9 @@ namespace Predictions.Controllers
         {
             var evaluationDetails = new EvaluationDetailsViewModel();
             var expertlist = _expertService.GenerateSelectList();
-            var tourlist = _tourService.GenerateSelectList();
-            var viewModel = new PredictionsDisplayViewModel(expertlist, tourlist, evaluationDetails);
+            //var tourlist = _tourService.GenerateSelectList();
+            var tours = _tourService.GetLastTournamentTours();
+            var viewModel = new PredictionsDisplayViewModel(expertlist, tours, evaluationDetails);
             return View(viewModel);
         }
 

@@ -14,10 +14,10 @@ namespace Predictions.ViewModels
         public PredictionsDisplayViewModel()
         { }
 
-        public PredictionsDisplayViewModel (List<SelectListItem> expertlist, List<SelectListItem> tourlist, EvaluationDetailsViewModel evaluationDetails)
+        public PredictionsDisplayViewModel (List<SelectListItem> expertlist, List<Tour> tours, EvaluationDetailsViewModel evaluationDetails)
         {
             Expertlist = expertlist;
-            Tourlist = tourlist;
+            Tourlist = GenerateSelectList(tours);
             EvaluationDetails = evaluationDetails;
         }
 
@@ -32,6 +32,14 @@ namespace Predictions.ViewModels
         public EvaluationDetailsViewModel EvaluationDetails { get; set; }
         //public MatchTableViewModel MatchTable { get; set; }
 
+        private List<SelectListItem> GenerateSelectList(List<Tour> tours)
+        {
+            return tours.Select(t => new SelectListItem()
+            {
+                Text = t.TourNumber.ToString(),
+                Value = t.TourId.ToString()
+            }).ToList();
+        }
 
     }
 }
