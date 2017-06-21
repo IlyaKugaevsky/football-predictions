@@ -14,7 +14,7 @@ namespace Predictions.DAL
     {
         public static IQueryable<Tour> ToursWithMatchesWithTeams(this PredictionsContext context)
         {
-            return context.NewTours
+            return context.Tours
                 .Include(t => t.Matches
                     .Select(m => m.HomeTeam))
                 .Include(t => t.Matches
@@ -24,7 +24,7 @@ namespace Predictions.DAL
         public static IQueryable<Tour> GetTours(this PredictionsContext context, IFetchStrategy<Tour>[] fetchStrategies)
         {
             var appliedStrategies = fetchStrategies.Select(fs => fs.Apply()).ToArray();
-            return context.NewTours.IncludeMultiple<Tour>(appliedStrategies);
+            return context.Tours.IncludeMultiple<Tour>(appliedStrategies);
         }
 
         public static IQueryable<Tour> GetLastTournamentTours(this PredictionsContext context, IFetchStrategy<Tournament>[] fetchStrategies)

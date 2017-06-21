@@ -18,7 +18,7 @@ namespace Predictions.DAL
         public DbSet<Prediction> Predictions { get; set; }
         public DbSet<OldTour> OldTours { get; set; }
 
-        public DbSet<Tour> NewTours { get; set; }
+        public DbSet<Tour> Tours { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

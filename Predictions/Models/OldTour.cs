@@ -33,9 +33,9 @@ namespace Predictions.Models
         //public virtual List<Match> Matches { get; set; }
 
 
-        public NewTourDto GetTourDto()
+        public TourDto GetTourDto()
         {
-            return new NewTourDto(OldTourId, OldTourNumber, StartDate, EndDate);
+            return new TourDto(OldTourId, OldTourNumber, StartDate, EndDate);
         }
     }
 }

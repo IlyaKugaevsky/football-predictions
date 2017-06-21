@@ -26,7 +26,7 @@ namespace Predictions.Services
         //add custom includes
         public Tour LoadTour(int? tourId)
         {
-            return _context.NewTours
+            return _context.Tours
                 .Include(t => t.Matches
                     .Select(m => m.Predictions
                         .Select(p => p.Expert)))
@@ -83,7 +83,7 @@ namespace Predictions.Services
            //     new MatchesWithPredictionsWIthExperts()
            //};
 
-            var tour = _context.NewTours
+            var tour = _context.Tours
                    .Include(t => t.Matches
                    .Select(m => m.Predictions
                    .Select(p => p.Expert)))
@@ -113,7 +113,7 @@ namespace Predictions.Services
             //return predictions.Select(p => p.IsClosed ? p.Sum.ToString() : "-").ToList();
 
             if (tourId == null || expertId == null) return null;
-            var tour = _context.NewTours
+            var tour = _context.Tours
                    .Include(t => t.Matches
                    .Select(m => m.Predictions
                    .Select(p => p.Expert)))
@@ -188,7 +188,7 @@ namespace Predictions.Services
         //why Football score? mb strings?
         public void AddExpertPredictions(int expertId, int tourId, IList<FootballScore> scorelist)
         {
-            var tour = _context.NewTours
+            var tour = _context.Tours
                   .Include(t => t.Matches
                   .Select(m => m.Predictions))
                   .Single(t => t.TourId == tourId);

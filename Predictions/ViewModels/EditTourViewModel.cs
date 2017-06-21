@@ -14,15 +14,15 @@ namespace Predictions.ViewModels
         public EditTourViewModel()
         { }
 
-        public EditTourViewModel(List<Team> teams, List<Match> matches, List<FootballScore> scorelist,  NewTourDto newTourDto)
+        public EditTourViewModel(List<Team> teams, List<Match> matches, List<FootballScore> scorelist,  TourDto tourDto)
         {
             Teamlist = GenerateSelectList(teams);
-            NewTourDto = newTourDto;
+            TourDto = tourDto;
             MatchTable = GenerateMatchTable(matches, scorelist);
-            SubmitTextArea = new SubmitTextAreaViewModel(newTourDto.TourId);
+            SubmitTextArea = new SubmitTextAreaViewModel(tourDto.TourId);
         }
 
-        public NewTourDto NewTourDto { get; set; }
+        public TourDto TourDto { get; set; }
         public MatchTableViewModel MatchTable { get; set; }
         public List<SelectListItem> Teamlist { get; set; }
         public int SelectedHomeTeamId { get; set; }

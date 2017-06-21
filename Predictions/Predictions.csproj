@@ -312,7 +312,7 @@
     <Compile Include="Models\Dtos\MatchDto.cs" />
     <Compile Include="Models\Dtos\ParsingMatchInfo.cs" />
     <Compile Include="Models\Dtos\TeamDto.cs" />
-    <Compile Include="Models\Dtos\NewTourDto.cs" />
+    <Compile Include="Models\Dtos\TourDto.cs" />
     <Compile Include="Models\Expert.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />

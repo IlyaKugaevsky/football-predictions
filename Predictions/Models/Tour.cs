@@ -13,11 +13,11 @@ namespace Predictions.Models
         public Tour()
         { }
 
-        public Tour(int tornamentId, int tourNumber, bool isClosed)
+        public Tour(int tornamentId, int tourNumber)
         {
             TournamentId = tornamentId;
             TourNumber = tourNumber;
-            IsClosed = isClosed;
+            IsClosed = false;
         }
 
 
@@ -44,9 +44,9 @@ namespace Predictions.Models
         public virtual List<Match> Matches { get; set; }
 
 
-        public NewTourDto GetDto()
+        public TourDto GetDto()
         {
-            return new NewTourDto(TourId, TourNumber, StartDate, EndDate);
+            return new TourDto(TourId, TourNumber, StartDate, EndDate);
         }
     }
 }

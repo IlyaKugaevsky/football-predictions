@@ -23,19 +23,19 @@ namespace Predictions.ViewModels
         //    SubmitTextArea = new SubmitTextAreaViewModel();
         //}
 
-        public EditPredictionsViewModel(List<Match> matches, List<Expert> experts, List<FootballScore> scorelist, NewTourDto newTourDto, int expertId, bool addPredictionSuccess)
+        public EditPredictionsViewModel(List<Match> matches, List<Expert> experts, List<FootballScore> scorelist, TourDto tourDto, int expertId, bool addPredictionSuccess)
         {
-            NewTourDto = newTourDto;
+            TourDto = tourDto;
             Expertlist = GenerateSelectList(experts);
             MatchTable = GenerateMatchTable(matches, scorelist);
             SubmitTextArea = new SubmitTextAreaViewModel();
             SelectedExpertId = expertId;
-            SubmitTextArea.TourId = newTourDto.TourId;
+            SubmitTextArea.TourId = tourDto.TourId;
             AddPredictionsSuccess = addPredictionSuccess;
         }
 
         //display
-        public NewTourDto NewTourDto { get; set; }
+        public TourDto TourDto { get; set; }
 
         public List<SelectListItem> Expertlist { get; set; }
 

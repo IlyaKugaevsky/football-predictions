@@ -13,7 +13,7 @@ namespace Predictions.ViewModels
         public ResultsTableViewModel()
         { }
 
-        public ResultsTableViewModel(List<NewTourDto> tours, List<ExpertDto> resultsTable)
+        public ResultsTableViewModel(List<TourDto> tours, List<ExpertDto> resultsTable)
         {
             Tourlist = GenerateSelectList(tours);
             ResultsTable = resultsTable;
@@ -24,7 +24,7 @@ namespace Predictions.ViewModels
 
         public List<ExpertDto> ResultsTable { get; set; }
 
-        private List<SelectListItem> GenerateSelectList(List<NewTourDto> tours)
+        private List<SelectListItem> GenerateSelectList(List<TourDto> tours)
         {
             var tourlist = new List<SelectListItem>()
             {

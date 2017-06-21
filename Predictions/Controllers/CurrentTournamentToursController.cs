@@ -25,7 +25,6 @@ namespace Predictions.Controllers
         private readonly TeamService _teamService;
         private readonly FileService _fileService;
         private readonly TournamentService _tournamentService;
-        //private readonly int _currentTournamentId;
 
         public CurrentTournamentToursController()
         {
@@ -39,12 +38,14 @@ namespace Predictions.Controllers
 
             //constructor with params?
             _fileService = new FileService();
-
-            //_currentTournamentId = _tournamentService.GetCurrentTournamentId();
         }
 
         public ActionResult Index()
         {
+            //var tour = new Tour(3, 100500);
+            //_context.Tours.Add(tour);
+            //_context.SaveChanges();
+
             return View(_tourService.GetLastTournamentSchedule());
         }
 
@@ -65,15 +66,10 @@ namespace Predictions.Controllers
         [MultipleButton(Name = "action", Argument = "SaveTourSettings")]
         public ActionResult SaveTourSettings(EditTourViewModel viewModel)
         {
-            //id nullcheck
-            if (ModelState.IsValid)
-            {
-                //tourNumber in TourDto
-                _tourService.UpdateTour(viewModel.NewTourDto);
-                return RedirectToAction("EditTour", new { tourId = viewModel.NewTourDto.TourId});
-            }
-            return EditTour(viewModel.NewTourDto.TourId);
-
+            //model cannot be invalid (?)
+            //tourNumber in TourDto not set
+            _tourService.UpdateTour(viewModel.TourDto);
+            return RedirectToAction("EditTour", new { tourId = viewModel.TourDto.TourId});
         }
 
         //bind include
@@ -81,18 +77,15 @@ namespace Predictions.Controllers
         [MultipleButton(Name = "action", Argument = "AddMatch")]
         public ActionResult AddMatch(EditTourViewModel viewModel)
         {
-            if (ModelState.IsValid)
-            {
-                var match = new Match(
-                    viewModel.InputDate,
-                    viewModel.SelectedHomeTeamId,
-                    viewModel.SelectedAwayTeamId,
-                    viewModel.NewTourDto.TourId);
+            if (!ModelState.IsValid) return RedirectToAction("EditTour", new {tourId = viewModel.TourDto.TourId});
 
-                _matchService.AddMatch(match);
-                return RedirectToAction("EditTour", new {tourId = viewModel.NewTourDto.TourId });
-            }
-            return View(viewModel);
+            var match = new Match(
+                viewModel.InputDate,
+                viewModel.SelectedHomeTeamId,
+                viewModel.SelectedAwayTeamId,
+                viewModel.TourDto.TourId);
+            _matchService.AddMatch(match);
+            return RedirectToAction("EditTour", new { tourId = viewModel.TourDto.TourId });
         }
 
         //IParsingResult, error messages
@@ -100,47 +93,26 @@ namespace Predictions.Controllers
         [MultipleButton(Name = "action", Argument = "AddMatches")]
         public ActionResult AddMatches(EditTourViewModel viewModel)
         {
-            if (ModelState.IsValid)
-            {
-                //already in viewModel?
-                var possibleTeams = _teamService.GetLastTournamentTeams();
+            var possibleTeams = _teamService.GetLastTournamentTeams();
+            var inputMatchesInfo = viewModel.SubmitTextArea.InputText;
 
-                var inputMatchesInfo = viewModel.SubmitTextArea.InputText;
-                var parsingResult = _fileService.ParseTourSchedule(inputMatchesInfo);
+            if (inputMatchesInfo.IsNullOrEmpty())
+                return RedirectToAction("EditTour", new {tourId = viewModel.SubmitTextArea.TourId});
 
-                var matches = _matchService.CreateMatches(parsingResult, possibleTeams, viewModel.SubmitTextArea.TourId);
-
-                _matchService.AddMatches(matches);
-
-                return RedirectToAction("EditTour", new { tourId = viewModel.SubmitTextArea.TourId});
-            }
-            //fix
-            return EditTour(viewModel.SubmitTextArea.TourId);
+            var parsingResult = _fileService.ParseTourSchedule(inputMatchesInfo);
+            var matches = _matchService.CreateMatches(parsingResult, possibleTeams, viewModel.SubmitTextArea.TourId);
+            _matchService.AddMatches(matches);
+            return RedirectToAction("EditTour", new { tourId = viewModel.SubmitTextArea.TourId});
         }
 
 
         public ActionResult EditPredictions(int tourId, int expertId = 1, bool addPredictionSuccess = false) 
         {
-
-            //var expertlist = _expertService.GenerateSelectList();
             var experts = _expertService.GetExpertList();
-
             var tourDto = _tourService.GetTourDto(tourId);
-
-            //var headers = new List<string>() { "Дата", "Дома", "В гостях", "Прогноз" };
-
             var matches = _matchService.GetLastTournamentMatchesByTourId(tourId).ToList();
-
             var scorelist = _predictionService.GeneratePredictionlist(tourId, expertId, true);
-
-            //var matchTable = new MatchTableViewModel(headers, matchlist, scorelist);
-
             var viewModel = new EditPredictionsViewModel(matches, experts,  scorelist, tourDto,expertId, addPredictionSuccess);
-
-            //viewModel.SelectedExpertId = expertId;
-
-            //viewModel.SubmitTextArea.TourId = viewModel.NewTourDto.TourId;
-            //viewModel.AddPredictionsSuccess = addPredictionSuccess;
 
             return View(viewModel);
         }
@@ -150,7 +122,13 @@ namespace Predictions.Controllers
         [MultipleButton(Name = "action", Argument = "ShowPredictions")]
         public ActionResult ShowPredictions(EditPredictionsViewModel viewModel)
         {
-            return RedirectToAction("EditPredictions", new { tourId = viewModel.NewTourDto.TourId, expertId = viewModel.SelectedExpertId });
+            return RedirectToAction(
+                "EditPredictions", 
+                new
+                {
+                    tourId = viewModel.TourDto.TourId,
+                    expertId = viewModel.SelectedExpertId
+                });
         }
 
         //bind
@@ -158,13 +136,19 @@ namespace Predictions.Controllers
         [MultipleButton(Name = "action", Argument = "EditPredictions")]
         public ActionResult EditPredictions(EditPredictionsViewModel viewModel)
         {
-            if (ModelState.IsValid)
-            {
-                _predictionService.AddExpertPredictions(viewModel.SelectedExpertId, viewModel.NewTourDto.TourId, viewModel.MatchTable.Scorelist);
-                return RedirectToAction("EditPredictions", new { tourId = viewModel.NewTourDto.TourId, expertId = viewModel.SelectedExpertId });
-            }
-            return View(viewModel);
+            if (!ModelState.IsValid) return View(viewModel);
 
+            _predictionService.AddExpertPredictions(
+                viewModel.SelectedExpertId, 
+                viewModel.TourDto.TourId, 
+                viewModel.MatchTable.Scorelist);
+            return RedirectToAction(
+                "EditPredictions", 
+                new
+                {
+                    tourId = viewModel.TourDto.TourId,
+                    expertId = viewModel.SelectedExpertId
+                });
         }
 
         //bind
@@ -174,32 +158,34 @@ namespace Predictions.Controllers
         {
             var teamlist = _teamService.GenerateOrderedTeamTitlelist(viewModel.SubmitTextArea.TourId);
             var scorelist = _fileService.ParseExpertPredictions(viewModel.SubmitTextArea.InputText, teamlist);
-            if (!scorelist.IsNullOrEmpty()) _predictionService.AddExpertPredictions(viewModel.SelectedExpertId, viewModel.SubmitTextArea.TourId, scorelist);
+            if (!scorelist.IsNullOrEmpty())
+                _predictionService.AddExpertPredictions(viewModel.SelectedExpertId, viewModel.SubmitTextArea.TourId, scorelist);
 
-            return RedirectToAction("EditPredictions", new { tourId = viewModel.SubmitTextArea.TourId, expertId = viewModel.SelectedExpertId, addPredictionSuccess = !scorelist.IsNullOrEmpty()
-        });
+            return RedirectToAction(
+                "EditPredictions",
+                new
+                {
+                    tourId = viewModel.SubmitTextArea.TourId,
+                    expertId = viewModel.SelectedExpertId,
+                    addPredictionSuccess = !scorelist.IsNullOrEmpty()
+                });
         }
 
 
         public ActionResult AddScores(int tourId)
         {
-            var matchlist = _matchService.GetLastTournamentMatchesByTourId(tourId).Select(m => m.GetDto()).ToList();
+            var matches = _matchService.GetLastTournamentMatchesByTourId(tourId).Select(m => m.GetDto()).ToList();
             var scorelist = _matchService.GenerateScorelist(tourId, true);
-            var headers = new List<string>() { "Дата", "Дома", "В гостях", "Счет" };
-            var matchTable = new MatchTableViewModel(headers, matchlist, scorelist);
-
-            return View(new AddScoresViewModel(tourId, matchTable));
+            return View(new AddScoresViewModel(tourId, matches, scorelist));
         }
 
         [HttpPost]
         public ActionResult AddScores([Bind(Include = "MatchTable, CurrentTourId")] AddScoresViewModel viewModel)
         {
-            if (ModelState.IsValid)
-            {
-                _matchService.AddScores(_tourService.GetMatchesByTour(viewModel.CurrentTourId), viewModel.MatchTable.Scorelist);
-                return RedirectToAction("Index");
-            }
-            return AddScores(viewModel.CurrentTourId); //not sure
+            if (!ModelState.IsValid) return AddScores(viewModel.CurrentTourId); //not sure
+
+            _matchService.AddScores(_tourService.GetMatchesByTour(viewModel.CurrentTourId), viewModel.MatchTable.Scorelist);
+            return RedirectToAction("Index");
         }
 
         public ActionResult Preresults(int tourId)
@@ -229,7 +215,7 @@ namespace Predictions.Controllers
             var tourId = _matchService.GetTourId(id);
             if (tourId == null) return HttpNotFound(); //this also checks id
             _matchService.DeleteMatch(id);
-            return RedirectToAction("EditTour", new { id = tourId });
+            return RedirectToAction("EditTour", new { tourId = tourId });
         }
 
         //terrible, fix as fast as possible
