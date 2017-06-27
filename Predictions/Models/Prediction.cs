@@ -8,8 +8,18 @@ namespace Predictions.Models
 {
     public class Prediction
     {
+        public Prediction()
+        { }
+
+        public Prediction(int expertId, int matchId, string value)
+        {
+            ExpertId = expertId;
+            MatchId = matchId;
+            Value = value;
+        }
+
         public int PredictionId { get; set; }
-        //[RegularExpression(@"[(\d{1,2}):(\d{1,2})]", ErrorMessage = "Некорректный счет")]
+
         public string Value { get; set; }
 
         public int Sum { get; set; } = 0;

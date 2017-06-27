@@ -9,7 +9,9 @@ using System.Data.Entity;
 using System.Linq.Expressions;
 using System.Management.Instrumentation;
 using System.Net;
+using Predictions.DAL.EntityFrameworkExtensions;
 using Predictions.DAL.FetchStrategies;
+using Predictions.DAL.FetchStrategies.TourFetchStrategies;
 using Predictions.DAL.FetchStrategies.TournamentFetchStrategies;
 using Predictions.Models.Dtos;
 using Predictions.ViewModels.Basis;
@@ -19,18 +21,6 @@ namespace Predictions.Services
     public class TourService
     {
         private readonly PredictionsContext _context;
-
-        //move to EF
-        public int MatchesCount(int tourId)
-        {
-            return _context.Tours.Single(t => t.TourId == tourId).Matches.Count();
-        }
-
-        //move to EF
-        public bool AllResultsReady(int tourId)
-        {
-            return !EagerLoad(tourId, t => t.Matches).Matches.Any(m => m.Score.IsNullOrEmpty());
-        }
 
         public TourService(PredictionsContext context)
         {
@@ -46,39 +36,17 @@ namespace Predictions.Services
         public void UpdateTour(TourDto tourDto)
         {
             var tour = _context.Tours.Find(tourDto.TourId);
-            if (tour != null) throw new KeyNotFoundException("no tour with Id = " + tour.TourId.ToString());
+            if (tour == null) throw new KeyNotFoundException("no tour with Id = " + tour.TourId.ToString());
             
             tour.StartDate = tourDto.StartDate;
             tour.EndDate = tourDto.EndDate;
             _context.SaveChanges();
         }
 
-        public List<SelectListItem> GenerateSelectList()
-        {
-            var tourlist = new List<SelectListItem>();
-            _context.Tours.ToList()
-                .ForEach(t => tourlist.Add( new SelectListItem() { Text = t.TourId.ToString(), Value = t.TourId.ToString() }));
-            return tourlist;
-        }
-
-
-        public Tour EagerLoad(int? id, params Expression<Func<Tour, object>>[] includes)
-        {
-            if (id == null) return null;
-            return _context.Tours.IncludeMultiple(includes)
-                .ToList()
-                .Single(t => t.TourId == id);
-        }
-
-
         public List<Tour> GetLastTournamentTours()
         {
-            return _context.Tournaments
-                .Include(t => t.NewTours)
-                .OrderByDescending(t => t.TournamentId)
-                .First()
-                .NewTours
-                .ToList();
+            var fetchStrategies = new IFetchStrategy<Tournament>[] { new Tours() };
+            return _context.GetLastTournamentTours(fetchStrategies).ToList();
         }
 
         public List<Tour> GetLastTournamentSchedule()
@@ -91,35 +59,13 @@ namespace Predictions.Services
             return _context.GetLastTournamentTours(fetchStrategies).ToList();
         }
 
-        //public List<Tour> LoadBasicsWith(params Expression<Func<Tour, object>>[] includes)
-        //{
-        //    //var tours = _context.Tournaments.Last().Tours;
-        //    //       return tours.Include(t => t.Matches
-        //    //            .Select(m => m.HomeTeam))
-        //    //        .Include(t => t.Matches
-        //    //            .Select(m => m.AwayTeam))
-        //    //        .IncludeMultiple(includes)
-        //    //        .ToList();
-
-
-        //    //return _context.Tournaments.Include(trn => trn.Tours).Last().Tours;
-
-        //    var trnm = _context.Tournaments.Find(1);
-        //    var tours = trnm.Tours.ToList();
-
-        //    return tours;
-        //}
-
-        public List<Match> GetMatchesByTour(int? id)
-        {
-            if (id == null) return null;
-            return EagerLoad(id, t => t.Matches).Matches.ToList();
-        }
-
         //not sure
         public List<Tuple<Expert, int>> GenerateTourPreresultlist(int tourId)
         {
-            var tour = EagerLoad(tourId, t => t.Matches.Select(m => m.Predictions));
+            //var tour = EagerLoad(tourId, t => t.Matches.Select(m => m.Predictions));
+
+            var fetchStrategies = new IFetchStrategy<Tour>[] { new MatchesWithPredictions() };
+            var tour = _context.GetTours(fetchStrategies).Single(t => t.TourId == tourId);
             var matches = tour.Matches;
             var predictions = matches.SelectMany(m => m.Predictions).ToList();
             var experts = _context.Experts.ToList();

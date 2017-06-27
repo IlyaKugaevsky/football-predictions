@@ -14,13 +14,5 @@ namespace Predictions.Services
         {
             _context = context;
         }
-
-        public int GetCurrentTournamentId()
-        {
-            return _context.Tournaments
-                .OrderByDescending(t => t.TournamentId)
-                .First()
-                .TournamentId;
-        }
     }
 }

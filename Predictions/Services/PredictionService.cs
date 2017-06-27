@@ -6,9 +6,11 @@ using Predictions.DAL;
 using Predictions.Models;
 using Predictions.Helpers;
 using System.Data.Entity;
+using Predictions.DAL.EntityFrameworkExtensions;
 using Predictions.DAL.FetchStrategies;
 using Predictions.DAL.FetchStrategies.TourFetchStrategies;
 using Predictions.DAL.FetchStrategies.TournamentFetchStrategies;
+using Predictions.Models.Dtos;
 using Predictions.Services;
 using Predictions.ViewModels.Basis;
 
@@ -33,48 +35,6 @@ namespace Predictions.Services
                 .Single(t => t.TourId == tourId);
         }
 
-
-        //same order as matches, because of include
-        //public List<Prediction> LoadPredictions(List<Match> matches, int? expertId)
-        //{
-        //    if (expertId == null || !matches.Any()) return null;
-        //    var matchesIds = matches
-        //        .Select(m => m.MatchId);
-
-        //    matches = _context.Matches
-        //        .Where(m => matchesIds.Contains(m.MatchId))
-        //        .Include(m => m.Predictions)
-        //        .ToList();
-
-        //    return matches
-        //        .SelectMany(m => m.Predictions)
-        //        .Where(p => p.ExpertId == expertId)
-        //        .ToList();
-        //}
-
-        ////same order as matches, because of include
-        //public List<Prediction> LoadTourPredictions(int? tourId, int? expertId)
-        //{
-        //    if (expertId == null || tourId == null) return null;
-
-        //    var matches = LoadTour(tourId).Matches;
-
-        //    return matches
-        //        .SelectMany(m => m.Predictions)
-        //        .Where(p => p.ExpertId == expertId)
-        //        .ToList();
-        //}
-
-        public List<FootballScore> GenerateStraightScorelist(int length, string value = "-", bool editable = false)
-        {
-            var scorelist = new List<FootballScore>();
-            for (var i = 0; i < length; i++)
-            {
-                scorelist.Add(new FootballScore(value, editable));
-            }
-            return scorelist;
-        }
-
         public List<FootballScore> GeneratePredictionlist(int tourId, int expertId, bool editable = false, string emptyDisplay = "-")
         {
 
@@ -97,8 +57,7 @@ namespace Predictions.Services
             })
             .ToList();
 
-            //if (expertId == null) return GenerateStraightScorelist(mpList.Count, emptyDisplay, false);
-            emptyDisplay = editable ? String.Empty : emptyDisplay;
+            emptyDisplay = editable ? string.Empty : emptyDisplay;
 
             return mpList
                 .Select(mp => new FootballScore(mp.Prediction == null ? emptyDisplay : mp.Prediction.Value, editable))
@@ -106,13 +65,12 @@ namespace Predictions.Services
         }
 
         //predictions can be null; need matches!
-        public List<string> GenerateTempResultlist(int? tourId, int? expertId = null, string emptyDisplay = "-")
+        public List<string> GenerateTempResultlist(int tourId, int expertId, string emptyDisplay = "-")
         {
             //var predictions = LoadTourPredictions(tourId, expertId);
             //if (predictions.IsNullOrEmpty()) return null;
             //return predictions.Select(p => p.IsClosed ? p.Sum.ToString() : "-").ToList();
 
-            if (tourId == null || expertId == null) return null;
             var tour = _context.Tours
                    .Include(t => t.Matches
                    .Select(m => m.Predictions
@@ -163,8 +121,7 @@ namespace Predictions.Services
 
             foreach (var epGroup in predictions)
             {
-                var info = new ExpertDto();
-                info.Nickname = epGroup.Key.Nickname;
+                var info = new ExpertDto { Nickname = epGroup.Key.Nickname };
                 foreach (var prediction in epGroup)
                 {
                     info.Sum += prediction.Sum;
@@ -179,12 +136,13 @@ namespace Predictions.Services
                 
         }
 
-        public Prediction CreatePrediction(int expertId, int matchId, string value)
-        {
-            return new Prediction() { ExpertId = expertId, MatchId = matchId, Value = value };
-        }
+        //public Prediction CreatePrediction(int expertId, int matchId, string value)
+        //{
+        //    return new Prediction() { ExpertId = expertId, MatchId = matchId, Value = value };
+        //}
 
-
+        
+        //decompose
         //why Football score? mb strings?
         public void AddExpertPredictions(int expertId, int tourId, IList<FootballScore> scorelist)
         {
@@ -204,7 +162,7 @@ namespace Predictions.Services
             var createdPredictions = new List<Prediction>();
             for (var i = 0; i < mpList.Count(); i++)
             {
-                if (mpList[i].Prediction == null) createdPredictions.Add(CreatePrediction(expertId, mpList[i].Match.MatchId, scorelist[i].Value));
+                if (mpList[i].Prediction == null) createdPredictions.Add(new Prediction(expertId, mpList[i].Match.MatchId, scorelist[i].Value));
                 else mpList[i].Prediction.Value = scorelist[i].Value;
             }
             _context.Predictions.AddRange(createdPredictions);
@@ -244,24 +202,6 @@ namespace Predictions.Services
             _context.SaveChanges();
         }
 
-        void RestartPrediction(Prediction prediction)
-        {
-            if(prediction.IsClosed)
-            {
-                prediction.Expert.Sum -= prediction.Sum;
-                if (prediction.Score) prediction.Expert.Scores--;
-                else if(prediction.Difference) prediction.Expert.Differences--;
-                else if(prediction.Outcome) prediction.Expert.Outcomes--;
-
-                prediction.Sum = 0;
-                prediction.Score = false;
-                prediction.Difference = false;
-                prediction.Outcome = false;
-
-                prediction.IsClosed = false;
-            }
-        }
-
         public void RestartTour(int tourId)
         {
             var tour = LoadTour(tourId);
@@ -274,6 +214,22 @@ namespace Predictions.Services
             }
             tour.IsClosed = false;
             _context.SaveChanges();
+        }
+
+        private void RestartPrediction(Prediction prediction)
+        {
+            if (!prediction.IsClosed) return;
+            prediction.Expert.Sum -= prediction.Sum;
+            if (prediction.Score) prediction.Expert.Scores--;
+            else if(prediction.Difference) prediction.Expert.Differences--;
+            else if(prediction.Outcome) prediction.Expert.Outcomes--;
+
+            prediction.Sum = 0;
+            prediction.Score = false;
+            prediction.Difference = false;
+            prediction.Outcome = false;
+
+            prediction.IsClosed = false;
         }
     }
 }

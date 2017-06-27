@@ -17,18 +17,9 @@ namespace Predictions.Services
             _context = context;
         }
 
-        public List<Expert> GetExpertList()
+        public List<Expert> GetExperts()
         {
             return _context.Experts.ToList();
-        }
- 
-        public List<SelectListItem> GenerateSelectList()
-        {
-            var expertlist = new List<SelectListItem>();
-            _context.Experts.ToList().
-                ForEach(e => expertlist.Add(
-                    new SelectListItem() { Text = e.Nickname, Value = e.ExpertId.ToString() }));
-            return expertlist;
         }
     }
 }

@@ -29,12 +29,14 @@
                     {
                         if (User.IsInRole("Admin"))
                         {
-                            <li>@Html.ActionLink("Матчи", "Index", "Matches")</li>
+                            @*<li>@Html.ActionLink("Матчи", "Index", "Matches")</li>*@
                         }
                     }
                     <li>@Html.ActionLink("Расписание", "Index", "CurrentTournamentTours")</li>
                     <li>@Html.ActionLink("База прогнозов", "PredictionsDisplay", "Predictions")</li>
                     <li>@Html.ActionLink("Турнирная таблица", "Index", "Experts")</li>
+                    <li>@Html.ActionLink("Статистика", "MatchStats", "Stats")</li>
+
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

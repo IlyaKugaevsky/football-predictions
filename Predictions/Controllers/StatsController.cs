@@ -1,20 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
 using System.Linq;
-using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Predictions.DAL;
-using Predictions.Models;
 using Predictions.Services;
 using Predictions.ViewModels;
-using Predictions.ViewModels.Basis;
 
 namespace Predictions.Controllers
 {
-    public class ExpertsController : Controller
+    public class StatsController : Controller
     {
         private readonly PredictionsContext _context;
         private readonly ExpertService _expertService;
@@ -22,7 +17,9 @@ namespace Predictions.Controllers
         private readonly PredictionService _predictionService;
         private readonly MatchService _matchService;
         private readonly TeamService _teamService;
-        public ExpertsController()
+        private readonly StatService _statService;
+
+        public StatsController()
         {
             _context = new PredictionsContext();
             _expertService = new ExpertService(_context);
@@ -30,29 +27,22 @@ namespace Predictions.Controllers
             _predictionService = new PredictionService(_context);
             _matchService = new MatchService(_context);
             _teamService = new TeamService(_context);
+            _statService = new StatService(_context);
         }
 
-
-        public ActionResult Statistics()
+        public ActionResult MatchStats()
         {
-            return View();
-        }
-
-        // GET: Experts
-        public ActionResult Index()
-        {
-            var tours = _tourService.GetLastTournamentTours();
-
-            var results = _predictionService.GenerateExpertsInfo();
-            var resultsTable = new ResultsTableViewModel(tours.Select(t => t.GetDto()).ToList(), results);
-
-            return View(resultsTable);
+            var tours = _tourService.GetLastTournamentTours().Select(t => t.GetDto()).ToList();
+            var matchStats = _statService.GenerateMatchStats(tours.First().TourId);
+            var matchStatsVieModel = new MatchStatsViewModel(tours, matchStats);
+            return View(matchStatsVieModel);
         }
 
         [HttpPost]
-        public ActionResult GetResultsTable(int tourId)
+        public ActionResult GetMatchStatsTable(int tourId)
         {
-            return PartialView("ResultsTable", _predictionService.GenerateExpertsInfo(tourId));
+
+            return PartialView("MatchStatsTable", _statService.GenerateMatchStats(tourId));
         }
     }
 }

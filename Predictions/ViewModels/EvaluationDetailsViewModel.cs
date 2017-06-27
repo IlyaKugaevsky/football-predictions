@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Predictions.DAL;
+using Predictions.DAL.EntityFrameworkExtensions;
 using Predictions.Models.Dtos;
 
 namespace Predictions.ViewModels

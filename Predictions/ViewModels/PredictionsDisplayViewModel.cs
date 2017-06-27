@@ -14,11 +14,11 @@ namespace Predictions.ViewModels
         public PredictionsDisplayViewModel()
         { }
 
-        public PredictionsDisplayViewModel (List<SelectListItem> expertlist, List<Tour> tours, EvaluationDetailsViewModel evaluationDetails)
+        public PredictionsDisplayViewModel (List<Expert> experts, List<Tour> tours, EvaluationDetailsViewModel evaluationDetails = null)
         {
-            Expertlist = expertlist;
+            Expertlist = GenerateSelectList(experts);
             Tourlist = GenerateSelectList(tours);
-            EvaluationDetails = evaluationDetails;
+            EvaluationDetails = evaluationDetails ?? new EvaluationDetailsViewModel();
         }
 
         [Required]
@@ -30,7 +30,6 @@ namespace Predictions.ViewModels
         public int SelectedExpertId { get; set; }
         public int SelectedTourId { get; set; }
         public EvaluationDetailsViewModel EvaluationDetails { get; set; }
-        //public MatchTableViewModel MatchTable { get; set; }
 
         private List<SelectListItem> GenerateSelectList(List<Tour> tours)
         {
@@ -38,6 +37,15 @@ namespace Predictions.ViewModels
             {
                 Text = t.TourNumber.ToString(),
                 Value = t.TourId.ToString()
+            }).ToList();
+        }
+
+        private List<SelectListItem> GenerateSelectList(List<Expert> experts)
+        {
+            return experts.Select(e => new SelectListItem()
+            {
+                Text = e.Nickname,
+                Value = e.ExpertId.ToString()
             }).ToList();
         }
 

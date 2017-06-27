@@ -32,31 +32,13 @@ namespace Predictions.Controllers
 
         public ActionResult PredictionsDisplay()
         {
-            var evaluationDetails = new EvaluationDetailsViewModel();
-            var expertlist = _expertService.GenerateSelectList();
-            //var tourlist = _tourService.GenerateSelectList();
+            var experts = _expertService.GetExperts();
             var tours = _tourService.GetLastTournamentTours();
-            var viewModel = new PredictionsDisplayViewModel(expertlist, tours, evaluationDetails);
+            var viewModel = new PredictionsDisplayViewModel(experts, tours);
             return View(viewModel);
         }
 
-        //bind, invalide model
-        //[HttpPost]
-        //public ActionResult PredictionsDisplay(PredictionsDisplayViewModel viewModel)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var headers = new List<string>() { "Дата", "Дома", "В гостях", "Прогноз" };
-        //        var matchlist = _matchService.GenerateMatchlist(viewModel.SelectedTourId);
-        //        var scorelist = _predictionService.GeneratePredictionlist(viewModel.SelectedTourId, viewModel.SelectedExpertId);
-        //        var matchtable = new MatchTableViewModel(headers, matchlist, scorelist);
-        //        viewModel.EvaluationDetails = matchtable;
-        //        return View(viewModel);
-        //    }
-        //    //wtf!
-        //    else return HttpNotFound();
-        //}
-
+        //don't now how to encapsulate ViewModel stuff (like headers)
         [HttpPost]
         public ActionResult GetMatchTable(int tourId, int expertId)
         {
@@ -70,11 +52,11 @@ namespace Predictions.Controllers
         [HttpPost]
         public ActionResult GetEvaluationDetails(int tourId, int expertId)
         {
-            var matchlist = _matchService.GetLastTournamentMatchesByTourId(tourId).Select(m => m.GetDto()).ToList();
+            var matches = _matchService.GetLastTournamentMatchesByTourId(tourId).Select(m => m.GetDto()).ToList();
             var scorelist = _matchService.GenerateScorelist(tourId);
             var predictionlist = _predictionService.GeneratePredictionlist(tourId, expertId);
             var tempResultlist = _predictionService.GenerateTempResultlist(tourId, expertId);
-            var evaluationDetails = new EvaluationDetailsViewModel(matchlist, scorelist, predictionlist, tempResultlist);
+            var evaluationDetails = new EvaluationDetailsViewModel(matches, scorelist, predictionlist, tempResultlist);
             return PartialView("EvaluationDetails", evaluationDetails);
         }
     }

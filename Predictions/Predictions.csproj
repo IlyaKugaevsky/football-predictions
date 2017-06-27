@@ -211,15 +211,18 @@
     <Compile Include="Controllers\ExpertsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\MatchesController.cs" />
     <Compile Include="Controllers\PredictionsController.cs" />
-    <Compile Include="Controllers\SimpleOutputController.cs" />
-    <Compile Include="Controllers\TeamsController.cs" />
     <Compile Include="Controllers\CurrentTournamentToursController.cs" />
-    <Compile Include="DAL\EntityFrameworkExtensions.cs" />
+    <Compile Include="Controllers\StatsController.cs" />
+    <Compile Include="DAL\EntityFrameworkExtensions\CommonExtensions.cs" />
+    <Compile Include="DAL\EntityFrameworkExtensions\MatchExtensions.cs" />
+    <Compile Include="DAL\EntityFrameworkExtensions\TourExtensions.cs" />
     <Compile Include="DAL\FetchStrategies\IFetchStrategy.cs" />
+    <Compile Include="DAL\FetchStrategies\TourFetchStrategies\Matches.cs" />
     <Compile Include="DAL\FetchStrategies\TourFetchStrategies\MatchesWithAwayTeam.cs" />
     <Compile Include="DAL\FetchStrategies\TourFetchStrategies\MatchesWithHomeTeam.cs" />
+    <Compile Include="DAL\FetchStrategies\TourFetchStrategies\MatchesWithPredictions.cs" />
+    <Compile Include="DAL\FetchStrategies\TournamentFetchStrategies\Tours.cs" />
     <Compile Include="DAL\FetchStrategies\TournamentFetchStrategies\ToursWithMatchesWithAwayTeam.cs" />
     <Compile Include="DAL\FetchStrategies\TournamentFetchStrategies\ToursWithMatchesWithHomeTeam.cs" />
     <Compile Include="DAL\FetchStrategies\TournamentFetchStrategies\ToursWithMatchesWithPredictionsWIthExperts.cs" />
@@ -327,6 +330,7 @@
     <Compile Include="Services\FileService.cs" />
     <Compile Include="Services\MatchService.cs" />
     <Compile Include="Services\PredictionService.cs" />
+    <Compile Include="Services\StatService.cs" />
     <Compile Include="Services\TeamService.cs" />
     <Compile Include="Services\TournamentService.cs" />
     <Compile Include="Services\TourService.cs" />
@@ -334,13 +338,15 @@
     <Compile Include="ViewModels\AddPredictionsViewModel.cs" />
     <Compile Include="ViewModels\AddScoresViewModel.cs" />
     <Compile Include="ViewModels\Basis\ActionLinkParams.cs" />
-    <Compile Include="ViewModels\Basis\ExpertDto.cs" />
+    <Compile Include="Models\Dtos\ExpertDto.cs" />
     <Compile Include="ViewModels\Basis\FootballScore.cs" />
+    <Compile Include="ViewModels\Basis\MatchStat.cs" />
     <Compile Include="ViewModels\Basis\PredictionInfo.cs" />
     <Compile Include="ViewModels\Basis\PredictionResults.cs" />
     <Compile Include="ViewModels\EditTourViewModel.cs" />
     <Compile Include="ViewModels\EvaluationDetailsViewModel.cs" />
     <Compile Include="ViewModels\MatchesViewModel.cs" />
+    <Compile Include="ViewModels\MatchStatsViewModel.cs" />
     <Compile Include="ViewModels\MatchTableViewModel.cs" />
     <Compile Include="ViewModels\PredictionsDisplayViewModel.cs" />
     <Compile Include="ViewModels\PreresultsViewModel.cs" />
@@ -523,8 +529,10 @@
     <Content Include="Views\CurrentTournamentTours\DeleteConfirmation.cshtml" />
     <Content Include="Views\Experts\Statistics.cshtml" />
     <Content Include="Views\Shared\SubmitTextArea.cshtml" />
-    <Content Include="Views\Shared\ResultsTable.cshtml" />
+    <Content Include="Views\Experts\ResultsTable.cshtml" />
     <Content Include="Views\Shared\TestPartial.cshtml" />
+    <Content Include="Views\Stats\MatchStats.cshtml" />
+    <Content Include="Views\Stats\MatchStatsTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

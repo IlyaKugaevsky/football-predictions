@@ -12,6 +12,7 @@ using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using Predictions.ViewModels.Basis;
 using Predictions.Helpers;
+using Predictions.DAL.EntityFrameworkExtensions;
 
 namespace Predictions.Controllers
 {
@@ -49,7 +50,6 @@ namespace Predictions.Controllers
             return View(_tourService.GetLastTournamentSchedule());
         }
 
-        //404 after deleting
         //model or Dto?
         public ActionResult EditTour(int tourId)
         {
@@ -108,7 +108,7 @@ namespace Predictions.Controllers
 
         public ActionResult EditPredictions(int tourId, int expertId = 1, bool addPredictionSuccess = false) 
         {
-            var experts = _expertService.GetExpertList();
+            var experts = _expertService.GetExperts();
             var tourDto = _tourService.GetTourDto(tourId);
             var matches = _matchService.GetLastTournamentMatchesByTourId(tourId).ToList();
             var scorelist = _predictionService.GeneratePredictionlist(tourId, expertId, true);
@@ -184,15 +184,15 @@ namespace Predictions.Controllers
         {
             if (!ModelState.IsValid) return AddScores(viewModel.CurrentTourId); //not sure
 
-            _matchService.AddScores(_tourService.GetMatchesByTour(viewModel.CurrentTourId), viewModel.MatchTable.Scorelist);
+            _matchService.AddScores(_matchService.GetMatchesByTour(viewModel.CurrentTourId), viewModel.MatchTable.Scorelist);
             return RedirectToAction("Index");
         }
 
         public ActionResult Preresults(int tourId)
         {
             var preresults = _tourService.GenerateTourPreresultlist(tourId);
-            var enableSubmit = _tourService.AllResultsReady(tourId);
-            var viewModel = new PreresultsViewModel(preresults, _tourService.MatchesCount(tourId), tourId, enableSubmit);
+            var enableSubmit = _matchService.AllResultsAreReady(tourId);
+            var viewModel = new PreresultsViewModel(preresults, _matchService.MatchesCount(tourId), tourId, enableSubmit);
             return View(viewModel);
         }
 
@@ -208,12 +208,10 @@ namespace Predictions.Controllers
             return RedirectToAction("Index");
         }
 
-        //404 error
         public ActionResult DeleteMatch(int id)
         {
             //so~so, mb better
             var tourId = _matchService.GetTourId(id);
-            if (tourId == null) return HttpNotFound(); //this also checks id
             _matchService.DeleteMatch(id);
             return RedirectToAction("EditTour", new { tourId = tourId });
         }

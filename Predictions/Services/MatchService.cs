@@ -7,6 +7,7 @@ using Predictions.DAL;
 using Predictions.ViewModels;
 using Predictions.ViewModels.Basis;
 using System.Data.Entity;
+using Predictions.DAL.EntityFrameworkExtensions;
 using Predictions.DAL.FetchStrategies;
 using Predictions.DAL.FetchStrategies.TourFetchStrategies;
 using Predictions.DAL.FetchStrategies.TournamentFetchStrategies;
@@ -22,6 +23,26 @@ namespace Predictions.Services
         {
             _context = context;
         }
+
+        public int MatchesCount(int tourId)
+        {
+            var fetchStrategies = new IFetchStrategy<Tour>[] { new Matches() };
+            return _context.GetTours(fetchStrategies).Single(t => t.TourId == tourId).Matches.Count();
+        }
+
+        public bool AllResultsAreReady(int tourId)
+        {
+            var fetchStrategies = new IFetchStrategy<Tour>[] { new Matches() };
+            var matches = _context.GetTours(fetchStrategies).Single(t => t.TourId == tourId).Matches;
+            return !matches.Any(m => m.Score.IsNullOrEmpty());
+        }
+
+        public List<Match> GetMatchesByTour(int tourId)
+        {
+            var fetchStrategies = new IFetchStrategy<Tour>[] { new Matches() };
+            return _context.GetTours(fetchStrategies).Single(t => t.TourId == tourId).Matches;
+        }
+
 
         public List<Match> GetTourSchedule(int tourId)
         {
@@ -58,7 +79,6 @@ namespace Predictions.Services
                 new ToursWithMatchesWithHomeTeam(),
                 new ToursWithMatchesWithAwayTeam()
             };
-
             var tours = _context.GetLastTournamentTours(fetchStrategies);
             var tour = tours.Single(t => t.TourId == tourId);
 
@@ -67,16 +87,6 @@ namespace Predictions.Services
 
         public List<FootballScore> GenerateScorelist(int tourId, bool editable = false, string emptyDisplay = "-")
         {
-
-            //var tour = _context.Tours
-            //        .Include(t => t.Matches
-            //            .Select(m => m.HomeTeam))
-            //        .Include(t => t.Matches
-            //            .Select(m => m.AwayTeam))
-            //        .Single(t => t.TourId == tourId);
-
-            //var tour = _context.ToursWithMatchesWithTeams().Single(t => t.TourId == tourId);
-
             var fetchStrategies = new IFetchStrategy<Tour>[]
             {
                 new MatchesWithHomeTeam(),
@@ -84,23 +94,8 @@ namespace Predictions.Services
             };
 
             var tour = _context.GetTours(fetchStrategies).Single(t => t.TourId == tourId);
-
-            //var tour = _context.g
-
-
-            //return tour.Matches.Select(m => new FootballScore
-            //{
-            //    Value = (String.IsNullOrEmpty(m.Score) && editable == false) ? emptyDisplay : m.Score,
-            //    Editable = editable 
-            //}).ToList();
-
             return tour.Matches.Select(m => m.GetFootballScore(editable, emptyDisplay)).ToList();
 
-        }
-
-        public List<FootballScore> GenerateScorelist(List<Match> matches, bool editable = false, string emptyDisplay = "-")
-        {
-            return matches.Select(m => m.GetFootballScore(editable, emptyDisplay)).ToList();
         }
 
         public List<Match> CreateMatches(List<ParsingMatchInfo> matches, List<Team> possibleTeams, int tourId)
@@ -125,18 +120,18 @@ namespace Predictions.Services
         }
 
 
-        public int? GetTourId(int? matchId)
+        public int GetTourId(int matchId)
         {
-            if (matchId == null) return null;
             var match = _context.Matches.Find(matchId);
-            if (match == null) return null;
+            if (match == null) throw new KeyNotFoundException("no match with Id = " + matchId.ToString());
             return match.TourId;
         }
 
         //always null-check before execute this
-        public void DeleteMatch(int? id)
+        public void DeleteMatch(int matchId)
         {
-            var match = _context.Matches.Find(id);
+            var match = _context.Matches.Find(matchId);
+            if (match == null) throw new KeyNotFoundException("no match with id = " + matchId.ToString());
             _context.Matches.Remove(match);
             _context.SaveChanges();
         }

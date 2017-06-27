@@ -94,9 +94,8 @@ namespace Predictions.Services
         public void TestWriteFile(string fileName)
         {
             var filePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath(_defaultFolder), fileName);
-            string hello = "Hello!";
-            var lines = new List<string>();
-            lines.Add(hello);
+            var hello = "Hello!";
+            var lines = new List<string> {hello};
             File.WriteAllLines(filePath, lines);
         }
     }
