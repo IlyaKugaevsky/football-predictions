@@ -9,8 +9,8 @@ using Predictions.ViewModels.Basis;
 using System.Data.Entity;
 using Predictions.DAL.EntityFrameworkExtensions;
 using Predictions.DAL.FetchStrategies;
-using Predictions.DAL.FetchStrategies.TourFetchStrategies;
-using Predictions.DAL.FetchStrategies.TournamentFetchStrategies;
+using Predictions.DAL.FetchStrategies.ToursFetchStrategies;
+using Predictions.DAL.FetchStrategies.TournamentsFetchStrategies;
 using Predictions.Models.Dtos;
 
 namespace Predictions.Services
@@ -26,20 +26,20 @@ namespace Predictions.Services
 
         public int MatchesCount(int tourId)
         {
-            var fetchStrategies = new IFetchStrategy<Tour>[] { new Matches() };
+            var fetchStrategies = new IFetchStrategy<Tour>[] { new FetchMatches() };
             return _context.GetTours(fetchStrategies).Single(t => t.TourId == tourId).Matches.Count();
         }
 
         public bool AllResultsAreReady(int tourId)
         {
-            var fetchStrategies = new IFetchStrategy<Tour>[] { new Matches() };
+            var fetchStrategies = new IFetchStrategy<Tour>[] { new FetchMatches() };
             var matches = _context.GetTours(fetchStrategies).Single(t => t.TourId == tourId).Matches;
             return !matches.Any(m => m.Score.IsNullOrEmpty());
         }
 
         public List<Match> GetMatchesByTour(int tourId)
         {
-            var fetchStrategies = new IFetchStrategy<Tour>[] { new Matches() };
+            var fetchStrategies = new IFetchStrategy<Tour>[] { new FetchMatches() };
             return _context.GetTours(fetchStrategies).Single(t => t.TourId == tourId).Matches;
         }
 
@@ -48,8 +48,8 @@ namespace Predictions.Services
         {
             var fetchStrategies = new IFetchStrategy<Tour>[]
             {
-                new MatchesWithHomeTeam(),
-                new MatchesWithAwayTeam()
+                new FetchMatchesWithHomeTeam(),
+                new FetchMatchesWithAwayTeam()
             };
 
             var tours = _context.GetTours(fetchStrategies);
@@ -62,8 +62,8 @@ namespace Predictions.Services
         {
             var fetchStrategies = new IFetchStrategy<Tournament>[]
             {
-                new ToursWithMatchesWithHomeTeam(),
-                new ToursWithMatchesWithAwayTeam()
+                new FetchToursWithMatchesWithHomeTeam(),
+                new FetchToursWithMatchesWithAwayTeam()
             };
 
             var tours = _context.GetLastTournamentTours(fetchStrategies);
@@ -76,8 +76,8 @@ namespace Predictions.Services
         {
             var fetchStrategies = new IFetchStrategy<Tournament>[]
             {
-                new ToursWithMatchesWithHomeTeam(),
-                new ToursWithMatchesWithAwayTeam()
+                new FetchToursWithMatchesWithHomeTeam(),
+                new FetchToursWithMatchesWithAwayTeam()
             };
             var tours = _context.GetLastTournamentTours(fetchStrategies);
             var tour = tours.Single(t => t.TourId == tourId);
@@ -89,8 +89,8 @@ namespace Predictions.Services
         {
             var fetchStrategies = new IFetchStrategy<Tour>[]
             {
-                new MatchesWithHomeTeam(),
-                new MatchesWithAwayTeam()
+                new FetchMatchesWithHomeTeam(),
+                new FetchMatchesWithAwayTeam()
             };
 
             var tour = _context.GetTours(fetchStrategies).Single(t => t.TourId == tourId);

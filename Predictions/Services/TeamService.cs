@@ -7,8 +7,8 @@ using System.Web.Mvc;
 using System.Data.Entity;
 using Predictions.Models;
 using Predictions.DAL.FetchStrategies;
-using Predictions.DAL.FetchStrategies.TourFetchStrategies;
-using Predictions.DAL.FetchStrategies.TournamentFetchStrategies;
+using Predictions.DAL.FetchStrategies.ToursFetchStrategies;
+using Predictions.DAL.FetchStrategies.TournamentsFetchStrategies;
 using Predictions.DAL.EntityFrameworkExtensions;
 
 namespace Predictions.Services
@@ -26,8 +26,8 @@ namespace Predictions.Services
         {
             var fetchStrategies = new IFetchStrategy<Tournament>[]
             {
-                new ToursWithMatchesWithHomeTeam(),
-                new ToursWithMatchesWithAwayTeam()
+                new FetchToursWithMatchesWithHomeTeam(),
+                new FetchToursWithMatchesWithAwayTeam()
             };
             var firstTour = _context.GetLastTournamentTours(fetchStrategies).First();
 
@@ -46,8 +46,8 @@ namespace Predictions.Services
         {
             var fetchStrategies = new IFetchStrategy<Tour>[]
             {
-                new MatchesWithHomeTeam(),
-                new MatchesWithAwayTeam()
+                new FetchMatchesWithHomeTeam(),
+                new FetchMatchesWithAwayTeam()
             };
 
             var tour = _context.GetTours(fetchStrategies).Single(t => t.TourId == tourId);

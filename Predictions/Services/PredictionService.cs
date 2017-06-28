@@ -8,8 +8,8 @@ using Predictions.Helpers;
 using System.Data.Entity;
 using Predictions.DAL.EntityFrameworkExtensions;
 using Predictions.DAL.FetchStrategies;
-using Predictions.DAL.FetchStrategies.TourFetchStrategies;
-using Predictions.DAL.FetchStrategies.TournamentFetchStrategies;
+using Predictions.DAL.FetchStrategies.ToursFetchStrategies;
+using Predictions.DAL.FetchStrategies.TournamentsFetchStrategies;
 using Predictions.Models.Dtos;
 using Predictions.Services;
 using Predictions.ViewModels.Basis;
@@ -105,7 +105,7 @@ namespace Predictions.Services
 
             var fetchStrategies = new IFetchStrategy<Tournament>[]
             {
-                new ToursWithMatchesWithPredictionsWIthExperts()
+                new FetchToursWithMatchesWithPredictionsWithExperts()
             };
 
             var tours = _context.GetLastTournamentTours(fetchStrategies);

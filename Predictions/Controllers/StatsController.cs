@@ -41,8 +41,12 @@ namespace Predictions.Controllers
         [HttpPost]
         public ActionResult GetMatchStatsTable(int tourId)
         {
-
             return PartialView("MatchStatsTable", _statService.GenerateMatchStats(tourId));
+        }
+
+        public ActionResult ExpertsStats()
+        {
+            return View(_statService.GenerateExpertsOverallRating());
         }
     }
 }

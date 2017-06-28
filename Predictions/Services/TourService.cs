@@ -11,8 +11,8 @@ using System.Management.Instrumentation;
 using System.Net;
 using Predictions.DAL.EntityFrameworkExtensions;
 using Predictions.DAL.FetchStrategies;
-using Predictions.DAL.FetchStrategies.TourFetchStrategies;
-using Predictions.DAL.FetchStrategies.TournamentFetchStrategies;
+using Predictions.DAL.FetchStrategies.ToursFetchStrategies;
+using Predictions.DAL.FetchStrategies.TournamentsFetchStrategies;
 using Predictions.Models.Dtos;
 using Predictions.ViewModels.Basis;
 
@@ -45,7 +45,7 @@ namespace Predictions.Services
 
         public List<Tour> GetLastTournamentTours()
         {
-            var fetchStrategies = new IFetchStrategy<Tournament>[] { new Tours() };
+            var fetchStrategies = new IFetchStrategy<Tournament>[] { new FetchTours() };
             return _context.GetLastTournamentTours(fetchStrategies).ToList();
         }
 
@@ -53,8 +53,8 @@ namespace Predictions.Services
         {
             var fetchStrategies = new IFetchStrategy<Tournament>[]
             {
-                new ToursWithMatchesWithHomeTeam(),
-                new ToursWithMatchesWithAwayTeam()
+                new FetchToursWithMatchesWithHomeTeam(),
+                new FetchToursWithMatchesWithAwayTeam()
             };
             return _context.GetLastTournamentTours(fetchStrategies).ToList();
         }
@@ -64,7 +64,7 @@ namespace Predictions.Services
         {
             //var tour = EagerLoad(tourId, t => t.Matches.Select(m => m.Predictions));
 
-            var fetchStrategies = new IFetchStrategy<Tour>[] { new MatchesWithPredictions() };
+            var fetchStrategies = new IFetchStrategy<Tour>[] { new FetchMatchesWithPredictions() };
             var tour = _context.GetTours(fetchStrategies).Single(t => t.TourId == tourId);
             var matches = tour.Matches;
             var predictions = matches.SelectMany(m => m.Predictions).ToList();

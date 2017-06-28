@@ -34,7 +34,16 @@
                     }
                     <li>@Html.ActionLink("Расписание", "Index", "CurrentTournamentTours")</li>
                     <li>@Html.ActionLink("База прогнозов", "PredictionsDisplay", "Predictions")</li>
-                    <li>@Html.ActionLink("Статистика", "MatchStats", "Stats")</li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            Статистика
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Глобальный рейтинг экспертов", "ExpertsStats", "Stats")</li>
+                            <li>@Html.ActionLink("Статистика по матчам тура", "MatchStats", "Stats")</li>
+                        </ul>
+                    </li>
                     <li>@Html.ActionLink("Турнирная таблица", "Index", "Experts")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")

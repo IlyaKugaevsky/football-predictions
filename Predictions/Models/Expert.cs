@@ -15,7 +15,12 @@ namespace Predictions.Models
         public int Scores { get; set; }
         public int Sum { get; set; }
 
-
         public virtual List<Prediction> Predictions { get; set; }
+
+        public int GetPredictionsSum()
+        {
+            if (Predictions == null) throw new NullReferenceException(Nickname + " predictions");
+            return Predictions.Select(p => p.Sum).Sum();
+        }
     }
 }

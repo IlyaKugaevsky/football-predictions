@@ -1,0 +1,121 @@
+﻿@model IEnumerable<Predictions.ViewModels.Basis.ExpertStat>
+
+
+
+
+<h1>Глобальный рейтинг</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-body" id="results">
+                    <table class="table table-hover" id="resultsTable">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Эксперт</th>
+                                <th>Всего прогнозов</th>
+                                <th>Общая сумма</th>
+                                <th>Средняя сумма</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Nickname)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PredictionsCount)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Sum)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AvgSum)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@*<table class="table table-hover" id="resultsTable">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Эксперт</th>
+            <th>Всего прогнозов</th>
+            <th>Общая сумма</th>
+            <th>Средняя сумма</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td></td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nickname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PredictionsCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sum)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AvgSum)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>*@
+
+<link href="//cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" rel="stylesheet"/>
+<script src="//cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+<script src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+
+<script>
+    var setDataTables = function () {
+        var t = $('#resultsTable').DataTable({
+            "columnDefs": [{
+                "searchable": false,
+                "orderable": false,
+                "targets": 0
+            }],
+            "language": {
+                "decimal": ","
+            },
+            "retrieve": true,
+            "paging": false,
+            "info": false,
+            "filter": false,
+            "order": [[4, "desc"]],
+            "aaSorting": []
+        });
+
+        t.on('order.dt search.dt', function () {
+            t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
+    };
+
+    $(document).ready(setDataTables);
+</script>
+
+
+

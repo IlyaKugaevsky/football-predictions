@@ -5,7 +5,8 @@ using System.Web;
 using Predictions.DAL;
 using Predictions.DAL.EntityFrameworkExtensions;
 using Predictions.DAL.FetchStrategies;
-using Predictions.DAL.FetchStrategies.TourFetchStrategies;
+using Predictions.DAL.FetchStrategies.ExpertsFetchStrategies;
+using Predictions.DAL.FetchStrategies.ToursFetchStrategies;
 using Predictions.Models;
 using Predictions.ViewModels.Basis;
 
@@ -24,9 +25,9 @@ namespace Predictions.Services
         {
             var fetchStrategies = new IFetchStrategy<Tour>[]
             {
-                new MatchesWithHomeTeam(), 
-                new MatchesWithAwayTeam(),
-                new MatchesWithPredictions() 
+                new FetchMatchesWithHomeTeam(), 
+                new FetchMatchesWithAwayTeam(),
+                new FetchMatchesWithPredictions() 
             };
 
             var tour = _context.GetTours(fetchStrategies).Single(t => t.TourId == tourId);
@@ -56,6 +57,19 @@ namespace Predictions.Services
             }
 
             return matchStats;
+        }
+
+        public List<ExpertStat> GenerateExpertsOverallRating()
+        {
+            var fetchStrategies = new IFetchStrategy<Expert>[] { new FetchPredictions() };
+            var experts = _context.GetExperts(fetchStrategies).ToList();
+            var validExperts = experts.Where(e => !e.Predictions.ToList().IsNullOrEmpty());
+
+            return validExperts.Select(e => new ExpertStat(e.Nickname,
+                                                           e.Predictions.Count,
+                                                           Math.Round((double)e.GetPredictionsSum() / e.Predictions.Count, 2),
+                                                           e.GetPredictionsSum()))
+                                                           .ToList();
         }
 
     }
