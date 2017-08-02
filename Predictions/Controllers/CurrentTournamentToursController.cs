@@ -43,7 +43,7 @@ namespace Predictions.Controllers
 
         public ActionResult Index()
         {
-            //var tour = new Tour(3, 100500);
+            //var tour = new Tour(3, 4);
             //_context.Tours.Add(tour);
             //_context.SaveChanges();
 

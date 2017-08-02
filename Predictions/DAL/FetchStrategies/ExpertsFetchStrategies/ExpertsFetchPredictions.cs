@@ -7,7 +7,7 @@ using Predictions.Models;
 
 namespace Predictions.DAL.FetchStrategies.ExpertsFetchStrategies
 {
-    public class FetchPredictions: IFetchStrategy<Expert>
+    public class ExpertsFetchPredictions: IFetchStrategy<Expert>
     {
         public Expression<Func<Expert, object>> Apply()
         {

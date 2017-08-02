@@ -5,6 +5,7 @@ using System.Web;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Web.UI;
+using Microsoft.Ajax.Utilities;
 using Predictions.Models.Dtos;
 using Predictions.ViewModels.Basis;
 
@@ -16,7 +17,7 @@ namespace Predictions.Models
         public string Title { get; set; }
         public string Score { get; set; } = "-";
 
-        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:dd.MM.yyyy | HH:mm}")]
+        //[DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:dd.MM.yyyy | HH:mm}")]
         [Column(TypeName = "DateTime2")]
         public DateTime Date { get; set; }
 
@@ -28,9 +29,6 @@ namespace Predictions.Models
 
         [ForeignKey("AwayTeamId")]
         public Team AwayTeam { get; set; }
-
-        //public int TourId { get; set; }
-        //public Tour Tour { get; set; }
 
         public int TourId { get; set; }
         public Tour Tour { get; set; }
@@ -106,6 +104,12 @@ namespace Predictions.Models
                 Value = (String.IsNullOrEmpty(Score) && editable == false) ? emptyDisplay : Score,
                 Editable = editable
             };
+        }
+
+        public int GetPredictionsSum()
+        {
+            if (Predictions == null) throw new NullReferenceException("Predictions");
+            return Predictions.Select(p => p.Sum).Sum();
         }
     }
 }

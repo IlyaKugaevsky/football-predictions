@@ -218,8 +218,11 @@
     <Compile Include="DAL\EntityFrameworkExtensions\ExpertsExtensions.cs" />
     <Compile Include="DAL\EntityFrameworkExtensions\MatchesExtensions.cs" />
     <Compile Include="DAL\EntityFrameworkExtensions\ToursExtensions.cs" />
-    <Compile Include="DAL\FetchStrategies\ExpertsFetchStrategies\Predictions.cs" />
+    <Compile Include="DAL\FetchStrategies\ExpertsFetchStrategies\ExpertsFetchPredictions.cs" />
     <Compile Include="DAL\FetchStrategies\IFetchStrategy.cs" />
+    <Compile Include="DAL\FetchStrategies\MatchesFetchStrategies\FetchAwayTeam.cs" />
+    <Compile Include="DAL\FetchStrategies\MatchesFetchStrategies\FetchHomeTeam.cs" />
+    <Compile Include="DAL\FetchStrategies\MatchesFetchStrategies\MatchesFetchPredictions.cs" />
     <Compile Include="DAL\FetchStrategies\ToursFetchStrategies\FetchMatches.cs" />
     <Compile Include="DAL\FetchStrategies\ToursFetchStrategies\FetchMatchesWithAwayTeam.cs" />
     <Compile Include="DAL\FetchStrategies\ToursFetchStrategies\FetchMatchesWithHomeTeam.cs" />
@@ -346,6 +349,7 @@
     <Compile Include="ViewModels\Basis\MatchStat.cs" />
     <Compile Include="ViewModels\Basis\PredictionInfo.cs" />
     <Compile Include="ViewModels\Basis\PredictionResults.cs" />
+    <Compile Include="ViewModels\Basis\TopStats.cs" />
     <Compile Include="ViewModels\EditTourViewModel.cs" />
     <Compile Include="ViewModels\EvaluationDetailsViewModel.cs" />
     <Compile Include="ViewModels\MatchesViewModel.cs" />
@@ -355,6 +359,7 @@
     <Compile Include="ViewModels\PreresultsViewModel.cs" />
     <Compile Include="ViewModels\ResultsTableViewModel.cs" />
     <Compile Include="ViewModels\SubmitTextAreaViewModel.cs" />
+    <Compile Include="ViewModels\TopStatsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\images\bg-image.jpg" />
@@ -479,6 +484,7 @@
     <Content Include="Views\Stats\MatchStats.cshtml" />
     <Content Include="Views\Stats\MatchStatsTable.cshtml" />
     <Content Include="Views\Stats\ExpertsStats.cshtml" />
+    <Content Include="Views\Stats\TopStats.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

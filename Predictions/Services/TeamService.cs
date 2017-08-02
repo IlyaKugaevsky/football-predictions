@@ -35,10 +35,10 @@ namespace Predictions.Services
 
             var teams = new List<Team>();
             firstTour.Matches.ForEach(m =>
-            {
-                teams.Add(m.HomeTeam);
-                teams.Add(m.AwayTeam);
-            });
+                {
+                    teams.Add(m.HomeTeam);
+                    teams.Add(m.AwayTeam);
+                });
             return teams;
         }
 

@@ -48,5 +48,10 @@ namespace Predictions.Controllers
         {
             return View(_statService.GenerateExpertsOverallRating());
         }
+
+        public ActionResult TopStats()
+        {            
+            return View(new TopStatsViewModel(_statService.GenerateTopStats()));
+        }
     }
 }
