@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Core.Core.Models;
+using Core.Models;
 using Persistence.DAL.FetchStrategies;
 
 namespace Persistence.DAL.EntityFrameworkExtensions

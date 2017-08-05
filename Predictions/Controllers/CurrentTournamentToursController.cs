@@ -1,19 +1,18 @@
-﻿using Predictions.DAL;
-using System;
-using System.Collections.Generic;
+﻿//using Predictions.DAL;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Predictions.ViewModels;
-using System.Net;
-using System.Data.Entity;
-using System.Data.Entity.Migrations;
-using Predictions.Core.Models;
-using Predictions.Core.Services;
-using Predictions.ViewModels.Basis;
+//using Predictions.Core.Models;
+//using Predictions.Core.Services;
+using Core.Models;
+using Core.Models.Dtos;
+using Persistence.DAL;
+using Persistence.DAL.EntityFrameworkExtensions;
 using Predictions.Helpers;
-using Predictions.DAL.EntityFrameworkExtensions;
-using Services;
+using Services.Services;
+using Services.Helpers;
+
+//using Predictions.DAL.EntityFrameworkExtensions;
 
 namespace Predictions.Controllers
 {
@@ -97,7 +96,7 @@ namespace Predictions.Controllers
             var possibleTeams = _teamService.GetLastTournamentTeams();
             var inputMatchesInfo = viewModel.SubmitTextArea.InputText;
 
-            if (inputMatchesInfo.IsNullOrEmpty())
+            if (GenericsHelper.IsNullOrEmpty(inputMatchesInfo))
                 return RedirectToAction("EditTour", new {tourId = viewModel.SubmitTextArea.TourId});
 
             var parsingResult = _fileService.ParseTourSchedule(inputMatchesInfo);
@@ -159,7 +158,7 @@ namespace Predictions.Controllers
         {
             var teamlist = _teamService.GenerateOrderedTeamTitlelist(viewModel.SubmitTextArea.TourId);
             var scorelist = _fileService.ParseExpertPredictions(viewModel.SubmitTextArea.InputText, teamlist);
-            if (!scorelist.IsNullOrEmpty())
+            if (!GenericsHelper.IsNullOrEmpty(scorelist))
                 _predictionService.AddExpertPredictions(viewModel.SelectedExpertId, viewModel.SubmitTextArea.TourId, scorelist);
 
             return RedirectToAction(
@@ -168,7 +167,7 @@ namespace Predictions.Controllers
                 {
                     tourId = viewModel.SubmitTextArea.TourId,
                     expertId = viewModel.SelectedExpertId,
-                    addPredictionSuccess = !scorelist.IsNullOrEmpty()
+                    addPredictionSuccess = !GenericsHelper.IsNullOrEmpty(scorelist)
                 });
         }
 
@@ -222,7 +221,7 @@ namespace Predictions.Controllers
         {
             var match = _context.Matches.Find(id);
 
-            ViewBag.number = match.Predictions.IsNullOrEmpty() ? 0 : match.Predictions.Count();
+            ViewBag.number = GenericsHelper.IsNullOrEmpty(match.Predictions) ? 0 : match.Predictions.Count();
             ViewBag.id = id;
             return View();
         }

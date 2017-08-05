@@ -1,4 +1,4 @@
-﻿@using Predictions.DAL.EntityFrameworkExtensions
+﻿@using Services.Helpers
 
 @model Predictions.ViewModels.MatchTableViewModel
 
@@ -39,13 +39,13 @@
                     @if (Model.Scorelist.Any())
                     {
                         <td>
-                        if(Model.Scorelist[i].Editable)
+                        @if(Model.Scorelist[i].Editable)
                         {
-                            @Html.TextBoxFor(@model => @Model.Scorelist[i].Value, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(@model => @Model.Scorelist[i].Value)
+                            @Html.TextBoxFor(model => model.Scorelist[i].Value, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Scorelist[i].Value)
                         }
                         else
-                        { @Html.DisplayFor(@model => @Model.Scorelist[i].Value)}
+                        { @Html.DisplayFor(model => model.Scorelist[i].Value)}
                     </td>
                     }
 

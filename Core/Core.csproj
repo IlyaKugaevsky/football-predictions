@@ -41,24 +41,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\Models\Dtos\ExpertDto.cs" />
-    <Compile Include="Core\Models\Dtos\ExpertStat.cs" />
-    <Compile Include="Core\Models\Dtos\FootballScore.cs" />
-    <Compile Include="Core\Models\Dtos\MatchDto.cs" />
-    <Compile Include="Core\Models\Dtos\MatchStat.cs" />
-    <Compile Include="Core\Models\Dtos\ParsingMatchInfo.cs" />
-    <Compile Include="Core\Models\Dtos\PredictionResults.cs" />
-    <Compile Include="Core\Models\Dtos\TeamDto.cs" />
-    <Compile Include="Core\Models\Dtos\TopStats.cs" />
-    <Compile Include="Core\Models\Dtos\TourDto.cs" />
-    <Compile Include="Core\Models\Expert.cs" />
-    <Compile Include="Core\Models\Match.cs" />
-    <Compile Include="Core\Models\OldTour.cs" />
-    <Compile Include="Core\Models\Prediction.cs" />
-    <Compile Include="Core\Models\Team.cs" />
-    <Compile Include="Core\Models\Tour.cs" />
-    <Compile Include="Core\Models\Tournament.cs" />
-    <Compile Include="Core\PredictionEvaluator.cs" />
+    <Compile Include="Models\Dtos\ExpertDto.cs" />
+    <Compile Include="Models\Dtos\ExpertStat.cs" />
+    <Compile Include="Models\Dtos\FootballScore.cs" />
+    <Compile Include="Models\Dtos\MatchDto.cs" />
+    <Compile Include="Models\Dtos\MatchStat.cs" />
+    <Compile Include="Models\Dtos\ParsingMatchInfo.cs" />
+    <Compile Include="Models\Dtos\PredictionResults.cs" />
+    <Compile Include="Models\Dtos\TeamDto.cs" />
+    <Compile Include="Models\Dtos\TopStats.cs" />
+    <Compile Include="Models\Dtos\TourDto.cs" />
+    <Compile Include="Models\Expert.cs" />
+    <Compile Include="Models\Match.cs" />
+    <Compile Include="Models\OldTour.cs" />
+    <Compile Include="Models\Prediction.cs" />
+    <Compile Include="Models\Team.cs" />
+    <Compile Include="Models\Tour.cs" />
+    <Compile Include="Models\Tournament.cs" />
+    <Compile Include="PredictionEvaluator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

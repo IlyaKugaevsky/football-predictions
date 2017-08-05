@@ -1,4 +1,4 @@
-﻿using Predictions.DAL;
+﻿//using Predictions.DAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +7,9 @@ using System.Web.Mvc;
 using Predictions.ViewModels;
 using System.Net;
 using System.Data.Entity;
+using Persistence.DAL;
 using Predictions.ViewModels.Basis;
-using Predictions.Core.Services;
-using Services;
+using Services.Services;
 
 namespace Predictions.Controllers
 {

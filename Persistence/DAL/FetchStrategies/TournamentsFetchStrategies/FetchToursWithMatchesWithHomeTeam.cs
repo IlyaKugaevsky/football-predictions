@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Core.Core.Models;
+using Core.Models;
 using System.Linq;
 
 namespace Persistence.DAL.FetchStrategies.TournamentsFetchStrategies

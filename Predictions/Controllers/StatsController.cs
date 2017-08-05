@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Predictions.Core.Services;
+using Persistence.DAL;
 //using Predictions.Core.Services;
-using Predictions.DAL;
+//using Predictions.DAL;
 using Predictions.ViewModels;
-using Services;
+using Services.Services;
 
 namespace Predictions.Controllers
 {

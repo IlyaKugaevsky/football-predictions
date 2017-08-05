@@ -6,14 +6,14 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Predictions.DAL.PredictionsContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<Persistence.DAL.PredictionsContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(Predictions.DAL.PredictionsContext context)
+        protected override void Seed(Persistence.DAL.PredictionsContext context)
         {
             //  This method will be called after migrating to the latest version.
 

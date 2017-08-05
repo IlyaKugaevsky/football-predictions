@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Predictions.Core.Models;
+using Core.Models;
 
 namespace Predictions.ViewModels
 {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
-using Predictions.Core.Models;
+using Core.Models;
 
 namespace Predictions.ViewModels
 {
