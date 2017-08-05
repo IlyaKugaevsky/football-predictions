@@ -5,7 +5,6 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Owin.Security.Cookies;
-using Predictions.Models;
 
 namespace Predictions.DAL.FetchStrategies
 {

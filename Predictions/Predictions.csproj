@@ -214,6 +214,13 @@
     <Compile Include="Controllers\PredictionsController.cs" />
     <Compile Include="Controllers\CurrentTournamentToursController.cs" />
     <Compile Include="Controllers\StatsController.cs" />
+    <Compile Include="Core\Services\ExpertService.cs" />
+    <Compile Include="Core\Services\FileService.cs" />
+    <Compile Include="Core\Services\MatchService.cs" />
+    <Compile Include="Core\Services\PredictionService.cs" />
+    <Compile Include="Core\Services\StatService.cs" />
+    <Compile Include="Core\Services\TeamService.cs" />
+    <Compile Include="Core\Services\TournamentService.cs" />
     <Compile Include="DAL\EntityFrameworkExtensions\CommonExtensions.cs" />
     <Compile Include="DAL\EntityFrameworkExtensions\ExpertsExtensions.cs" />
     <Compile Include="DAL\EntityFrameworkExtensions\MatchesExtensions.cs" />
@@ -316,40 +323,33 @@
       <DependentUpon>201706191442057_rename new mapping.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\Dtos\MatchDto.cs" />
-    <Compile Include="Models\Dtos\ParsingMatchInfo.cs" />
-    <Compile Include="Models\Dtos\TeamDto.cs" />
-    <Compile Include="Models\Dtos\TourDto.cs" />
-    <Compile Include="Models\Expert.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\Match.cs" />
-    <Compile Include="Models\Tour.cs" />
-    <Compile Include="Models\Prediction.cs" />
-    <Compile Include="Models\Team.cs" />
-    <Compile Include="Models\OldTour.cs" />
-    <Compile Include="Models\Tournament.cs" />
+    <Compile Include="ViewModels\AccountViewModels.cs" />
+    <Compile Include="Core\Models\Dtos\MatchDto.cs" />
+    <Compile Include="Core\Models\Dtos\ParsingMatchInfo.cs" />
+    <Compile Include="Core\Models\Dtos\TeamDto.cs" />
+    <Compile Include="Core\Models\Dtos\TourDto.cs" />
+    <Compile Include="Core\Models\Expert.cs" />
+    <Compile Include="Authentication\IdentityModels.cs" />
+    <Compile Include="ViewModels\ManageViewModels.cs" />
+    <Compile Include="Core\Models\Match.cs" />
+    <Compile Include="Core\Models\Tour.cs" />
+    <Compile Include="Core\Models\Prediction.cs" />
+    <Compile Include="Core\Models\Team.cs" />
+    <Compile Include="Core\Models\OldTour.cs" />
+    <Compile Include="Core\Models\Tournament.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\ExpertService.cs" />
-    <Compile Include="Services\FileService.cs" />
-    <Compile Include="Services\MatchService.cs" />
-    <Compile Include="Services\PredictionService.cs" />
-    <Compile Include="Services\StatService.cs" />
-    <Compile Include="Services\TeamService.cs" />
-    <Compile Include="Services\TournamentService.cs" />
-    <Compile Include="Services\TourService.cs" />
+    <Compile Include="Core\Services\TourService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AddPredictionsViewModel.cs" />
     <Compile Include="ViewModels\AddScoresViewModel.cs" />
     <Compile Include="ViewModels\Basis\ActionLinkParams.cs" />
-    <Compile Include="Models\Dtos\ExpertDto.cs" />
-    <Compile Include="ViewModels\Basis\ExpertStat.cs" />
-    <Compile Include="ViewModels\Basis\FootballScore.cs" />
-    <Compile Include="ViewModels\Basis\MatchStat.cs" />
+    <Compile Include="Core\Models\Dtos\ExpertDto.cs" />
+    <Compile Include="Core\Models\Dtos\ExpertStat.cs" />
+    <Compile Include="Core\Models\Dtos\FootballScore.cs" />
+    <Compile Include="Core\Models\Dtos\MatchStat.cs" />
     <Compile Include="ViewModels\Basis\PredictionInfo.cs" />
     <Compile Include="ViewModels\Basis\PredictionResults.cs" />
-    <Compile Include="ViewModels\Basis\TopStats.cs" />
+    <Compile Include="Core\Models\Dtos\TopStats.cs" />
     <Compile Include="ViewModels\EditTourViewModel.cs" />
     <Compile Include="ViewModels\EvaluationDetailsViewModel.cs" />
     <Compile Include="ViewModels\MatchesViewModel.cs" />
@@ -488,7 +488,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Dtos\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -552,6 +551,12 @@
     <EmbeddedResource Include="Migrations\201706191442057_rename new mapping.resx">
       <DependentUpon>201706191442057_rename new mapping.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{a63a536f-2024-4d03-baba-c1daea4a4c20}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

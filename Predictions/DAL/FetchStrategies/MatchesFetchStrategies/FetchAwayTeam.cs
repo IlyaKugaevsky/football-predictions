@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
-using Predictions.Models;
+using Predictions.Core.Models;
 
 namespace Predictions.DAL.FetchStrategies.MatchesFetchStrategies
 {

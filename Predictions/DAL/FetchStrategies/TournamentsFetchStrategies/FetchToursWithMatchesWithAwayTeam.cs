@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Predictions.Models;
 using System.Linq.Expressions;
+using Predictions.Core.Models;
 
 namespace Predictions.DAL.FetchStrategies.TournamentsFetchStrategies
 {

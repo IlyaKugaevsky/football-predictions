@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Predictions.Core.Models;
+using Predictions.Core.Models.Dtos;
 using Predictions.DAL;
 using Predictions.DAL.EntityFrameworkExtensions;
-using Predictions.Models.Dtos;
+using FootballScore = Predictions.Core.Models.Dtos.FootballScore;
 
 namespace Predictions.ViewModels
 {

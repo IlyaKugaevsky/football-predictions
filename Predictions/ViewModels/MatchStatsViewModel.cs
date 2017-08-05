@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Predictions.Models.Dtos;
+using Predictions.Core.Models.Dtos;
 using Predictions.ViewModels.Basis;
 
 namespace Predictions.ViewModels

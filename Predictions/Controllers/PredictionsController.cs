@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Predictions.Models;
 using Predictions.ViewModels;
 using System.Net;
 using System.Data.Entity;
-using Predictions.Services;
 using Predictions.ViewModels.Basis;
+using Predictions.Core.Services;
+using Services;
 
 namespace Predictions.Controllers
 {

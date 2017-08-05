@@ -1,12 +1,13 @@
-﻿using Predictions.Models;
-using Predictions.ViewModels.Basis;
+﻿using Predictions.ViewModels.Basis;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.EnterpriseServices.Internal;
 using System.Linq;
 using System.Web.Mvc;
-using Predictions.Models.Dtos;
+using Predictions.Core.Models;
+using Predictions.Core.Models.Dtos;
+using FootballScore = Predictions.Core.Models.Dtos.FootballScore;
 
 namespace Predictions.ViewModels
 {

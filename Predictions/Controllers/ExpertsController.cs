@@ -6,11 +6,11 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Predictions.Core.Services;
 using Predictions.DAL;
-using Predictions.Models;
-using Predictions.Services;
 using Predictions.ViewModels;
 using Predictions.ViewModels.Basis;
+using Services;
 
 namespace Predictions.Controllers
 {

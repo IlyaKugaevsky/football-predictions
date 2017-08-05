@@ -4,15 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Predictions.Models;
 using Predictions.ViewModels;
-using Predictions.Services;
 using System.Net;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
+using Predictions.Core.Models;
+using Predictions.Core.Services;
 using Predictions.ViewModels.Basis;
 using Predictions.Helpers;
 using Predictions.DAL.EntityFrameworkExtensions;
+using Services;
 
 namespace Predictions.Controllers
 {
