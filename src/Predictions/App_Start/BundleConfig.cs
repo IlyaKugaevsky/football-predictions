@@ -7,19 +7,15 @@ namespace Predictions
     {
         public static void RegisterBundles(BundleCollection bundles)
         {
+
             //bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-            //            "~/FrontEnd/Scripts/jquery.unobtrusive-ajax.js"));
+            //            "~/FrontEnd/Scripts/jquery-{version}.js",
+            //            "~/FrontEnd/Scripts/jquery.unobtrusive-ajax.min.js",
+            //            "~/FrontEnd/Scripts/jquery.validate*"));
 
-            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/FrontEnd/Scripts/jquery-{version}.js",
-                        "~/FrontEnd/Scripts/jquery.unobtrusive-ajax.min.js",
-                        "~/FrontEnd/Scripts/jquery.validate*"));
 
-            //bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-            //"~/FrontEnd/Scripts/jquery.validate*"));
-
-            bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
-                        "~/Scripts/modernizr-*"));
+            //bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
+            //            "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/FrontEnd/Scripts/bootstrap.min.js",
@@ -33,6 +29,7 @@ namespace Predictions
                       "~/FrontEnd/Content/site.css",
                       "~/FrontEnd/Content/bootstrap-select.min.css"
                       ));
+
             BundleTable.EnableOptimizations = true;
         }
     }
