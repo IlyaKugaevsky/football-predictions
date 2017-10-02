@@ -16,6 +16,7 @@ namespace Predictions.Controllers
         private readonly PredictionsContext _context;
         private readonly ExpertService _expertService;
         private readonly TourService _tourService;
+
         private readonly PredictionService _predictionService;
         private readonly MatchService _matchService;
         private readonly TeamService _teamService;

@@ -1,0 +1,20 @@
+﻿@model IEnumerable<Core.Models.Tour>
+
+<style>
+    html {
+    overflow-y: scroll;
+}
+
+    </style>
+
+<h1>@Model.First().Tournament.Title</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            @for (var i = 0; i < Model.Count(); i++)
+            {
+                @Html.Partial("Tour", Model.ElementAt(i))
+            }
+        </div>
+    </div>
+</div>

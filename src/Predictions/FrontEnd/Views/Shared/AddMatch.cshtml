@@ -1,0 +1,12 @@
+﻿@model Predictions.ViewModels.EditTourViewModel
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "addMatchForm", @class = "form-inline" }))
+{
+    <div class="control-group">
+        @Html.HiddenFor(model => model.TourDto.TourId, Model.TourDto.TourId)
+        @Html.TextBoxFor(model => model.InputDate, new { @class = "form-control datepicker", data_width = "auto" })
+        @Html.DropDownListFor(model => model.SelectedHomeTeamId, Model.Teamlist, new { @class = "selectpicker", data_width = "auto", @title = "Дома" })
+        @Html.DropDownListFor(model => model.SelectedAwayTeamId, Model.Teamlist, new { @class = "selectpicker", data_width = "auto", @title = "В гостях" })
+        <button class="btn btn-info" name="action:AddMatch" type="submit">Добавить матч</button>
+    </div>
+}

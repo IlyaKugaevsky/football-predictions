@@ -45,7 +45,7 @@ namespace Core.Models
             HomeTeam = homeTeam;
             AwayTeam = awayTeam;
             Tour = tour;
-            Score = String.Empty;
+            Score = string.Empty;
         }
 
         public Match(DateTime date, Team homeTeam, Team awayTeam, int tourId)
@@ -60,7 +60,7 @@ namespace Core.Models
             HomeTeam = homeTeam;
             AwayTeam = awayTeam;
             TourId = tourId;
-            Score = String.Empty;
+            Score = string.Empty;
         }
 
         public Match(DateTime date, int homeTeamId, int awayTeamId, int tourId)
@@ -69,7 +69,7 @@ namespace Core.Models
             HomeTeamId = homeTeamId;
             AwayTeamId = awayTeamId;
             TourId = tourId;
-            Score = String.Empty;
+            Score = string.Empty;
         }
 
         //public Match(MatchInfo matchInfo)
@@ -96,7 +96,7 @@ namespace Core.Models
         {
             return new Dtos.FootballScore
             {
-                Value = (String.IsNullOrEmpty(Score) && editable == false) ? emptyDisplay : Score,
+                Value = (string.IsNullOrEmpty(Score) && editable == false) ? emptyDisplay : Score,
                 Editable = editable
             };
         }

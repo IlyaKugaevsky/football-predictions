@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Core.Models.Dtos.MatchStat>
+
+<table class="table table-hover" id="matchStatsTable">
+    <thead>
+        <tr>
+            @*<th></th>*@
+            <th>Дома</th>
+            <th>В гостях</th>
+            <th>Средняя сумма прогноза</th>
+            <th>Отличающиеся прогнозы</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @*<td></td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.HomeTeamTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AwayTeamTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AverageSum)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DifferentPredictions)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    var setDataTables = function () {
+        var t = $('#matchStatsTable').DataTable({
+            "columnDefs": [{
+                "orderable": false,
+                "targets": [0, 1]
+            }],
+            "language": {
+                "decimal": ",",
+                "emptyTable": "Нет данных по туру"
+            },
+            "aaSorting": [],
+            "retrieve": true,
+            "paging": false,
+            "info": false,
+            "filter": false
+        });
+    };
+    $(document).ready(setDataTables);
+</script>
+

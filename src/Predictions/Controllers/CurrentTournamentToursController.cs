@@ -1,4 +1,9 @@
 ﻿//using Predictions.DAL;
+
+using System;
+using System.Collections.Generic;
+using System.Data.Entity.Migrations;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using Predictions.ViewModels;
@@ -43,9 +48,30 @@ namespace Predictions.Controllers
 
         public ActionResult Index()
         {
-            //var tour = new Tour(3, 4);
-            //_context.Tours.Add(tour);
+            //var tours = new List<Tour>();
+
+            //for (var i = 1; i <= 6; i++)
+            //{
+            //    tours.Add(new Tour(4, i));
+            //}
+
+            //_context.Tours.AddRange(tours);
             //_context.SaveChanges();
+
+            //_context.Tournaments.Add(trnm);
+            //_context.SaveChanges();
+
+
+            //var experts = _context.Experts.ToList();
+            //foreach (var expert in experts)
+            //{
+            //    expert.Sum = 0;
+            //    expert.Scores = 0;
+            //    expert.Differences = 0;
+            //    expert.Outcomes = 0;
+            //}
+            //_context.SaveChanges();
+
 
             return View(_tourService.GetLastTournamentSchedule());
         }

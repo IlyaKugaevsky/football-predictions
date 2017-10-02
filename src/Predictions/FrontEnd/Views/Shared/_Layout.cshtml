@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title – Конкурс прогнозов</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/scripts/jquery.unobtrusive-ajax.min.js")
+
+</head>
+<body>
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Конкурсы прогнозов", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        if (User.IsInRole("Admin"))
+                        {
+                            @*<li>@Html.ActionLink("Матчи", "Index", "Matches")</li>*@
+                        }
+                    }
+                    <li>@Html.ActionLink("Расписание", "Index", "CurrentTournamentTours")</li>
+                    <li>@Html.ActionLink("База прогнозов", "PredictionsDisplay", "Predictions")</li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            Статистика
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Глобальный рейтинг экспертов", "ExpertsStats", "Stats")</li>
+                            <li>@Html.ActionLink("Статистика по матчам тура", "MatchStats", "Stats")</li>
+                            <li>@Html.ActionLink("Рекорды", "TopStats", "Stats")</li>
+                        </ul>
+                    </li>
+                    <li>@Html.ActionLink("Турнирная таблица", "Index", "Experts")</li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year – cherocky</p>
+        </footer>
+    </div>
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

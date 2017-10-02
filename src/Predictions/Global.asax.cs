@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using Predictions.Views;
 
 namespace Predictions
 {
@@ -16,6 +17,8 @@ namespace Predictions
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            ViewEngines.Engines.Add(new CustomViewEngine());
         }
     }
 }
