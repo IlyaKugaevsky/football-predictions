@@ -30,8 +30,14 @@ namespace Predictions
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            BootstrapContainer();
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             ViewEngines.Engines.Add(new CustomViewEngine());
+        }
+
+        protected void Application_End()
+        {
+            _container.Dispose();
         }
     }
 }
