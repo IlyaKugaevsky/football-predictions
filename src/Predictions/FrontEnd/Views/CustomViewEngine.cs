@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
-namespace Predictions.Views
+namespace Predictions.FrontEnd.Views
 {
     public class CustomViewEngine: RazorViewEngine
     {
