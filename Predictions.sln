@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "src\Core\Core.cspro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Predictions", "src\Predictions\Predictions.csproj", "{7A137A82-CB22-4B49-9F31-0879815AB020}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Test", "test\Core.Tests\Core.Test.csproj", "{CB1DB453-7721-4E23-9684-0E3430F93DFD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Tests", "test\Core.Tests\Core.Tests.csproj", "{CB1DB453-7721-4E23-9684-0E3430F93DFD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EFC1DEA7-6A92-4842-92E3-55621A4445E5}"
 EndProject

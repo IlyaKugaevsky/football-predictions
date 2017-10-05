@@ -23,7 +23,7 @@ namespace Predictions.Controllers
 {
     public class CurrentTournamentToursController : Controller
     {
-        private readonly PredictionsContext _context;
+        // private readonly PredictionsContext _context;
         private readonly ExpertService _expertService;
         private readonly TourService _tourService;
         private readonly PredictionService _predictionService;
@@ -243,13 +243,13 @@ namespace Predictions.Controllers
         }
 
         //terrible, fix as fast as possible
-        public ActionResult DeleteConfirmation(int id)
-        {
-            var match = _context.Matches.Find(id);
+        //public ActionResult DeleteConfirmation(int id)
+        //{
+        //    var match = _context.Matches.Find(id);
 
-            ViewBag.number = GenericsHelper.IsNullOrEmpty(match.Predictions) ? 0 : match.Predictions.Count();
-            ViewBag.id = id;
-            return View();
-        }
+        //    ViewBag.number = GenericsHelper.IsNullOrEmpty(match.Predictions) ? 0 : match.Predictions.Count();
+        //    ViewBag.id = id;
+        //    return View();
+        //}
     }
 }
