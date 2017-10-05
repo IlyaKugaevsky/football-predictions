@@ -20,6 +20,7 @@ namespace Persistence.DAL
 
         public DbSet<Tour> Tours { get; set; }
 
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();

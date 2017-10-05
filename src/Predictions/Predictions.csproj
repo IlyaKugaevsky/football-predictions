@@ -329,6 +329,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Windsor\Installers\ControllerInstaller.cs" />
+    <Compile Include="Windsor\Installers\DbContextInstaller.cs" />
     <Compile Include="Windsor\Plumbing\WindsorControllerFactory.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Authentication\IdentityModels.cs" />
