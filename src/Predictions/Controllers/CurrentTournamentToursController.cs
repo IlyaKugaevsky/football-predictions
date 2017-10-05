@@ -32,9 +32,9 @@ namespace Predictions.Controllers
         private readonly FileService _fileService;
         private readonly TournamentService _tournamentService;
 
-        public CurrentTournamentToursController()
+        public CurrentTournamentToursController(IPredictionsContext _context)
         {
-            _context = new PredictionsContext();
+            //_context = new PredictionsContext();
             _expertService = new ExpertService(_context);
             _tourService = new TourService(_context);
             _predictionService = new PredictionService(_context);

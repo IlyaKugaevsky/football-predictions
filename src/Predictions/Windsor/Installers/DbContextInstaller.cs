@@ -14,9 +14,10 @@ namespace Predictions.Windsor.Installers
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            container.Register(Classes.FromThisAssembly()
-                .BasedOn<IPredictionsContext>()
-                .LifestylePerWebRequest());
+            container.Register(
+                Component.For<IPredictionsContext>()
+                    .ImplementedBy<PredictionsContext>()
+                    .LifestylePerWebRequest());
         }
     }
 }

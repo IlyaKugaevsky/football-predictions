@@ -13,9 +13,9 @@ namespace Services.Services
 {
     public class MatchService
     {
-        private readonly PredictionsContext _context;
+        private readonly IPredictionsContext _context;
 
-        public MatchService(PredictionsContext context)
+        public MatchService(IPredictionsContext context)
         {
             _context = context;
         }

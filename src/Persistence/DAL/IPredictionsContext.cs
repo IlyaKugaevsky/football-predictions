@@ -10,13 +10,13 @@ namespace Persistence.DAL
 {
     public interface IPredictionsContext
     {
-        IDbSet<Tournament> Tournaments { get; set; }
-        IDbSet<Expert> Experts { get; set; }
-        IDbSet<Team> Teams { get; set; }
-        IDbSet<Match> Matches { get; set; }
-        IDbSet<Prediction> Predictions { get; set; }
-        IDbSet<OldTour> OldTours { get; set; }
-        IDbSet<Tour> Tours { get; set; }
+        DbSet<Tournament> Tournaments { get; set; }
+        DbSet<Expert> Experts { get; set; }
+        DbSet<Team> Teams { get; set; }
+        DbSet<Match> Matches { get; set; }
+        DbSet<Prediction> Predictions { get; set; }
+        DbSet<OldTour> OldTours { get; set; }
+        DbSet<Tour> Tours { get; set; }
 
         int SaveChanges();
     }

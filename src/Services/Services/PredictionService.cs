@@ -13,9 +13,9 @@ namespace Services.Services
 {
     public class PredictionService
     {
-        private readonly PredictionsContext _context;
+        private readonly IPredictionsContext _context;
 
-        public PredictionService(PredictionsContext context)
+        public PredictionService(IPredictionsContext context)
         {
             _context = context;
         }

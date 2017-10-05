@@ -14,9 +14,9 @@ namespace Services.Services
 {
     public class StatService
     {
-        private readonly PredictionsContext _context;
+        private readonly IPredictionsContext _context;
 
-        public StatService(PredictionsContext context)
+        public StatService(IPredictionsContext context)
         {
             _context = context;
         }

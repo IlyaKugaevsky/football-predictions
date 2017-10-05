@@ -8,9 +8,9 @@ namespace Services.Services
 {
     public class ExpertService
     {
-        private readonly PredictionsContext _context;
+        private readonly IPredictionsContext _context;
 
-        public ExpertService(PredictionsContext context)
+        public ExpertService(IPredictionsContext context)
         {
             _context = context;
         }

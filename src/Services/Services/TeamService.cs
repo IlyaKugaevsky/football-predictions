@@ -12,9 +12,9 @@ namespace Services.Services
 {
     public class TeamService
     {
-        private readonly PredictionsContext _context;
+        private readonly IPredictionsContext _context;
 
-        public TeamService(PredictionsContext context)
+        public TeamService(IPredictionsContext context)
         {
             _context = context;
         }

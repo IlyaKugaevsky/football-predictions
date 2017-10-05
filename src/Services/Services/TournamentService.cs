@@ -4,9 +4,9 @@ namespace Services.Services
 {
     public class TournamentService
     {
-        private readonly PredictionsContext _context;
+        private readonly IPredictionsContext _context;
 
-        public TournamentService(PredictionsContext context)
+        public TournamentService(IPredictionsContext context)
         {
             _context = context;
         }

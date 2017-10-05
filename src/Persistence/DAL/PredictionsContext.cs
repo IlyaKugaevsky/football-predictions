@@ -4,7 +4,7 @@ using Core.Models;
 
 namespace Persistence.DAL
 {
-    public class PredictionsContext : DbContext
+    public class PredictionsContext : DbContext, IPredictionsContext
     {
         public PredictionsContext() : base("PredictionsContext")
         {

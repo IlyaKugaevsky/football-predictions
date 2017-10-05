@@ -13,9 +13,9 @@ namespace Services.Services
 {
     public class TourService
     {
-        private readonly PredictionsContext _context;
+        private readonly IPredictionsContext _context;
 
-        public TourService(PredictionsContext context)
+        public TourService(IPredictionsContext context)
         {
             _context = context;
         }
