@@ -19,6 +19,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{E07D1D3C-8
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Tests", "test\Services.Tests\Services.Tests.csproj", "{11520799-3C14-4D9E-ADCA-833D13C8C34B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Tests", "src\Web.Tests\Web.Tests.csproj", "{5284EC30-8F74-4F05-B3C6-36192D4DB624}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.Tests", "src\Persistence.Tests\Persistence.Tests.csproj", "{DA1ED79F-DC6C-4F62-9F1A-8E7FA325DA97}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +53,14 @@ Global
 		{11520799-3C14-4D9E-ADCA-833D13C8C34B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11520799-3C14-4D9E-ADCA-833D13C8C34B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11520799-3C14-4D9E-ADCA-833D13C8C34B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5284EC30-8F74-4F05-B3C6-36192D4DB624}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5284EC30-8F74-4F05-B3C6-36192D4DB624}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5284EC30-8F74-4F05-B3C6-36192D4DB624}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5284EC30-8F74-4F05-B3C6-36192D4DB624}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA1ED79F-DC6C-4F62-9F1A-8E7FA325DA97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA1ED79F-DC6C-4F62-9F1A-8E7FA325DA97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA1ED79F-DC6C-4F62-9F1A-8E7FA325DA97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA1ED79F-DC6C-4F62-9F1A-8E7FA325DA97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +72,8 @@ Global
 		{7A137A82-CB22-4B49-9F31-0879815AB020} = {EFC1DEA7-6A92-4842-92E3-55621A4445E5}
 		{CB1DB453-7721-4E23-9684-0E3430F93DFD} = {E07D1D3C-8796-40EC-8B10-E5FBAB166F24}
 		{11520799-3C14-4D9E-ADCA-833D13C8C34B} = {E07D1D3C-8796-40EC-8B10-E5FBAB166F24}
+		{5284EC30-8F74-4F05-B3C6-36192D4DB624} = {E07D1D3C-8796-40EC-8B10-E5FBAB166F24}
+		{DA1ED79F-DC6C-4F62-9F1A-8E7FA325DA97} = {E07D1D3C-8796-40EC-8B10-E5FBAB166F24}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPathV6 = ..\lib\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8;..\lib\EnterpriseLibrary.TransientFaultHandling.Data.6.0.1304.1\lib\NET45
