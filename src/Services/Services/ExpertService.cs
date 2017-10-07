@@ -15,7 +15,8 @@ namespace Services.Services
             _context = context;
         }
 
-        public List<Expert> GetExperts()
+
+        public IReadOnlyList<Expert> GetExperts()
         {
             return _context.GetExperts().ToList();
         }

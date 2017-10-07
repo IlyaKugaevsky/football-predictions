@@ -14,7 +14,7 @@ namespace Web.ViewModels
         public PredictionsDisplayViewModel()
         { }
 
-        public PredictionsDisplayViewModel (List<Expert> experts, List<Tour> tours, EvaluationDetailsViewModel evaluationDetails = null)
+        public PredictionsDisplayViewModel (IEnumerable<Expert> experts, List<Tour> tours, EvaluationDetailsViewModel evaluationDetails = null)
         {
             Expertlist = GenerateSelectList(experts);
             Tourlist = GenerateSelectList(tours);
@@ -22,16 +22,16 @@ namespace Web.ViewModels
         }
 
         [Required]
-        public List<SelectListItem> Expertlist { get; set; }
+        public IReadOnlyList<SelectListItem> Expertlist { get; set; }
 
         [Required]
-        public List<SelectListItem> Tourlist { get; set; }
+        public IReadOnlyList<SelectListItem> Tourlist { get; set; }
 
         public int SelectedExpertId { get; set; }
         public int SelectedTourId { get; set; }
         public EvaluationDetailsViewModel EvaluationDetails { get; set; }
 
-        private List<SelectListItem> GenerateSelectList(List<Tour> tours)
+        private IReadOnlyList<SelectListItem> GenerateSelectList(List<Tour> tours)
         {
             return tours.Select(t => new SelectListItem()
             {
@@ -40,7 +40,7 @@ namespace Web.ViewModels
             }).ToList();
         }
 
-        private List<SelectListItem> GenerateSelectList(List<Expert> experts)
+        private IReadOnlyList<SelectListItem> GenerateSelectList(IEnumerable<Expert> experts)
         {
             return experts.Select(e => new SelectListItem()
             {

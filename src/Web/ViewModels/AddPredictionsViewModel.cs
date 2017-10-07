@@ -24,7 +24,7 @@ namespace Web.ViewModels
         //    SubmitTextArea = new SubmitTextAreaViewModel();
         //}
 
-        public EditPredictionsViewModel(List<Match> matches, List<Expert> experts, List<FootballScore> scorelist, TourDto tourDto, int expertId, bool addPredictionSuccess)
+        public EditPredictionsViewModel(List<Match> matches, IReadOnlyList<Expert> experts, List<FootballScore> scorelist, TourDto tourDto, int expertId, bool addPredictionSuccess)
         {
             TourDto = tourDto;
             Expertlist = GenerateSelectList(experts);
@@ -38,7 +38,7 @@ namespace Web.ViewModels
         //display
         public TourDto TourDto { get; set; }
 
-        public List<SelectListItem> Expertlist { get; set; }
+        public IReadOnlyList<SelectListItem> Expertlist { get; set; }
 
         public MatchTableViewModel MatchTable { get; set; }
 
@@ -49,7 +49,7 @@ namespace Web.ViewModels
 
         public bool AddPredictionsSuccess { get; set; } = false;
 
-        private List<SelectListItem> GenerateSelectList(List<Expert> experts)
+        private IReadOnlyList<SelectListItem> GenerateSelectList(IReadOnlyList<Expert> experts)
         {
             return experts.Select(e => new SelectListItem()
             {
