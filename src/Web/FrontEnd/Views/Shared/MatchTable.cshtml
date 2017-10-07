@@ -1,0 +1,69 @@
+﻿@using Services.Helpers
+
+@model Web.ViewModels.MatchTableViewModel
+
+
+
+<style>
+    input.form-control {
+        width: auto;
+    }
+</style>
+
+<table class="table table-hover table-inverse">
+    <thead>
+        <tr>
+            <th class="col-xs-2">@Model.Headers[0]</th>
+            <th class="col-xs-1">@Model.Headers[1]</th>
+            <th class="col-xs-1">@Model.Headers[2]</th>
+            @if (Model.Headers.Count > 3)
+            {
+                <th class="col-xs-1">@Model.Headers[3]</th>
+            }
+            @if (!@Model.ActionLinklist.IsNullOrEmpty())
+            {
+                <th class="col-xs-1"></th>
+            }
+
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Matchlist.Any())
+        {
+            for (int i = 0; i < Model.Matchlist.Count(); i++)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(model => Model.Matchlist[i].Date)</td>
+                    <td>@Model.Matchlist[i].HomeTeam.Title</td>
+                    <td>@Model.Matchlist[i].AwayTeam.Title</td>
+                    @if (Model.Scorelist.Any())
+                    {
+                        <td>
+                        @if(Model.Scorelist[i].Editable)
+                        {
+                            @Html.TextBoxFor(model => model.Scorelist[i].Value, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Scorelist[i].Value)
+                        }
+                        else
+                        { @Html.DisplayFor(model => model.Scorelist[i].Value)}
+                    </td>
+                    }
+
+                    @if (!@Model.ActionLinklist.IsNullOrEmpty())
+                    {
+                        <td class="col-xs-1">
+                            <div>
+                                @Html.ActionLink(
+                                Model.ActionLinklist[i].LinkText,
+                                Model.ActionLinklist[i].ActionName,
+                                Model.ActionLinklist[i].RouteValues,
+                                Model.ActionLinklist[i].HtmlAttributes)
+                            </div>
+                        </td>
+                    }
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+

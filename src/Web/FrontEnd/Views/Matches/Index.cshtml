@@ -1,0 +1,55 @@
+﻿@model Web.ViewModels.MatchesViewModel
+
+<h2>Матчи</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <table class="table table-hover">
+            <tbody>
+                <tr>
+                    <th>Тур</th>
+                    <th>Дата</th>
+                    <th>Дома</th>
+                    <th>В гостях</th>
+                </tr>
+                @foreach (var item in Model.Matchlist)
+                {
+                    <tr>
+                        <td>@item.TourId</td>
+                        <td>@item.Date</td>
+                        <td>@item.HomeTeam.Title</td>
+                        <td>@item.AwayTeam.Title</td>
+                        <td>@Html.ActionLink("Delete", "Delete", new { id = item.MatchId })</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="row">
+            <div class="col-md-1"><span class="label label-default">Тур</span></div>
+            <div class="col-md-2"><span class="label label-default">Дата</span></div>
+            <div class="col-md-2"><span class="label label-default">Дома</span></div>
+            <div class="col-md-2"><span class="label label-default">В гостях</span></div>
+        </div>
+        <div class="row">
+            <div class="col-md-1">
+                @Html.TextBoxFor(model => model.SelectedTourId, new { @class = "form-control", @Value = "1"})
+            </div>
+            <div class="col-md-2">
+                @Html.TextBoxFor(model => model.InputDate, new { @class = "form-control datepicker", @type = "date" })
+            </div>
+            <div class="col-md-2">
+                @Html.DropDownListFor(model => model.SelectedHomeTeamId, new SelectList(Model.Teamlist, "TeamId", "Title"), new { @class = "form-control", placeholder = "Дома" })
+            </div>
+            <div class="col-md-2">
+                @Html.DropDownListFor(model => model.SelectedAwayTeamId, new SelectList(Model.Teamlist, "TeamId", "Title"), new { @class = "selectpicker", Style = "data-width:auto;" })
+            </div>
+            <div class="col-md-2">
+                <input type="submit" class="btn btn-info" value="Добавить матч">
+            </div>
+        </div>
+    </div>
+}

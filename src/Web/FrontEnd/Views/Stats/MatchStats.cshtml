@@ -1,0 +1,47 @@
+﻿@using Web.Helpers
+@model Web.ViewModels.MatchStatsViewModel
+
+<h1>Статистика по матчам тура</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-body">
+                    @using (Ajax.BeginForm("GetMatchStatsTable", new AjaxOptions { UpdateTargetId = "matchStats", InsertionMode = InsertionMode.Replace }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.DropDownListFor(model => model.SelectedTourId, Model.Tourlist, new
+                       {
+                           @class = "selectpicker pull-right",
+                           title = "Выбрать тур",
+                           data_style = "btn-primary",
+                           data_width = "auto",
+                           Name = "tourId"
+                       })
+
+                    }
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-body" id="matchStats">
+                    @Html.PartialFor(m => m.MatchStats, "MatchStatsTable")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts
+{
+    <script src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/plug-ins/1.10.11/sorting/numeric-comma.js"></script>
+    <link href="//cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" rel="stylesheet"/>
+    @*<script src="//cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>*@
+    <script>
+        $('.selectpicker').on('change', function () {
+            $('#form0').submit();
+        });
+    </script>
+}

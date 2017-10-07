@@ -1,0 +1,9 @@
+﻿@model Web.ViewModels.SubmitTextAreaViewModel
+
+@Html.HiddenFor(model => model.TourId)
+<div class="form-group">
+    <div class="col-md-12 input-group">
+        <span class="input-group-addon"><span class="glyphicon glyphicon-pencil"></span></span>
+        @Html.TextAreaFor(Model => Model.InputText, new { @class = "form-control", @rows = 20, style = "max-width:80% !important;" })
+    </div>
+</div>
