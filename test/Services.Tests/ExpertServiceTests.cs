@@ -5,7 +5,6 @@ using Core.Models;
 using Moq;
 using Xunit;
 using Services.Services;
-
 using System.Data.Entity;
 using Persistence.DAL;
 
@@ -13,39 +12,54 @@ namespace Services.Tests
 {
     public class ExpertServiceTests
     {
-        private readonly IQueryable<Expert> _experts;
+        private readonly List<Expert> _testData;
+        private readonly Mock<DbSet<Expert>> _mockSet;
+        private readonly Mock<PredictionsContext> _mockContext;
 
-        public ExpertServiceTests()
+        private List<Expert> CreateTestData()
         {
-            _experts = new List<Expert>()
+            return new List<Expert>()
             {
                 new Expert() {ExpertId = 1, Nickname = "Spiderman"},
                 new Expert() {ExpertId = 2, Nickname = "Batman"}
-            }
-            .AsQueryable();
+            };
+        }
+
+        private Mock<DbSet<Expert>> CreateMockSet()
+        {
+            var mockSet = new Mock<DbSet<Expert>>();
+
+            mockSet.As<IQueryable<Expert>>().Setup(m => m.Provider).Returns(_testData.AsQueryable().Provider);
+            mockSet.As<IQueryable<Expert>>().Setup(m => m.Expression).Returns(_testData.AsQueryable().Expression);
+            mockSet.As<IQueryable<Expert>>().Setup(m => m.ElementType).Returns(_testData.AsQueryable().ElementType);
+            mockSet.As<IQueryable<Expert>>().Setup(m => m.GetEnumerator()).Returns(_testData.AsQueryable().GetEnumerator());
+
+            return mockSet;
+        }
+
+
+        private Mock<PredictionsContext> CreateMockContext()
+        {
+            var mockContext = new Mock<PredictionsContext>();
+            mockContext.Setup(c => c.Experts).Returns(_mockSet.Object);
+            return mockContext;
+        }
+
+
+        public ExpertServiceTests()
+        {
+            _testData = CreateTestData();
+            _mockSet = CreateMockSet();
+            _mockContext = CreateMockContext();
         }
 
         [Fact]
-        public void Should_Fetch_All_Experts()
+        public void GetExperts_Should_Fetch_All_Experts()
         {
-
-            var mockSet = new Mock<DbSet<Expert>>();
-
-            mockSet.As<IQueryable<Expert>>().Setup(m => m.Provider).Returns(_experts.Provider);
-            mockSet.As<IQueryable<Expert>>().Setup(m => m.Expression).Returns(_experts.Expression);
-            mockSet.As<IQueryable<Expert>>().Setup(m => m.ElementType).Returns(_experts.ElementType);
-            mockSet.As<IQueryable<Expert>>().Setup(m => m.GetEnumerator()).Returns(_experts.GetEnumerator());
-
-            var mockContext = new Mock<PredictionsContext>();
-            mockContext.Setup(c => c.Experts).Returns(mockSet.Object);
-
-            var expertService = new ExpertService(mockContext.Object);
+            var expertService = new ExpertService(_mockContext.Object);
             var fetchedExperts = expertService.GetExperts();
 
-            Assert.Equal(1, fetchedExperts[0].ExpertId);
-            Assert.Equal(2, fetchedExperts[1].ExpertId);
-            Assert.Equal("Spiderman", fetchedExperts[0].Nickname);
-            Assert.Equal("Batman", fetchedExperts[1].Nickname);
+            Assert.Equal(_testData, fetchedExperts);
         }
 
     }

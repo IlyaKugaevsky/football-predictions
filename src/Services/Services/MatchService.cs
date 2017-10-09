@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Core.Models;
 using Core.Models.Dtos;
@@ -20,39 +21,22 @@ namespace Services.Services
             _context = context;
         }
 
-        public int MatchesCount(int tourId)
+        public IList<Match> GetMatchesByTourId(int tourId)
         {
             var fetchStrategies = new IFetchStrategy<Tour>[] { new FetchMatches() };
-            return Queryable.Single<Tour>(_context.GetTours(fetchStrategies), t => t.TourId == tourId).Matches.Count();
+            return _context.GetTours(fetchStrategies).TourById(tourId).Matches;
         }
 
-        public bool AllResultsAreReady(int tourId)
-        {
-            var fetchStrategies = new IFetchStrategy<Tour>[] { new FetchMatches() };
-            var matches = Queryable.Single<Tour>(_context.GetTours(fetchStrategies), t => t.TourId == tourId).Matches;
-            return !matches.Any(m => m.Score.IsNullOrEmpty());
-        }
-
-        public List<Match> GetMatchesByTour(int tourId)
-        {
-            var fetchStrategies = new IFetchStrategy<Tour>[] { new FetchMatches() };
-            return Queryable.Single<Tour>(_context.GetTours(fetchStrategies), t => t.TourId == tourId).Matches;
-        }
-
-
-        public List<Match> GetTourSchedule(int tourId)
+        public IList<Match> GetTourSchedule(int tourId)
         {
             var fetchStrategies = new IFetchStrategy<Tour>[]
             {
                 new FetchMatchesWithHomeTeam(),
                 new FetchMatchesWithAwayTeam()
             };
-
-            var tours = _context.GetTours(fetchStrategies);
-            var tour = Queryable.Single<Tour>(tours, t => t.TourId == tourId);
-
-            return tour.Matches.ToList();
+            return _context.GetTours(fetchStrategies).TourById(tourId).Matches;
         }
+
 
         public List<Match> GetLastTournamentMatchesByTourId(int tourId)
         {
@@ -66,6 +50,19 @@ namespace Services.Services
             var tour = Queryable.Single<Tour>(tours, t => t.TourId == tourId);
 
             return tour.Matches.ToList();
+        }
+
+
+        public int MatchesCount(int tourId)
+        {
+            var fetchStrategies = new IFetchStrategy<Tour>[] { new FetchMatches() };
+            return _context.GetTours(fetchStrategies).TourById(tourId).Matches.Count();        
+        }
+
+        public bool AllMatchScoresPopulated(int tourId)
+        {
+            var fetchStrategies = new IFetchStrategy<Tour>[] { new FetchMatches() };
+            return _context.GetTours(fetchStrategies).TourById(tourId).Matches.AllScoresNotNullOrEmpty();
         }
 
         public List<MatchDto> GenerateMatchlist(int tournamentId, int tourId)
@@ -119,19 +116,19 @@ namespace Services.Services
         public int GetTourId(int matchId)
         {
             var match = _context.Matches.Find(matchId);
-            if (match == null) throw new KeyNotFoundException("no match with Id = " + matchId.ToString());
+            if (match == null) throw new KeyNotFoundException($"no match with Id = {matchId}");
             return match.TourId;
         }
 
-        //always null-check before execute this
         public void DeleteMatch(int matchId)
         {
             var match = _context.Matches.Find(matchId);
-            if (match == null) throw new KeyNotFoundException("no match with id = " + matchId.ToString());
+            if (match == null) throw new KeyNotFoundException($"no match with id = {matchId}");
             _context.Matches.Remove(match);
             _context.SaveChanges();
         }
 
+        //zip?
         public void AddScores(IList<Match> matches, IList<FootballScore> scorelist)
         {
             for (var i = 0; i < matches.Count(); i++)

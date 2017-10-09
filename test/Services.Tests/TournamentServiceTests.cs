@@ -15,8 +15,8 @@ namespace Services.Tests
             var tournament = new Tournament() {Title = "World Cup", TournamentId = 1};
             var tours = new List<Tour>()
             {
-                new Tour(tornamentId: 1, tourNumber: 1),
-                new Tour(tornamentId: 1, tourNumber: 2)
+                new Tour(tournamentId: 1, tourNumber: 1),
+                new Tour(tournamentId: 1, tourNumber: 2)
             };
             tournament.NewTours = tours;
 

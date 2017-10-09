@@ -210,14 +210,14 @@ namespace Web.Controllers
         {
             if (!ModelState.IsValid) return AddScores(viewModel.CurrentTourId); //not sure
 
-            _matchService.AddScores(_matchService.GetMatchesByTour(viewModel.CurrentTourId), viewModel.MatchTable.Scorelist);
+            _matchService.AddScores(_matchService.GetMatchesByTourId(viewModel.CurrentTourId), viewModel.MatchTable.Scorelist);
             return RedirectToAction("Index");
         }
 
         public ActionResult Preresults(int tourId)
         {
             var preresults = _tourService.GenerateTourPreresultlist(tourId);
-            var enableSubmit = _matchService.AllResultsAreReady(tourId);
+            var enableSubmit = _matchService.AllMatchScoresPopulated(tourId);
             var viewModel = new PreresultsViewModel(preresults, _matchService.MatchesCount(tourId), tourId, enableSubmit);
             return View(viewModel);
         }

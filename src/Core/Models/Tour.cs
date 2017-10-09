@@ -11,9 +11,9 @@ namespace Core.Models
         public Tour()
         { }
 
-        public Tour(int tornamentId, int tourNumber)
+        public Tour(int tournamentId, int tourNumber)
         {
-            TournamentId = tornamentId;
+            TournamentId = tournamentId;
             TourNumber = tourNumber;
             IsClosed = false;
         }

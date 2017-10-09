@@ -10,7 +10,7 @@ namespace Core.Models
     {
         public int MatchId { get; set; }
         public string Title { get; set; }
-        public string Score { get; set; } = "-";
+        public string Score { get; set; } = string.Empty;
 
         //[DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:dd.MM.yyyy | HH:mm}")]
         [Column(TypeName = "DateTime2")]
