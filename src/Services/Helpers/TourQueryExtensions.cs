@@ -16,6 +16,5 @@ namespace Services.Helpers
         {
             return tours.Single(t => t.TourId == tourId);
         }
-
     }
 }

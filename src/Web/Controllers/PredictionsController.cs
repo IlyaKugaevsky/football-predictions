@@ -43,7 +43,9 @@ namespace Web.Controllers
         public ActionResult GetMatchTable(int tourId, int expertId)
         {
             var headers = new List<string>() { "Дата", "Дома", "В гостях", "Прогноз" };
-            var matchlist = _matchService.GetLastTournamentMatchesByTourId(tourId).Select(m => m.GetDto()).ToList();
+            //var matchlist = _matchService.GetLastTournamentMatchesByTourId(tourId).Select(m => m.GetDto()).ToList();
+            var matchlist = _matchService.GetTourSchedule(tourId).Select(m => m.GetDto()).ToList();
+
             var scorelist = _predictionService.GeneratePredictionlist(tourId, expertId);
             var matchTable = new MatchTableViewModel(headers, matchlist, scorelist);
             return PartialView("MatchTable", matchTable);
@@ -52,7 +54,8 @@ namespace Web.Controllers
         [HttpPost]
         public ActionResult GetEvaluationDetails(int tourId, int expertId)
         {
-            var matches = _matchService.GetLastTournamentMatchesByTourId(tourId).Select(m => m.GetDto()).ToList();
+            //var matches = _matchService.GetLastTournamentMatchesByTourId(tourId).Select(m => m.GetDto()).ToList();
+            var matches = _matchService.GetTourSchedule(tourId).Select(m => m.GetDto()).ToList();
             var scorelist = _matchService.GenerateScorelist(tourId);
             var predictionlist = _predictionService.GeneratePredictionlist(tourId, expertId);
             var tempResultlist = _predictionService.GenerateTempResultlist(tourId, expertId);

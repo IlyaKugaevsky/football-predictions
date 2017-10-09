@@ -15,7 +15,7 @@ namespace Web.ViewModels
         public EditTourViewModel()
         { }
 
-        public EditTourViewModel(List<Team> teams, List<Match> matches, List<FootballScore> scorelist,  TourDto tourDto)
+        public EditTourViewModel(List<Team> teams, IReadOnlyCollection<Match> matches, List<FootballScore> scorelist,  TourDto tourDto)
         {
             Teamlist = GenerateSelectList(teams);
             TourDto = tourDto;
@@ -40,20 +40,22 @@ namespace Web.ViewModels
             }).ToList();
         }
 
-        private MatchTableViewModel GenerateMatchTable(List<Match> matches, List<FootballScore> scorelist)
+        private MatchTableViewModel GenerateMatchTable(IReadOnlyCollection<Match> matches, List<FootballScore> scorelist)
         {
             var headers = new List<string>() { "Дата", "Дома", "В гостях", "Счет" };
+
             var matchlist = matches.Select(m => m.GetDto()).ToList();
 
-            var actionLinklist = matches.Select(t => 
+            var actionLinklist = matches.Select(m =>
                 new ActionLinkParams(
-                    "Удалить", 
-                    "DeleteConfirmation", 
-                    null, 
-                    new { id = t.MatchId }, 
+                    "Удалить",
+                    "DeleteConfirmation",
+                    null,
+                    new { id = m.MatchId },
                     new { @class = "btn btn-default" })).ToList();
 
             return new MatchTableViewModel(headers, matchlist, scorelist, actionLinklist);
+
         }
     }
 }

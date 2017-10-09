@@ -24,7 +24,7 @@ namespace Web.ViewModels
         //    SubmitTextArea = new SubmitTextAreaViewModel();
         //}
 
-        public EditPredictionsViewModel(List<Match> matches, IReadOnlyList<Expert> experts, List<FootballScore> scorelist, TourDto tourDto, int expertId, bool addPredictionSuccess)
+        public EditPredictionsViewModel(IReadOnlyCollection<Match> matches, IReadOnlyList<Expert> experts, List<FootballScore> scorelist, TourDto tourDto, int expertId, bool addPredictionSuccess)
         {
             TourDto = tourDto;
             Expertlist = GenerateSelectList(experts);
@@ -49,7 +49,7 @@ namespace Web.ViewModels
 
         public bool AddPredictionsSuccess { get; set; } = false;
 
-        private IReadOnlyList<SelectListItem> GenerateSelectList(IReadOnlyList<Expert> experts)
+        private IReadOnlyList<SelectListItem> GenerateSelectList(IEnumerable<Expert> experts)
         {
             return experts.Select(e => new SelectListItem()
             {
@@ -58,7 +58,7 @@ namespace Web.ViewModels
             }).ToList();
         }
 
-        private MatchTableViewModel GenerateMatchTable(List<Match> matches, List<FootballScore> scorelist)
+        private MatchTableViewModel GenerateMatchTable(IEnumerable<Match> matches, List<FootballScore> scorelist)
         {
             var headers = new List<string>() { "Дата", "Дома", "В гостях", "Прогноз" };
             var matchlist = matches.Select(m => m.GetDto()).ToList();

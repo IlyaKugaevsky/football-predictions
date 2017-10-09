@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Core.Models;
+using Core.Models.Dtos;
 
 namespace Services.Helpers
 {
@@ -22,6 +23,11 @@ namespace Services.Helpers
         public static bool AllHaveBothTeams(this IEnumerable<Match> matches)
         {
             return !matches.Any(m => m.HomeTeam == null || m.AwayTeam == null);
+        }
+
+        public static IEnumerable<MatchDto> ToDtos(this IEnumerable<Match> matches)
+        {
+            return matches.Select(m => m.GetDto());
         }
     }
 }

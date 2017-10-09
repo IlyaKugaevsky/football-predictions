@@ -11,18 +11,22 @@ using Persistence.DAL;
 using Services.Services;
 using Services.Helpers;
 using Xunit;
-using MatchModel = Core.Models.Match; // because of 'Match' class in Xunit
+using FootballMatch = Core.Models.Match; // because of 'Match' class in Xunit
 
 namespace Services.Tests
 {
     public class MatchServiceTests
     {
+        private readonly List<Tournament> _tournamentsTestData;
         private readonly List<Tour> _toursTestData;
-        private readonly List<MatchModel> _mathesTestData;
+        private readonly List<FootballMatch> _mathesTestData;
         private readonly List<Team> _teamsTestData;
 
-        private readonly Mock<DbSet<MatchModel>> _matchesMockSet;
+        private readonly Mock<DbSet<Tournament>> _tournamentsMockSet;
         private readonly Mock<DbSet<Tour>> _toursMockSet;
+        private readonly Mock<DbSet<FootballMatch>> _matchesMockSet;
+        private readonly Mock<DbSet<Team>> _teamsMockSet;
+
         private readonly Mock<PredictionsContext> _mockContext;
 
         private Mock<DbSet<T>> CreateMockSet<T> (ICollection<T> collection) where T : class
@@ -40,9 +44,14 @@ namespace Services.Tests
         private Mock<PredictionsContext> CreateMockContext()
         {
             var mockContext = new Mock<PredictionsContext>();
+
             _toursMockSet.Setup(t => t.Include(It.IsAny<string>())).Returns(_toursMockSet.Object);
+            _tournamentsMockSet.Setup(t => t.Include(It.IsAny<string>())).Returns(_tournamentsMockSet.Object);
+
             mockContext.Setup(c => c.Matches).Returns(_matchesMockSet.Object);
             mockContext.Setup(c => c.Tours).Returns(_toursMockSet.Object);
+            mockContext.Setup(c => c.Tournaments).Returns(_tournamentsMockSet.Object);
+
             return mockContext;
         }
 
@@ -51,24 +60,25 @@ namespace Services.Tests
             var team1 = new Team() { TeamId = 1, Title = "Spartak" };
             var team2 = new Team() { TeamId = 2, Title = "CSKA" };
 
-            var match1 = new MatchModel() { MatchId = 1, HomeTeam = team1, AwayTeam = team2, TourId = 1 };
-            var match2 = new MatchModel() { MatchId = 2, HomeTeam = team2, AwayTeam = team1, TourId = 1 };
-            var match3 = new MatchModel() { MatchId = 3, HomeTeam = team2, AwayTeam = team1, TourId = 2 };
+            var match1 = new FootballMatch() { MatchId = 1, HomeTeam = team1, AwayTeam = team2, TourId = 1 };
+            var match2 = new FootballMatch() { MatchId = 2, HomeTeam = team2, AwayTeam = team1, TourId = 1 };
+            var match3 = new FootballMatch() { MatchId = 3, HomeTeam = team2, AwayTeam = team1, TourId = 2 };
 
             var tour1 = new Tour()
             {
                 TourId = 1,
-                Matches = new List<MatchModel>() { match1, match2 }
+                Matches = new List<FootballMatch>() { match1, match2 }
             };
             var tour2 = new Tour()
             {
                 TourId = 2, 
-                Matches = new List<MatchModel>() { match3 }
+                Matches = new List<FootballMatch>() { match3 }
             };
 
             var tournament1 = new Tournament()
             {
                 TournamentId = 1,
+                NewTours = new List<Tour>() { tour1 }
             };
             var tournament2 = new Tournament()
             {
@@ -77,16 +87,20 @@ namespace Services.Tests
             };
 
             _teamsTestData = new List<Team>() { team1, team2 };
-            _mathesTestData = new List<MatchModel>() { match1, match2, match3 };
+            _mathesTestData = new List<FootballMatch>() { match1, match2, match3 };
             _toursTestData = new List<Tour>() { tour1, tour2 };
+            _tournamentsTestData = new List<Tournament>() { tournament1, tournament2 };
 
-            _matchesMockSet = CreateMockSet<MatchModel>(_mathesTestData);
+            _teamsMockSet = CreateMockSet<Team>(_teamsTestData);
+            _matchesMockSet = CreateMockSet<FootballMatch>(_mathesTestData);
             _toursMockSet = CreateMockSet<Tour>(_toursTestData);
+            _tournamentsMockSet = CreateMockSet<Tournament>(_tournamentsTestData);
+
             _mockContext = CreateMockContext();
         }
 
         [Fact]
-        public void GetMatchesByTour_Should_Return_Proper_Collection()
+        public void GetMatchesByTourId_Should_Return_Proper_Collection()
         {
             const int tourId = 1;
             var matches = _toursTestData.TourById(tourId).Matches;
@@ -110,21 +124,6 @@ namespace Services.Tests
             Assert.Equal(matches, fetchedMatches);
             Assert.True(allHaveBothTeams);
         }
-
-        public void GetTourSchedule_Should_Return_Proper_Collection()
-        {
-            const int tourId = 1;
-            var matches = _toursTestData.TourById(tourId).Matches;
-            var matchService = new MatchService(_mockContext.Object);
-
-            var fetchedMatches = matchService.GetTourSchedule(tourId);
-            var allHaveBothTeams = fetchedMatches.AllHaveBothTeams();
-
-            Assert.Equal(matches, fetchedMatches);
-            Assert.True(allHaveBothTeams);
-        }
-
-
 
         [Fact]
         public void MatchesCount_Should_Count_Correctly()
@@ -153,6 +152,20 @@ namespace Services.Tests
             var allMatchResultsPopulated = matchService.AllMatchScoresPopulated(tourId);
 
             Assert.Equal(expected, allMatchResultsPopulated);
+        }
+
+        [Fact]
+        public void GenerateMatchlist_Should_Return_Proper_Collection()
+        {
+            const int tourId = 1;
+            const int tournamentId = 2;
+            var matchDtos = _tournamentsTestData.TournamentById(2).NewTours.TourById(1).Matches.ToDtos().ToList();
+            var matchService = new MatchService(_mockContext.Object);
+
+            var fetchedMatchDtos = matchService.GenerateMatchlist(tournamentId, tourId);
+
+            Assert.Equal(matchDtos[0].HomeTeam.TeamId, fetchedMatchDtos[0].HomeTeam.TeamId);
+            Assert.Equal(matchDtos[1].HomeTeam.TeamId, fetchedMatchDtos[1].HomeTeam.TeamId);
         }
 
 

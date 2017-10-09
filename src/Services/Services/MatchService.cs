@@ -27,7 +27,7 @@ namespace Services.Services
             return _context.GetTours(fetchStrategies).TourById(tourId).Matches;
         }
 
-        public IList<Match> GetTourSchedule(int tourId)
+        public IReadOnlyCollection<Match> GetTourSchedule(int tourId)
         {
             var fetchStrategies = new IFetchStrategy<Tour>[]
             {
@@ -37,22 +37,7 @@ namespace Services.Services
             return _context.GetTours(fetchStrategies).TourById(tourId).Matches;
         }
 
-
-        public List<Match> GetLastTournamentMatchesByTourId(int tourId)
-        {
-            var fetchStrategies = new IFetchStrategy<Tournament>[]
-            {
-                new FetchToursWithMatchesWithHomeTeam(),
-                new FetchToursWithMatchesWithAwayTeam()
-            };
-
-            var tours = _context.GetLastTournamentTours(fetchStrategies);
-            var tour = Queryable.Single<Tour>(tours, t => t.TourId == tourId);
-
-            return tour.Matches.ToList();
-        }
-
-
+        //rewrite with IQueryable and ISpecification 
         public int MatchesCount(int tourId)
         {
             var fetchStrategies = new IFetchStrategy<Tour>[] { new FetchMatches() };

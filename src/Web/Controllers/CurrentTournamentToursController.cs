@@ -82,7 +82,8 @@ namespace Web.Controllers
             //optimization: tour with matches
             var tourDto = _tourService.GetTourDto(tourId);
             var teams = _teamService.GetLastTournamentTeams();
-            var matches = _matchService.GetLastTournamentMatchesByTourId(tourId);
+            //var matches = _matchService.GetLastTournamentMatchesByTourId(tourId);
+            var matches = _matchService.GetTourSchedule(tourId);
             var scorelist = _matchService.GenerateScorelist(tourId);
 
             return View(new EditTourViewModel(teams, matches, scorelist, tourDto));
@@ -136,7 +137,8 @@ namespace Web.Controllers
         {
             var experts = _expertService.GetExperts();
             var tourDto = _tourService.GetTourDto(tourId);
-            var matches = _matchService.GetLastTournamentMatchesByTourId(tourId).ToList();
+            //var matches = _matchService.GetLastTournamentMatchesByTourId(tourId).ToList();
+            var matches = _matchService.GetTourSchedule(tourId);
             var scorelist = _predictionService.GeneratePredictionlist(tourId, expertId, true);
             var viewModel = new EditPredictionsViewModel(matches, experts,  scorelist, tourDto,expertId, addPredictionSuccess);
 
@@ -200,7 +202,9 @@ namespace Web.Controllers
 
         public ActionResult AddScores(int tourId)
         {
-            var matches = _matchService.GetLastTournamentMatchesByTourId(tourId).Select(m => m.GetDto()).ToList();
+            //var matches = _matchService.GetLastTournamentMatchesByTourId(tourId).Select(m => m.GetDto()).ToList();
+            var matches = _matchService.GetTourSchedule(tourId).Select(m => m.GetDto()).ToList();
+
             var scorelist = _matchService.GenerateScorelist(tourId, true);
             return View(new AddScoresViewModel(tourId, matches, scorelist));
         }
@@ -242,7 +246,7 @@ namespace Web.Controllers
             return RedirectToAction("EditTour", new { tourId = tourId });
         }
 
-        //terrible, fix as fast as possible
+        ////terrible, fix as fast as possible
         //public ActionResult DeleteConfirmation(int id)
         //{
         //    var match = _context.Matches.Find(id);
