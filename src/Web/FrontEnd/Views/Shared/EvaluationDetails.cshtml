@@ -1,5 +1,4 @@
-﻿@using Services.Helpers
-
+﻿@using Core.Helpers
 @model Web.ViewModels.EvaluationDetailsViewModel
 
 
@@ -11,8 +10,8 @@
 </style>
 
 @{
-    var empty = Model.Matchlist.IsNullOrEmpty() 
-        && Model.Scorelist.IsNullOrEmpty() 
+    var empty = Model.Matchlist.IsNullOrEmpty()
+        && Model.Scorelist.IsNullOrEmpty()
         && Model.Predictionlist.IsNullOrEmpty();
 }
 
@@ -29,15 +28,16 @@
     </thead>
     <tbody>
         @if (!empty)
+
         {
-            for (int i = 0; i < Model.Matchlist.Count(); i++)
+            for (int i = 0; i < Model.Matchlist.ToList().Count(); i++)
             {
                 <tr>
                     <td>@Html.DisplayFor(model => Model.Matchlist[i].Date)</td>
                     <td>@Model.Matchlist[i].HomeTeam.Title</td>
                     <td>@Model.Matchlist[i].AwayTeam.Title</td>
-                    <td>@Model.Scorelist[i].Value</td>
-                    <td>@Model.Predictionlist[i].Value</td>
+                    <td>@Model.Scorelist[i].Score</td>
+                    <td>@Model.Predictionlist[i].Score</td>
                     <td>@Model.TempResultlist[i]</td>
                 </tr>
             }

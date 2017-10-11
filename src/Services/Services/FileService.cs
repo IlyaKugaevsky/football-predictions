@@ -58,7 +58,7 @@ namespace Services.Services
         }
 
         //rewrite!!!
-        public List<FootballScore> ParseExpertPredictions(string input, List<string> orderedTeamTitlelist)
+        public List<FootballScoreViewModel> ParseExpertPredictions(string input, List<string> orderedTeamTitlelist)
         {
             var isCorrect = true; 
 
@@ -66,7 +66,7 @@ namespace Services.Services
             lines = lines.Where(l => !string.IsNullOrWhiteSpace(l)).Distinct().ToList();
             if (2 * lines.Count() != orderedTeamTitlelist.Count()) isCorrect = false;
 
-            var predictionlist = new List<FootballScore>();
+            var predictionlist = new List<FootballScoreViewModel>();
             var i = 0;
 
             foreach (var line in lines)
@@ -82,10 +82,10 @@ namespace Services.Services
                     break;
                 }
                 
-                predictionlist.Add(new FootballScore(match.Groups["score"].Value));
+                predictionlist.Add(new FootballScoreViewModel(match.Groups["score"].Value));
                 i += 2;
             }
-            return isCorrect ? predictionlist : new List<FootballScore>();
+            return isCorrect ? predictionlist : new List<FootballScoreViewModel>();
         }
 
         /*public void TestWriteFile(string fileName)

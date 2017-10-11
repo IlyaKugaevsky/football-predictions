@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Core.Models.Dtos;
-using FootballScore = Core.Models.Dtos.FootballScore;
 
 namespace Web.ViewModels
 {
@@ -13,7 +12,7 @@ namespace Web.ViewModels
         public AddScoresViewModel()
         { }
 
-        public AddScoresViewModel(int currentTourId, List<MatchDto> matches, List<FootballScore> scorelist)
+        public AddScoresViewModel(int currentTourId, List<MatchDto> matches, IList<FootballScoreViewModel> scorelist)
         {
             CurrentTourId = currentTourId;
             MatchTable = GenerateMatchTable(matches, scorelist);
@@ -23,7 +22,7 @@ namespace Web.ViewModels
 
         public MatchTableViewModel MatchTable {get; set;}
 
-        private MatchTableViewModel GenerateMatchTable(List<MatchDto> matches, List<FootballScore> scorelist)
+        private MatchTableViewModel GenerateMatchTable(List<MatchDto> matches, IList<FootballScoreViewModel> scorelist)
         {
             var headers = new List<string>() { "Дата", "Дома", "В гостях", "Счет" };
             return new MatchTableViewModel(headers, matches, scorelist);

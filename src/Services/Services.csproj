@@ -52,10 +52,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\GenericsHelper.cs" />
-    <Compile Include="Helpers\MatchQueryExtensions.cs" />
-    <Compile Include="Helpers\TournamentQueryExtensions.cs" />
-    <Compile Include="Helpers\TourQueryExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ExpertService.cs" />
     <Compile Include="Services\FileService.cs" />
@@ -79,6 +75,9 @@
       <Project>{5d059095-3d34-4059-aced-9a2db7c1d1ba}</Project>
       <Name>Persistence</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

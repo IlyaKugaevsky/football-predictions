@@ -6,7 +6,6 @@ using System.Web.Mvc;
 using Core.Models;
 using Core.Models.Dtos;
 using Web.ViewModels.Basis;
-using FootballScore = Core.Models.Dtos.FootballScore;
 
 namespace Web.ViewModels
 {
@@ -15,7 +14,7 @@ namespace Web.ViewModels
         public EditTourViewModel()
         { }
 
-        public EditTourViewModel(List<Team> teams, IReadOnlyCollection<Match> matches, List<FootballScore> scorelist,  TourDto tourDto)
+        public EditTourViewModel(List<Team> teams, IReadOnlyCollection<Match> matches, IList<FootballScoreViewModel> scorelist,  TourDto tourDto)
         {
             Teamlist = GenerateSelectList(teams);
             TourDto = tourDto;
@@ -31,7 +30,7 @@ namespace Web.ViewModels
         public DateTime InputDate { get; set; }
         public SubmitTextAreaViewModel SubmitTextArea { get; set; }
 
-        private List<SelectListItem> GenerateSelectList(List<Team> teams)
+        private List<SelectListItem> GenerateSelectList(IEnumerable<Team> teams)
         {
             return teams.Select(t => new SelectListItem()
             {
@@ -40,7 +39,7 @@ namespace Web.ViewModels
             }).ToList();
         }
 
-        private MatchTableViewModel GenerateMatchTable(IReadOnlyCollection<Match> matches, List<FootballScore> scorelist)
+        private MatchTableViewModel GenerateMatchTable(IReadOnlyCollection<Match> matches, IList<FootballScoreViewModel> scorelist)
         {
             var headers = new List<string>() { "Дата", "Дома", "В гостях", "Счет" };
 

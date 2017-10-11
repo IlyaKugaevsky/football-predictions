@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Core.Helpers;
 using Core.Models;
 using Core.Models.Dtos;
 using Persistence.DAL;
@@ -8,7 +9,6 @@ using Persistence.DAL.EntityFrameworkExtensions;
 using Persistence.DAL.FetchStrategies;
 using Persistence.DAL.FetchStrategies.MatchesFetchStrategies;
 using Persistence.DAL.FetchStrategies.ToursFetchStrategies;
-using Services.Helpers;
 
 namespace Services.Services
 {

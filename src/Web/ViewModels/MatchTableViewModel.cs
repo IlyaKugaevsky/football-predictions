@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using Core.Models.Dtos;
 using Web.ViewModels.Basis;
-using FootballScore = Core.Models.Dtos.FootballScore;
 
 namespace Web.ViewModels
 {
@@ -13,19 +12,19 @@ namespace Web.ViewModels
         public MatchTableViewModel()
         { }
 
-        public MatchTableViewModel (List<string> headers, List<MatchDto> matchlist = null, List<FootballScore> scorelist = null, List<ActionLinkParams> actionLinklist = null)
+        public MatchTableViewModel (List<string> headers, List<MatchDto> matchlist = null, IList<FootballScoreViewModel> scorelist = null, List<ActionLinkParams> actionLinklist = null)
         {
             Headers = headers;
             Matchlist = matchlist ?? new List<MatchDto>();
-            Scorelist = scorelist ?? new List<FootballScore>();
+            Scorelist = scorelist ?? new List<FootballScoreViewModel>();
             ActionLinklist = actionLinklist ?? new List<ActionLinkParams>();
         }
 
-        public MatchTableViewModel(List<string> headers, bool isEditable, string emptyScoreSymbol, List<MatchDto> matchlist = null, IList<FootballScore> scorelist = null, List<ActionLinkParams> actionLinklist = null)
+        public MatchTableViewModel(List<string> headers, bool isEditable, string emptyScoreSymbol, List<MatchDto> matchlist = null, IList<FootballScoreViewModel> scorelist = null, List<ActionLinkParams> actionLinklist = null)
         {
             Headers = headers;
             Matchlist = matchlist ?? new List<MatchDto>();
-            Scorelist = scorelist ?? new List<FootballScore>();
+            Scorelist = scorelist ?? new List<FootballScoreViewModel>();
             ActionLinklist = actionLinklist ?? new List<ActionLinkParams>();
             IsEditable = isEditable;
             EmptyScoreSymbol = emptyScoreSymbol;
@@ -33,7 +32,7 @@ namespace Web.ViewModels
 
         public List<string> Headers { get; set; }
         public List<MatchDto> Matchlist { get; set; }
-        public IList<FootballScore> Scorelist { get; set; }
+        public IList<FootballScoreViewModel> Scorelist { get; set; }
         public IList<ActionLinkParams> ActionLinklist { get; set; }
 
         public bool IsEditable { get; set; }

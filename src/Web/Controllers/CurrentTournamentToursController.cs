@@ -6,16 +6,18 @@ using System.Data.Entity.Migrations;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
-//using Predictions.Core.Models;
-//using Predictions.Core.Services;
+using AutoMapper;
+using Core.Helpers;
 using Core.Models;
 using Core.Models.Dtos;
+using Core.QueryExtensions;
 using Persistence.DAL;
 using Persistence.DAL.EntityFrameworkExtensions;
 using Services.Services;
-using Services.Helpers;
 using Web.Helpers;
 using Web.ViewModels;
+using Web.AutoMapper.Extensions;
+using Web.AutoMapper.Profiles;
 
 //using Predictions.DAL.EntityFrameworkExtensions;
 
@@ -31,16 +33,22 @@ namespace Web.Controllers
         private readonly TeamService _teamService;
         private readonly FileService _fileService;
         private readonly TournamentService _tournamentService;
+        private readonly IMapper _mapper;
 
-        public CurrentTournamentToursController(IPredictionsContext _context)
+        public CurrentTournamentToursController(IPredictionsContext context)
         {
             //_context = new PredictionsContext();
-            _expertService = new ExpertService(_context);
-            _tourService = new TourService(_context);
-            _predictionService = new PredictionService(_context);
-            _matchService = new MatchService(_context);
-            _teamService = new TeamService(_context);
-            _tournamentService = new TournamentService(_context);
+            _expertService = new ExpertService(context);
+            _tourService = new TourService(context);
+            _predictionService = new PredictionService(context);
+            _matchService = new MatchService(context);
+            _teamService = new TeamService(context);
+            _tournamentService = new TournamentService(context);
+
+            _mapper = new MapperConfiguration(c =>
+            {
+                c.AddProfile<ModelToDtoProfile>();
+            }).CreateMapper(); ;
 
             //constructor with params?
             _fileService = new FileService();
@@ -48,30 +56,10 @@ namespace Web.Controllers
 
         public ActionResult Index()
         {
-            //var tours = new List<Tour>();
-
-            //for (var i = 1; i <= 6; i++)
-            //{
-            //    tours.Add(new Tour(4, i));
-            //}
-
-            //_context.Tours.AddRange(tours);
-            //_context.SaveChanges();
-
-            //_context.Tournaments.Add(trnm);
-            //_context.SaveChanges();
 
 
-            //var experts = _context.Experts.ToList();
-            //foreach (var expert in experts)
-            //{
-            //    expert.Sum = 0;
-            //    expert.Scores = 0;
-            //    expert.Differences = 0;
-            //    expert.Outcomes = 0;
-            //}
-            //_context.SaveChanges();
-
+            var matches = _tourService.GetLastTournamentSchedule().First().Matches;
+            var dtos = matches.ToDtos(_mapper);
 
             return View(_tourService.GetLastTournamentSchedule());
         }
@@ -221,7 +209,8 @@ namespace Web.Controllers
         public ActionResult Preresults(int tourId)
         {
             var preresults = _tourService.GenerateTourPreresultlist(tourId);
-            var enableSubmit = _matchService.AllMatchScoresPopulated(tourId);
+            //var enableSubmit = _matchService.AllMatchScoresPopulated(tourId);
+            var enableSubmit = _matchService.GetMatchesByTourId(tourId).AllScoresNotNullOrEmpty();
             var viewModel = new PreresultsViewModel(preresults, _matchService.MatchesCount(tourId), tourId, enableSubmit);
             return View(viewModel);
         }

@@ -1,5 +1,4 @@
-﻿@using Services.Helpers
-
+﻿@using Core.Helpers
 @model Web.ViewModels.MatchTableViewModel
 
 
@@ -41,11 +40,11 @@
                         <td>
                         @if(Model.Scorelist[i].Editable)
                         {
-                            @Html.TextBoxFor(model => model.Scorelist[i].Value, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Scorelist[i].Value)
+                            @Html.TextBoxFor(model => model.Scorelist[i].Score, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Scorelist[i].Score)
                         }
                         else
-                        { @Html.DisplayFor(model => model.Scorelist[i].Value)}
+                        { @Html.DisplayFor(model => model.Scorelist[i].Score)}
                     </td>
                     }
 

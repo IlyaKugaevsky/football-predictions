@@ -27,7 +27,7 @@ namespace Services.Services
                     .Include(t => Enumerable.Select<Match, IEnumerable<Expert>>(t.Matches, m => Enumerable.Select<Prediction, Expert>(m.Predictions, p => p.Expert))), t => t.TourId == tourId);
         }
 
-        public List<FootballScore> GeneratePredictionlist(int tourId, int expertId, bool editable = false, string emptyDisplay = "-")
+        public List<FootballScoreViewModel> GeneratePredictionlist(int tourId, int expertId, bool editable = false, string emptyDisplay = "-")
         {
 
            // var fetchStrategies = new IFetchStrategy<Tour>[]
@@ -49,7 +49,7 @@ namespace Services.Services
             emptyDisplay = editable ? string.Empty : emptyDisplay;
 
             return mpList
-                .Select(mp => new FootballScore(mp.Prediction == null ? emptyDisplay : mp.Prediction.Value, editable))
+                .Select(mp => new FootballScoreViewModel(mp.Prediction == null ? emptyDisplay : mp.Prediction.Value, editable))
                 .ToList();
         }
 
@@ -129,7 +129,7 @@ namespace Services.Services
         
         //decompose
         //why Football score? mb strings?
-        public void AddExpertPredictions(int expertId, int tourId, IList<FootballScore> scorelist)
+        public void AddExpertPredictions(int expertId, int tourId, IList<FootballScoreViewModel> scorelist)
         {
             var tour = Queryable.Single<Tour>(_context.Tours
                     .Include(t => Enumerable.Select<Match, List<Prediction>>(t.Matches, m => m.Predictions)), t => t.TourId == tourId);
@@ -145,8 +145,8 @@ namespace Services.Services
             var createdPredictions = new List<Prediction>();
             for (var i = 0; i < mpList.Count(); i++)
             {
-                if (mpList[i].Prediction == null) createdPredictions.Add(new Prediction(expertId, mpList[i].Match.MatchId, scorelist[i].Value));
-                else mpList[i].Prediction.Value = scorelist[i].Value;
+                if (mpList[i].Prediction == null) createdPredictions.Add(new Prediction(expertId, mpList[i].Match.MatchId, scorelist[i].Score));
+                else mpList[i].Prediction.Value = scorelist[i].Score;
             }
             _context.Predictions.AddRange(createdPredictions);
             _context.SaveChanges();

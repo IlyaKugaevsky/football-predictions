@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Core.Models;
-using Persistence.DAL;
-using Persistence.DAL.EntityFrameworkExtensions;
-using Persistence.DAL.FetchStrategies;
 
-namespace Services.Helpers
+namespace Core.QueryExtensions
 {
     public static class TourQueryExtensions
     {

@@ -84,21 +84,26 @@ namespace Core.Models
         public MatchDto GetDto()
         {
             if (HomeTeam == null)
-                throw new ArgumentNullException("HomeTeam");
+                throw new ArgumentNullException("HomeTeam cannot be null");
 
             if (AwayTeam == null)
-                throw new ArgumentNullException("AwayTeam");
+                throw new ArgumentNullException("AwayTeam cannot be null");
 
             return new MatchDto(Date, HomeTeam.GetDto(), AwayTeam.GetDto());
         }
 
-        public Dtos.FootballScore GetFootballScore(bool editable, string emptyDisplay)
+        public FootballScoreViewModel GetFootballScoreViewModel(bool editable, string emptyDisplay)
         {
-            return new Dtos.FootballScore
+            return new Dtos.FootballScoreViewModel
             {
-                Value = (string.IsNullOrEmpty(Score) && editable == false) ? emptyDisplay : Score,
+                Score = (string.IsNullOrEmpty(Score) && editable == false) ? emptyDisplay : Score,
                 Editable = editable
             };
+        }
+
+        public FootballScore GetFootballScore()
+        {
+            return new FootballScore(Score);
         }
 
         public int GetPredictionsSum()

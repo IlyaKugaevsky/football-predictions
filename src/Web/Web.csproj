@@ -50,6 +50,10 @@
       <HintPath>..\..\..\lib\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="AutoMapper">
+      <HintPath>..\..\..\lib\AutoMapper.6.1.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Castle.Core">
       <HintPath>..\..\..\lib\Castle.Core.4.2.0\lib\net45\Castle.Core.dll</HintPath>
       <Private>True</Private>
@@ -236,6 +240,8 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="AutoMapper\Extensions\ModelToDtoExtensions.cs" />
+    <Compile Include="AutoMapper\Profiles\ModelToDtoProfile.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ExpertsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -328,6 +334,7 @@
       <DependentUpon>201706191442057_rename new mapping.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Windsor\Installers\AutomapperInstaller.cs" />
     <Compile Include="Windsor\Installers\ControllerInstaller.cs" />
     <Compile Include="Windsor\Installers\DbContextInstaller.cs" />
     <Compile Include="Windsor\Plumbing\WindsorControllerFactory.cs" />
@@ -544,7 +551,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Plumbing\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.html" />

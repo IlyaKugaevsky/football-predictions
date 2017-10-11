@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Core.Helpers;
 using Core.Models;
 using Core.Models.Dtos;
+using Core.QueryExtensions;
 using Persistence.DAL;
 using Persistence.DAL.EntityFrameworkExtensions;
 using Persistence.DAL.FetchStrategies;
 using Persistence.DAL.FetchStrategies.TournamentsFetchStrategies;
 using Persistence.DAL.FetchStrategies.ToursFetchStrategies;
-using Services.Helpers;
 
 namespace Services.Services
 {
@@ -50,30 +51,25 @@ namespace Services.Services
             return _context.GetTours(fetchStrategies).TourById(tourId).Matches.AllScoresNotNullOrEmpty();
         }
 
-        public List<MatchDto> GenerateMatchlist(int tournamentId, int tourId)
+        public IReadOnlyCollection<Match> GenerateMatchlist(int tournamentId, int tourId)
         {
             var fetchStrategies = new IFetchStrategy<Tournament>[]
             {
                 new FetchToursWithMatchesWithHomeTeam(),
                 new FetchToursWithMatchesWithAwayTeam()
             };
-            var tours = _context.GetLastTournamentTours(fetchStrategies);
-            var tour = Queryable.Single<Tour>(tours, t => t.TourId == tourId);
-
-            return tour.Matches.Select(m => m.GetDto()).ToList();
+            return _context.GetLastTournamentTours(fetchStrategies).TourById(tourId).Matches.ToList();
         }
 
-        public List<FootballScore> GenerateScorelist(int tourId, bool editable = false, string emptyDisplay = "-")
+        public IList<FootballScoreViewModel> GenerateScorelist(int tourId, bool editable = false)
         {
             var fetchStrategies = new IFetchStrategy<Tour>[]
             {
                 new FetchMatchesWithHomeTeam(),
                 new FetchMatchesWithAwayTeam()
-            };
-
-            var tour = Queryable.Single<Tour>(_context.GetTours(fetchStrategies), t => t.TourId == tourId);
-            return tour.Matches.Select(m => m.GetFootballScore(editable, emptyDisplay)).ToList();
-
+            }; 
+            var matches = _context.GetTours(fetchStrategies).TourById(tourId).Matches;
+            return matches.GetScores().ToViewModels(editable).ToList();
         }
 
         public List<Match> CreateMatches(List<ParsingMatchInfo> matches, List<Team> possibleTeams, int tourId)
@@ -97,28 +93,27 @@ namespace Services.Services
             _context.SaveChanges();
         }
 
-
         public int GetTourId(int matchId)
         {
             var match = _context.Matches.Find(matchId);
-            if (match == null) throw new KeyNotFoundException($"no match with Id = {matchId}");
+            if (match == null) throw new KeyNotFoundException($"There is no match with Id = {matchId}");
             return match.TourId;
         }
 
         public void DeleteMatch(int matchId)
         {
             var match = _context.Matches.Find(matchId);
-            if (match == null) throw new KeyNotFoundException($"no match with id = {matchId}");
+            if (match == null) throw new KeyNotFoundException($"There is no match with Id = {matchId}");
             _context.Matches.Remove(match);
             _context.SaveChanges();
         }
 
         //zip?
-        public void AddScores(IList<Match> matches, IList<FootballScore> scorelist)
+        public void AddScores(IList<Match> matches, IList<FootballScoreViewModel> scorelist)
         {
             for (var i = 0; i < matches.Count(); i++)
             {
-                matches[i].Score = scorelist[i].Value;
+                matches[i].Score = scorelist[i].Score;
             }
             _context.SaveChanges();
         }

@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\..\..\lib\AutoMapper.6.1.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -41,10 +45,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\FootballScoreExtensions.cs" />
+    <Compile Include="Helpers\GenericsHelper.cs" />
     <Compile Include="Models\Dtos\ExpertDto.cs" />
     <Compile Include="Models\Dtos\ExpertStat.cs" />
-    <Compile Include="Models\Dtos\FootballScore.cs" />
+    <Compile Include="Models\Dtos\FootballScoreViewModel.cs" />
     <Compile Include="Models\Dtos\MatchDto.cs" />
+    <Compile Include="Models\Dtos\MatchScoreDto.cs" />
+    <Compile Include="Models\Dtos\MatchScorePredictionDto.cs" />
+    <Compile Include="Models\Dtos\MatchScorePredictionDtoCollection.cs" />
     <Compile Include="Models\Dtos\MatchStat.cs" />
     <Compile Include="Models\Dtos\ParsingMatchInfo.cs" />
     <Compile Include="Models\Dtos\PredictionResults.cs" />
@@ -52,6 +61,7 @@
     <Compile Include="Models\Dtos\TopStats.cs" />
     <Compile Include="Models\Dtos\TourDto.cs" />
     <Compile Include="Models\Expert.cs" />
+    <Compile Include="Models\FootballScore.cs" />
     <Compile Include="Models\Match.cs" />
     <Compile Include="Models\OldTour.cs" />
     <Compile Include="Models\Prediction.cs" />
@@ -60,6 +70,12 @@
     <Compile Include="Models\Tournament.cs" />
     <Compile Include="PredictionEvaluator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryExtensions\MatchQueryExtensions.cs" />
+    <Compile Include="QueryExtensions\TournamentQueryExtensions.cs" />
+    <Compile Include="QueryExtensions\TourQueryExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

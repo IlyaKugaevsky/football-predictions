@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Core.Helpers;
 using Core.Models;
 using Persistence.DAL;
 using Persistence.DAL.EntityFrameworkExtensions;
 using Persistence.DAL.FetchStrategies;
 using Persistence.DAL.FetchStrategies.TournamentsFetchStrategies;
 using Persistence.DAL.FetchStrategies.ToursFetchStrategies;
-using Services.Helpers;
 
 namespace Services.Services
 {

@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Castle.Components.DictionaryAdapter;
+using Core.QueryExtensions;
 using Moq;
 using Persistence.DAL;
 using Services.Services;
-using Services.Helpers;
 using Xunit;
 using FootballMatch = Core.Models.Match; // because of 'Match' class in Xunit
 
@@ -159,14 +159,29 @@ namespace Services.Tests
         {
             const int tourId = 1;
             const int tournamentId = 2;
-            var matchDtos = _tournamentsTestData.TournamentById(2).NewTours.TourById(1).Matches.ToDtos().ToList();
+            var matchDtos = _tournamentsTestData.TournamentById(2).NewTours.TourById(1).Matches.ToList();
             var matchService = new MatchService(_mockContext.Object);
 
             var fetchedMatchDtos = matchService.GenerateMatchlist(tournamentId, tourId);
 
-            Assert.Equal(matchDtos[0].HomeTeam.TeamId, fetchedMatchDtos[0].HomeTeam.TeamId);
-            Assert.Equal(matchDtos[1].HomeTeam.TeamId, fetchedMatchDtos[1].HomeTeam.TeamId);
+            Assert.Equal(matchDtos.First().HomeTeam.TeamId, fetchedMatchDtos.First().HomeTeam.TeamId);
+            Assert.Equal(matchDtos.Last().HomeTeam.TeamId, fetchedMatchDtos.Last().HomeTeam.TeamId);
         }
+
+        [Fact]
+        public void GenerateScorelist_Should_Return_Proper_Collection()
+        {
+            const int tourId = 1;
+            const int tournamentId = 2;
+            var matchDtos = _tournamentsTestData.TournamentById(2).NewTours.TourById(1).Matches.ToList();
+            var matchService = new MatchService(_mockContext.Object);
+
+            var fetchedMatchDtos = matchService.GenerateMatchlist(tournamentId, tourId);
+
+            Assert.Equal(matchDtos.First().HomeTeam.TeamId, fetchedMatchDtos.First().HomeTeam.TeamId);
+            Assert.Equal(matchDtos.Last().HomeTeam.TeamId, fetchedMatchDtos.Last().HomeTeam.TeamId);
+        }
+
 
 
 

@@ -3,11 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Core.Helpers;
 using Core.Models.Dtos;
-using Persistence.DAL.EntityFrameworkExtensions;
-using Services.Helpers;
-//using Predictions.DAL;
-//using Predictions.DAL.EntityFrameworkExtensions;
 
 namespace Web.ViewModels
 {
@@ -17,17 +14,17 @@ namespace Web.ViewModels
         {
         }
 
-        public EvaluationDetailsViewModel(List<MatchDto> matchlist, IList<FootballScore> scorelist, List<FootballScore> predictionlist, List<string> tempResultlist)
+        public EvaluationDetailsViewModel(List<MatchDto> matchlist, IList<FootballScoreViewModel> scorelist, List<FootballScoreViewModel> predictionlist, List<string> tempResultlist)
         {
             Matchlist = matchlist ?? new List<MatchDto>();
-            Scorelist = scorelist ?? new List<FootballScore>();
-            Predictionlist = predictionlist ?? new List<FootballScore>();
+            Scorelist = scorelist ?? new List<FootballScoreViewModel>();
+            Predictionlist = predictionlist ?? new List<FootballScoreViewModel>();
             TempResultlist = tempResultlist ?? new List<string>();
             if (!GenericsHelper.IsNullOrEmpty(tempResultlist) && !tempResultlist.Contains("-")) Sum = tempResultlist.Select(tr => Convert.ToInt32(tr)).Sum();
         }
         public List<MatchDto> Matchlist { get; set; }
-        public IList<FootballScore> Scorelist { get; set; }
-        public List<FootballScore> Predictionlist { get; set; }
+        public IList<FootballScoreViewModel> Scorelist { get; set; }
+        public List<FootballScoreViewModel> Predictionlist { get; set; }
         public List<string> TempResultlist { get; set; }
 
         public int Sum = -1;

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Core.Models;
 using Core.Models.Dtos;
+using Core.Helpers;
 
-namespace Services.Helpers
+namespace Core.QueryExtensions
 {
     public static class MatchQueryExtensions
     {
@@ -25,9 +23,9 @@ namespace Services.Helpers
             return !matches.Any(m => m.HomeTeam == null || m.AwayTeam == null);
         }
 
-        public static IEnumerable<MatchDto> ToDtos(this IEnumerable<Match> matches)
-        {
-            return matches.Select(m => m.GetDto());
-        }
+        //public static IEnumerable<MatchDto> ToDtos(this IEnumerable<Match> matches)
+        //{
+        //    return matches.Select(m => m.GetDto());
+        //}
     }
 }

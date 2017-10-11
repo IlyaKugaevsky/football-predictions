@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Core.Models;
+using Core.QueryExtensions;
 using Persistence.DAL.FetchStrategies;
 
 namespace Persistence.DAL.EntityFrameworkExtensions
@@ -16,10 +17,7 @@ namespace Persistence.DAL.EntityFrameworkExtensions
         {
             var appliedStrategies = fetchStrategies.Select(fs => fs.Apply()).ToArray();
             var tournaments = context.Tournaments.IncludeMultiple<Tournament>(appliedStrategies);
-            var lastTournament = tournaments
-                    .OrderByDescending(t => t.TournamentId)
-                    .First();
-
+            var lastTournament = tournaments.LastAdded();
             return lastTournament.NewTours.AsQueryable();
         }
 
@@ -27,9 +25,7 @@ namespace Persistence.DAL.EntityFrameworkExtensions
         {
             var appliedStrategies = fetchStrategies.Select(fs => fs.Apply()).ToArray();
             var tournaments = context.Tournaments.IncludeMultiple<Tournament>(appliedStrategies);
-            var tournament = tournaments
-                .Single(t => t.TournamentId == tournamentId);
-
+            var tournament = tournaments.TournamentById(tournamentId);
             return tournament.NewTours.AsQueryable();
         }
     }

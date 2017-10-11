@@ -7,7 +7,6 @@ using System.Linq;
 using System.Web.Mvc;
 using Core.Models;
 using Core.Models.Dtos;
-using FootballScore = Core.Models.Dtos.FootballScore;
 
 namespace Web.ViewModels
 {
@@ -24,7 +23,7 @@ namespace Web.ViewModels
         //    SubmitTextArea = new SubmitTextAreaViewModel();
         //}
 
-        public EditPredictionsViewModel(IReadOnlyCollection<Match> matches, IReadOnlyList<Expert> experts, List<FootballScore> scorelist, TourDto tourDto, int expertId, bool addPredictionSuccess)
+        public EditPredictionsViewModel(IReadOnlyCollection<Match> matches, IReadOnlyList<Expert> experts, List<FootballScoreViewModel> scorelist, TourDto tourDto, int expertId, bool addPredictionSuccess)
         {
             TourDto = tourDto;
             Expertlist = GenerateSelectList(experts);
@@ -58,7 +57,7 @@ namespace Web.ViewModels
             }).ToList();
         }
 
-        private MatchTableViewModel GenerateMatchTable(IEnumerable<Match> matches, List<FootballScore> scorelist)
+        private MatchTableViewModel GenerateMatchTable(IEnumerable<Match> matches, List<FootballScoreViewModel> scorelist)
         {
             var headers = new List<string>() { "Дата", "Дома", "В гостях", "Прогноз" };
             var matchlist = matches.Select(m => m.GetDto()).ToList();
