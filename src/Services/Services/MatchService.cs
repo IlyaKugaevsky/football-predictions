@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using AutoMapper;
 using Core.Helpers;
 using Core.Models;
 using Core.Models.Dtos;
@@ -16,10 +17,12 @@ namespace Services.Services
     public class MatchService
     {
         private readonly IPredictionsContext _context;
+        private readonly IMapper _mapper;
 
-        public MatchService(IPredictionsContext context)
+        public MatchService(IPredictionsContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public IList<Match> GetMatchesByTourId(int tourId)
@@ -42,7 +45,7 @@ namespace Services.Services
         public int MatchesCount(int tourId)
         {
             var fetchStrategies = new IFetchStrategy<Tour>[] { new FetchMatches() };
-            return _context.GetTours(fetchStrategies).TourById(tourId).Matches.Count();        
+            return _context.GetTours(fetchStrategies).TourById(tourId).Matches.Count;        
         }
 
         public bool AllMatchScoresPopulated(int tourId)

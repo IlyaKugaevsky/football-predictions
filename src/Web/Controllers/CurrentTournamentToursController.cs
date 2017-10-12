@@ -33,34 +33,24 @@ namespace Web.Controllers
         private readonly TeamService _teamService;
         private readonly FileService _fileService;
         private readonly TournamentService _tournamentService;
-        private readonly IMapper _mapper;
+        //private readonly IMapper _mapper;
 
-        public CurrentTournamentToursController(IPredictionsContext context)
+        public CurrentTournamentToursController(IPredictionsContext context, IMapper mapper)
         {
-            //_context = new PredictionsContext();
             _expertService = new ExpertService(context);
             _tourService = new TourService(context);
             _predictionService = new PredictionService(context);
-            _matchService = new MatchService(context);
+            _matchService = new MatchService(context, mapper);
             _teamService = new TeamService(context);
             _tournamentService = new TournamentService(context);
 
-            _mapper = new MapperConfiguration(c =>
-            {
-                c.AddProfile<ModelToDtoProfile>();
-            }).CreateMapper(); ;
+            // _mapper = mapper;
 
-            //constructor with params?
             _fileService = new FileService();
         }
 
         public ActionResult Index()
         {
-
-
-            var matches = _tourService.GetLastTournamentSchedule().First().Matches;
-            var dtos = matches.ToDtos(_mapper);
-
             return View(_tourService.GetLastTournamentSchedule());
         }
 
@@ -174,7 +164,7 @@ namespace Web.Controllers
         {
             var teamlist = _teamService.GenerateOrderedTeamTitlelist(viewModel.SubmitTextArea.TourId);
             var scorelist = _fileService.ParseExpertPredictions(viewModel.SubmitTextArea.InputText, teamlist);
-            if (!GenericsHelper.IsNullOrEmpty(scorelist))
+            if (!scorelist.IsNullOrEmpty())
                 _predictionService.AddExpertPredictions(viewModel.SelectedExpertId, viewModel.SubmitTextArea.TourId, scorelist);
 
             return RedirectToAction(

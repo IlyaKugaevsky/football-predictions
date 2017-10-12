@@ -14,6 +14,7 @@ namespace Web.AutoMapper.Profiles
         {
             CreateMap<Match, MatchDto>();
             CreateMap<Team, TeamDto>();
+            CreateMap<Match, MatchScoreDto>();
         }
     }
 }
