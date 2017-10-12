@@ -19,7 +19,7 @@ namespace Services.Services
         private readonly IPredictionsContext _context;
         private readonly IMapper _mapper;
 
-        public MatchService(IPredictionsContext context, IMapper mapper)
+        public MatchService(IPredictionsContext context, IMapper mapper = null)
         {
             _context = context;
             _mapper = mapper;

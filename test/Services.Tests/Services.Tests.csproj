@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\..\..\lib\AutoMapper.6.1.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Castle.Core">
       <HintPath>..\..\..\lib\Castle.Core.4.2.0\lib\net45\Castle.Core.dll</HintPath>
       <Private>True</Private>
