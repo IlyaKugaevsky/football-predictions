@@ -8,19 +8,20 @@
             @Html.AntiForgeryToken()
             <h2>@Model.CurrentTourNumber Тур</h2>
             @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "addScoresForm" }))
-            {
-                @Html.HiddenFor(model => Model.CurrentTourNumber)
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        @Html.PartialFor(m => m.MatchTable, "MatchTable")
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <input type="submit" class="btn btn-danger pull-right" value="Сохранить">
-                    </div>
-                </div>
-            }
+    {
+        @Html.HiddenFor(model => Model.CurrentTourNumber)
+        @Html.HiddenFor(model => Model.CurrentTourId)
+        <div class="panel panel-default">
+            <div class="panel-body">
+                @Html.PartialFor(m => m.MatchTable, "MatchTable")
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <input type="submit" class="btn btn-danger pull-right" value="Сохранить">
+            </div>
+        </div>
+}
             <div>
                 @Html.ActionLink("Назад к расписанию", "Index", new { }, new { @class = "btn btn-primary" })
             </div>

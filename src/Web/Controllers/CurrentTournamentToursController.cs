@@ -187,15 +187,15 @@ namespace Web.Controllers
             var matches = _matchService.GetTourSchedule(tourId).Select(m => m.GetDto()).ToList();
 
             var scorelist = _matchService.GenerateScorelist(tourId, true);
-            return View(new AddScoresViewModel(tourNumber, matches, scorelist));
+            return View(new AddScoresViewModel(tourId, tourNumber, matches, scorelist));
         }
 
         [HttpPost]
         public ActionResult AddScores([Bind(Include = "MatchTable, CurrentTourId")] AddScoresViewModel viewModel)
         {
-            if (!ModelState.IsValid) return AddScores(viewModel.CurrentTourNumber); //not sure
+            if (!ModelState.IsValid) return AddScores(viewModel.CurrentTourId); //not sure
 
-            _matchService.AddScores(_matchService.GetMatchesByTourId(viewModel.CurrentTourNumber), viewModel.MatchTable.Scorelist);
+            _matchService.AddScores(_matchService.GetMatchesByTourId(viewModel.CurrentTourId), viewModel.MatchTable.Scorelist);
             return RedirectToAction("Index");
         }
 
