@@ -25,7 +25,7 @@ namespace Web.Controllers
 {
     public class CurrentTournamentToursController : Controller
     {
-        // private readonly PredictionsContext _context;
+        private readonly IPredictionsContext _context;
         private readonly ExpertService _expertService;
         private readonly TourService _tourService;
         private readonly PredictionService _predictionService;
@@ -44,13 +44,15 @@ namespace Web.Controllers
             _teamService = new TeamService(context);
             _tournamentService = new TournamentService(context);
 
+            //_context = context;
+
             // _mapper = mapper;
 
             _fileService = new FileService();
         }
 
         public ActionResult Index()
-        {
+        {       
             return View(_tourService.GetLastTournamentSchedule());
         }
 
@@ -181,18 +183,19 @@ namespace Web.Controllers
         public ActionResult AddScores(int tourId)
         {
             //var matches = _matchService.GetLastTournamentMatchesByTourId(tourId).Select(m => m.GetDto()).ToList();
+            var tourNumber = _tourService.GetTourDto(tourId).TourNumber;
             var matches = _matchService.GetTourSchedule(tourId).Select(m => m.GetDto()).ToList();
 
             var scorelist = _matchService.GenerateScorelist(tourId, true);
-            return View(new AddScoresViewModel(tourId, matches, scorelist));
+            return View(new AddScoresViewModel(tourNumber, matches, scorelist));
         }
 
         [HttpPost]
         public ActionResult AddScores([Bind(Include = "MatchTable, CurrentTourId")] AddScoresViewModel viewModel)
         {
-            if (!ModelState.IsValid) return AddScores(viewModel.CurrentTourId); //not sure
+            if (!ModelState.IsValid) return AddScores(viewModel.CurrentTourNumber); //not sure
 
-            _matchService.AddScores(_matchService.GetMatchesByTourId(viewModel.CurrentTourId), viewModel.MatchTable.Scorelist);
+            _matchService.AddScores(_matchService.GetMatchesByTourId(viewModel.CurrentTourNumber), viewModel.MatchTable.Scorelist);
             return RedirectToAction("Index");
         }
 
@@ -219,20 +222,10 @@ namespace Web.Controllers
 
         public ActionResult DeleteMatch(int id)
         {
-            //so~so, mb better
+            //mb better
             var tourId = _matchService.GetTourId(id);
             _matchService.DeleteMatch(id);
             return RedirectToAction("EditTour", new { tourId = tourId });
         }
-
-        ////terrible, fix as fast as possible
-        //public ActionResult DeleteConfirmation(int id)
-        //{
-        //    var match = _context.Matches.Find(id);
-
-        //    ViewBag.number = GenericsHelper.IsNullOrEmpty(match.Predictions) ? 0 : match.Predictions.Count();
-        //    ViewBag.id = id;
-        //    return View();
-        //}
     }
 }

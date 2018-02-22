@@ -6,10 +6,10 @@
     <div class="row">
         <div class="col-md-12">
             @Html.AntiForgeryToken()
-            <h2>@Model.CurrentTourId Тур</h2>
+            <h2>@Model.CurrentTourNumber Тур</h2>
             @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "addScoresForm" }))
             {
-                @Html.HiddenFor(model => Model.CurrentTourId)
+                @Html.HiddenFor(model => Model.CurrentTourNumber)
                 <div class="panel panel-default">
                     <div class="panel-body">
                         @Html.PartialFor(m => m.MatchTable, "MatchTable")
