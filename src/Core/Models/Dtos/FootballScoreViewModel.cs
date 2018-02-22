@@ -27,6 +27,7 @@ namespace Core.Models.Dtos
 
             _editableEmptySign = editableEmptySign;
             _uneditableEmptySign = uneditableEmptySign;
+            Editable = editable;
         }
 
         public FootballScoreViewModel(string score, bool editable = false)
