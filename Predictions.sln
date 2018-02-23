@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "src\Services\Services.csproj", "{B73D8D94-C934-4342-8A30-294E8C20DAD8}"
 EndProject
@@ -76,6 +76,7 @@ Global
 		{DA1ED79F-DC6C-4F62-9F1A-8E7FA325DA97} = {E07D1D3C-8796-40EC-8B10-E5FBAB166F24}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPathV6 = ..\lib\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8;..\lib\EnterpriseLibrary.TransientFaultHandling.Data.6.0.1304.1\lib\NET45
+		EnterpriseLibraryConfigurationToolBinariesPathV6 = ..\lib\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8;..\lib\EnterpriseLibrary.TransientFaultHandling.Data.6.0.1304.1\lib\NET45;lib\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8;lib\EnterpriseLibrary.TransientFaultHandling.Data.6.0.1304.1\lib\NET45
+		SolutionGuid = {5507FC4E-1F07-43EE-903A-7CFB19F52D5E}
 	EndGlobalSection
 EndGlobal
