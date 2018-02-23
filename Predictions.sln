@@ -19,9 +19,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{E07D1D3C-8
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Tests", "test\Services.Tests\Services.Tests.csproj", "{11520799-3C14-4D9E-ADCA-833D13C8C34B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Tests", "src\Web.Tests\Web.Tests.csproj", "{5284EC30-8F74-4F05-B3C6-36192D4DB624}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Tests", "test\Web.Tests\Web.Tests.csproj", "{5284EC30-8F74-4F05-B3C6-36192D4DB624}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.Tests", "src\Persistence.Tests\Persistence.Tests.csproj", "{DA1ED79F-DC6C-4F62-9F1A-8E7FA325DA97}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.Tests", "test\Persistence.Tests\Persistence.Tests.csproj", "{DA1ED79F-DC6C-4F62-9F1A-8E7FA325DA97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
