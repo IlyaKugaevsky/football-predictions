@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using Core.Models;
 using Core.Models.Dtos;
 
@@ -6,6 +7,14 @@ namespace Core
 {
     public static class PredictionEvaluator
     {
+        public static readonly string Pattern = @"^$|^[0-9]{1,2}:[0-9]{1,2}$";
+
+        public static bool IsValidScore(string input)
+        {
+            var rgx = new Regex(Pattern);
+            return rgx.IsMatch(input);
+        }
+
         public static int GetHomeGoals(string expression) => 
             Convert.ToInt32(expression.Substring(0, expression.IndexOf(':')));
 
@@ -23,8 +32,7 @@ namespace Core
 
         public static bool PredictDifference(string prediction, string score)
         {
-            if (GetDifference(prediction) == GetDifference(score)) return true;
-            return false;
+            return GetDifference(prediction) == GetDifference(score);
         }
 
         public static bool PredictScore(string prediction, string score)

@@ -64,6 +64,7 @@
     <Compile Include="DAL\FetchStrategies\ToursFetchStrategies\FetchMatchesWithAwayTeam.cs" />
     <Compile Include="DAL\FetchStrategies\ToursFetchStrategies\FetchMatchesWithHomeTeam.cs" />
     <Compile Include="DAL\FetchStrategies\ToursFetchStrategies\FetchMatchesWithPredictions.cs" />
+    <Compile Include="DAL\FetchStrategies\ToursFetchStrategies\FetchMatchesWithPredictionsWithExperts.cs" />
     <Compile Include="DAL\IPredictionsContext.cs" />
     <Compile Include="DAL\PredictionsContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

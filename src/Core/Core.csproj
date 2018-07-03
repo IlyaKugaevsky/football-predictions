@@ -70,6 +70,7 @@
     <Compile Include="PredictionEvaluator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryExtensions\MatchQueryExtensions.cs" />
+    <Compile Include="QueryExtensions\StringExtensions.cs" />
     <Compile Include="QueryExtensions\TournamentQueryExtensions.cs" />
     <Compile Include="QueryExtensions\TourQueryExtensions.cs" />
   </ItemGroup>

@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="PredictionEvaluatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryExtensionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\..\lib\xunit.analyzers.0.7.0\analyzers\dotnet\cs\xunit.analyzers.dll" />

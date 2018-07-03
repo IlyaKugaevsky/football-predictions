@@ -22,14 +22,14 @@ namespace Services.Services
 
         public TourDto GetTourDto(int tourId)
         {
-            return Queryable.Single<Tour>(_context.Tours, t => t.TourId == tourId).GetDto();
+            return _context.Tours.Single(t => t.TourId == tourId).GetDto();
         }
 
         //tourNumber?
         public void UpdateTour(TourDto tourDto)
         {
             var tour = _context.Tours.Find(tourDto.TourId);
-            if (tour == null) throw new KeyNotFoundException("no tour with Id = " + tour.TourId.ToString());
+            if (tour == null) throw new KeyNotFoundException("no tour with Id = " + tourDto.TourId);
             
             tour.StartDate = tourDto.StartDate;
             tour.EndDate = tourDto.EndDate;
@@ -39,7 +39,7 @@ namespace Services.Services
         public List<Tour> GetLastTournamentTours()
         {
             var fetchStrategies = new IFetchStrategy<Tournament>[] { new FetchTours() };
-            return Enumerable.ToList<Tour>(_context.GetLastTournamentTours(fetchStrategies));
+            return _context.GetLastTournamentTours(fetchStrategies).ToList();
         }
 
         public List<Tour> GetLastTournamentSchedule()
@@ -49,7 +49,7 @@ namespace Services.Services
                 new FetchToursWithMatchesWithHomeTeam(),
                 new FetchToursWithMatchesWithAwayTeam()
             };
-            return Enumerable.ToList<Tour>(_context.GetLastTournamentTours(fetchStrategies));
+            return _context.GetLastTournamentTours(fetchStrategies).ToList();
         }
 
         //not sure
@@ -58,10 +58,10 @@ namespace Services.Services
             //var tour = EagerLoad(tourId, t => t.Matches.Select(m => m.Predictions));
 
             var fetchStrategies = new IFetchStrategy<Tour>[] { new FetchMatchesWithPredictions() };
-            var tour = Queryable.Single<Tour>(_context.GetTours(fetchStrategies), t => t.TourId == tourId);
+            var tour = _context.GetTours(fetchStrategies).Single(t => t.TourId == tourId);
             var matches = tour.Matches;
             var predictions = matches.SelectMany(m => m.Predictions).ToList();
-            var experts = Enumerable.ToList<Expert>(_context.Experts);
+            var experts = _context.Experts.ToList();
 
             var tourPreresultList = new List<Tuple<Expert, int>>();
 

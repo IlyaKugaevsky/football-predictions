@@ -1,13 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using Core.Models;
 using Core.Models.Dtos;
 using Core;
+using Core.Helpers;
 using Persistence.DAL;
 using Persistence.DAL.EntityFrameworkExtensions;
 using Persistence.DAL.FetchStrategies;
 using Persistence.DAL.FetchStrategies.TournamentsFetchStrategies;
+using Persistence.DAL.FetchStrategies.ToursFetchStrategies;
 
 namespace Services.Services
 {
@@ -23,22 +26,26 @@ namespace Services.Services
         //add custom includes
         public Tour LoadTour(int? tourId)
         {
-            return Queryable.Single<Tour>(_context.Tours
-                    .Include(t => Enumerable.Select<Match, IEnumerable<Expert>>(t.Matches, m => Enumerable.Select<Prediction, Expert>(m.Predictions, p => p.Expert))), t => t.TourId == tourId);
+            var fetchStrategies = new IFetchStrategy<Tour>[]
+            {
+                 new FetchMatchesWithPredictionsWithExperts()
+            };
+
+            return _context.GetTours(fetchStrategies).Single(t => t.TourId == tourId);
         }
 
         public List<FootballScoreViewModel> GeneratePredictionlist(int tourId, int expertId, bool editable = false, string emptyDisplay = "-")
         {
+            var fetchStrategies = new IFetchStrategy<Tour>[]
+            {
+                 new FetchMatchesWithPredictionsWithExperts()
+            };
 
-           // var fetchStrategies = new IFetchStrategy<Tour>[]
-           //{
-           //     new MatchesWithPredictionsWIthExperts()
-           //};
 
-            var tour = Queryable.Single<Tour>(_context.Tours
-                    .Include(t => Enumerable.Select<Match, IEnumerable<Expert>>(t.Matches, m => Enumerable.Select<Prediction, Expert>(m.Predictions, p => p.Expert))), t => t.TourId == tourId);
+            var tour = _context.Tours
+                .Include(t => t.Matches.Select(m => m.Predictions.Select(p => p.Expert))).Single(t => t.TourId == tourId);
 
-            var mpList = Enumerable.Select(tour.Matches, m => new
+            var mpList = tour.Matches.Select(m => new
             {
                 //match-prediction list
                 Match = m,
@@ -60,10 +67,10 @@ namespace Services.Services
             //if (predictions.IsNullOrEmpty()) return null;
             //return predictions.Select(p => p.IsClosed ? p.Sum.ToString() : "-").ToList();
 
-            var tour = Queryable.Single<Tour>(_context.Tours
-                    .Include(t => Enumerable.Select<Match, IEnumerable<Expert>>(t.Matches, m => Enumerable.Select<Prediction, Expert>(m.Predictions, p => p.Expert))), t => t.TourId == tourId);
+            var tour = _context.Tours
+                .Include(t => t.Matches.Select(m => m.Predictions.Select(p => p.Expert))).Single(t => t.TourId == tourId);
 
-            var mpList = Enumerable.Select(tour.Matches, m => new
+            var mpList = tour.Matches.Select(m => new
             {
                 //match-prediction list
                 Match = m,
@@ -72,7 +79,7 @@ namespace Services.Services
             .ToList();
 
             return mpList
-                .Select(mp => mp.Prediction == null ? emptyDisplay : mp.Prediction.Sum.ToString())
+                .Select(mp => mp.Prediction?.Sum.ToString() ?? emptyDisplay)
                 .ToList();
         }
 
@@ -84,7 +91,7 @@ namespace Services.Services
 
             if (tourNumber == 0)
             {
-                var experts = Enumerable.ToList<Expert>(_context.Experts);
+                var experts = _context.Experts.ToList();
                 experts.ForEach(e => results.Add(new ExpertDto(e.Nickname, e.Sum, e.Scores, e.Differences, e.Outcomes)));
                 return results;
             }
@@ -96,7 +103,7 @@ namespace Services.Services
 
             var tours = _context.GetLastTournamentTours(fetchStrategies);
 
-            var matches = Queryable.Single<Tour>(tours, t => t.TourNumber == tourNumber)
+            var matches = tours.Single(t => t.TourNumber == tourNumber)
                 .Matches;
 
             var predictions = matches
@@ -121,20 +128,15 @@ namespace Services.Services
                 
         }
 
-        //public Prediction CreatePrediction(int expertId, int matchId, string value)
-        //{
-        //    return new Prediction() { ExpertId = expertId, MatchId = matchId, Value = value };
-        //}
-
         
         //decompose
         //why Football score? mb strings?
-        public void AddExpertPredictions(int expertId, int tourId, IList<FootballScoreViewModel> scorelist)
+        public void AddExpertPredictions(int expertId, int tourId, IList<string> scorelist)
         {
-            var tour = Queryable.Single<Tour>(_context.Tours
-                    .Include(t => Enumerable.Select<Match, List<Prediction>>(t.Matches, m => m.Predictions)), t => t.TourId == tourId);
+            var tour = _context.Tours
+                .Include(t => t.Matches.Select(m => m.Predictions)).Single(t => t.TourId == tourId);
 
-            var mpList = Enumerable.Select(tour.Matches, m => new
+            var mpList = tour.Matches.Select(m => new
             {
                 //match-prediction list
                 Match = m,
@@ -145,15 +147,33 @@ namespace Services.Services
             var createdPredictions = new List<Prediction>();
             for (var i = 0; i < mpList.Count(); i++)
             {
-                if (mpList[i].Prediction == null) createdPredictions.Add(new Prediction(expertId, mpList[i].Match.MatchId, scorelist[i].Score));
-                else mpList[i].Prediction.Value = scorelist[i].Score;
+                if (mpList[i].Prediction == null) createdPredictions.Add(new Prediction(expertId, mpList[i].Match.MatchId, scorelist[i]));
+                else mpList[i].Prediction.Value = scorelist[i];
             }
             _context.Predictions.AddRange(createdPredictions);
             _context.SaveChanges();
         }
 
+        public void AddBotPredictions(int tourId)
+        {
+            var tour = _context.Tours
+                .Include(t => t.Matches.Select(m => m.Predictions)).AsNoTracking().Single(t => t.TourId == tourId);
+
+            var matches = tour.Matches;
+
+            var meanScores = GenerateMeanPredictions(tourId);
+            AddExpertPredictions(25, tourId, meanScores.ToList());
+
+            //ORDER!
+            var slavaScores = GenerateVenceslavaPredictions(matches.Count);
+            var randomScores = GenerateRandomizerPredictions(matches.Count);
+
+            AddExpertPredictions(16, tourId, slavaScores.ToList());
+            if(matches.First().Predictions.Where(m => m.ExpertId == 24).IsNullOrEmpty()) AddExpertPredictions(24, tourId, randomScores.ToList());
+        }
+
         //mb needs IPredictionEvaluator
-        void SubmitPrediction (Prediction prediction)
+        private void SubmitPrediction (Prediction prediction)
         {
             var predictionResults = PredictionEvaluator.GetPredictionResults(prediction.Value, prediction.Match.Score);
 
@@ -170,15 +190,19 @@ namespace Services.Services
             prediction.IsClosed = true;
         }
 
-        //mb fix
         public void SubmitTourPredictions(int? tourId)
         {
             var tour = LoadTour(tourId);
-            foreach(var m in tour.Matches)
+            var matches = tour.Matches.ToList();
+
+            foreach(var m in matches)
             {
-                foreach(var p in m.Predictions)
+                if (m.Score.IsNullOrEmpty()) throw new ArgumentException("Match score is not set.");
+
+                var predictions = m.Predictions.ToList();
+                foreach(var p in predictions)
                 {
-                    if(!p.IsClosed)SubmitPrediction(p);
+                    if (!p.IsClosed) SubmitPrediction(p);
                 }
             }
             tour.IsClosed = true;
@@ -214,5 +238,71 @@ namespace Services.Services
 
             prediction.IsClosed = false;
         }
+
+
+        public IReadOnlyList<string> GenerateVenceslavaPredictions(int matchNumber)
+        {
+            var scores = new List<string>();
+
+            for (var i = 1; i <= matchNumber; i++)
+            {
+                scores.Add("0:0");
+            }
+
+            return scores;
+
+        }
+
+        public IReadOnlyList<string> GenerateRandomizerPredictions(int matchNumber)
+        {
+            var scores = new List<string>();
+            var r = new Random();
+            for (var i = 1; i <= matchNumber; i++)
+            {
+                scores.Add(r.Next(0, 4).ToString() + ":" + r.Next(0, 4).ToString());
+            }
+
+            return scores;
+
+        }
+
+        public IReadOnlyList<string> GenerateMeanPredictions(int tourId)
+        {
+            var fetchStrategies = new IFetchStrategy<Tour>[]
+            {
+                new FetchMatchesWithPredictions()
+            };
+            var tour = _context.GetTours(fetchStrategies).AsNoTracking().Single(t => t.TourId == tourId);
+            var matches = tour.Matches;
+            var scores = new List<string>();
+
+            foreach (var match in matches)
+            {
+                var predictionValues = match.Predictions.Select(p => p.Value);
+                scores.Add(CalculateMeanScore(predictionValues));
+            }
+
+            return scores;
+        }
+
+        public string CalculateMeanScore(IEnumerable<string> scores)
+        {
+            var homeSum = 0;
+            var awaySum = 0;
+            var scoreList = scores.ToList();
+
+            foreach (var score in scoreList)
+            {
+                if (!PredictionEvaluator.IsValidScore(score)) throw new ArgumentException("Not a valid score");
+                homeSum += PredictionEvaluator.GetHomeGoals(score);
+                awaySum += PredictionEvaluator.GetAwayGoals(score);
+            }
+
+            var homeMean = homeSum / scoreList.Count;
+            var awayMean = awaySum / scoreList.Count;
+
+            return homeMean + ":" + awayMean;
+        }
+
     }
 }

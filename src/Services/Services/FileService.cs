@@ -11,11 +11,11 @@ namespace Services.Services
         //private readonly string _defaultFolder = "~/App_Data/TextFiles";
         public readonly string TourSchedulePattern = @"^(?<date>\d\d\.\d\d\.\d\d\d\d)" + @"\|"
                             + @"(?<time>\d\d:\d\d)" + @"(?<spaces>\s+)"
-                            + @"(?<homeTeam>\w+(\s\w+)?)" + @"(?<trash>(\W|_)+)"
-                            + @"(?<awayTeam>(\w+)(\s\w*)?)$";
+                            + @"(?<homeTeam>((\w+\.?)|((\w+)-(\w+)))(\s\w+)?)" + @"(?<trash>(\W|_)+)"
+                            + @"(?<awayTeam>((\w+\.?)|((\w+)-(\w+)))(\s\w*)?)$";
 
-        public readonly string PredictionPattern = @"^(?<homeTeam>\w+(\s\w+)?)" + @"\s-\s"
-                                                + @"(?<awayTeam>(\w+)(\s\w+)?)" + @"\s" + @"(?<score>\d\d?:\d\d?)" + @"(?<spaces>\s*)$";
+        public readonly string PredictionPattern = @"^(?<homeTeam>((\w+\.?)|((\w+)-(\w+)))(\s\w+)?)" + @"\s-\s"
+                                                + @"(?<awayTeam>((\w+\.?)|((\w+)-(\w+)))(\s\w*)?)" + @"\s" + @"(?<score>\d\d?:\d\d?)" + @"(?<spaces>\s*)$";
 
         /*public List<ParsingMatchInfo> ReadTourMatches(string localFilePath = "")
         {

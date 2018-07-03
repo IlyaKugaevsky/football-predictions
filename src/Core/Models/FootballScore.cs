@@ -20,7 +20,7 @@ namespace Core.Models
 
         public FootballScore(string input)
         {
-            var rgx = new Regex(FootballScore.Pattern);
+            var rgx = new Regex(Pattern);
 
             if (rgx.IsMatch(input))
             {
