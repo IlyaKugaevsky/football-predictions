@@ -41,8 +41,7 @@ namespace Core
             return false;
         }
 
-
-        public static PredictionResults GetPredictionResults(string prediction, string score) //sum, score, difference, outcome
+        public static PredictionResults GetPredictionResults(string prediction, string score, bool isPlayoff, int? guessedWinner = null, int? actualWinner = null) //sum, score, difference, outcome
         {
             if (string.IsNullOrEmpty(prediction))
             {
@@ -60,17 +59,37 @@ namespace Core
             var predictScore = PredictScore(prediction, score);
 
             var sum = 0;
-            if (predictOutcome) sum++;
-            if (predictDifference) sum++;
-            if (predictScore) sum++;
 
-            return new PredictionResults
+            if (!isPlayoff || GetDifference(score) != 0)
             {
-                Sum = sum,
-                Score = predictScore,
-                Difference = predictDifference,
-                Outcome = predictOutcome
-            };
+                if (predictOutcome) sum++;
+
+                if (predictDifference) sum++;
+
+                if (predictScore) sum++;
+
+                return new PredictionResults
+                {
+                    Sum = sum,
+                    Score = predictScore,
+                    Difference = predictDifference,
+                    Outcome = predictOutcome
+                };
+            }
+            else
+            {
+                if (predictDifference) sum++;
+                if (predictScore) sum += 2;
+                if (guessedWinner == actualWinner) sum++;
+
+                return new PredictionResults
+                {
+                    Sum = sum,
+                    Score = predictScore,
+                    Difference = predictDifference,
+                    Outcome = predictOutcome
+                };
+            }
         }
     }
 }

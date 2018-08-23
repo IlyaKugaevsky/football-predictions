@@ -114,9 +114,10 @@ namespace Services.Services
         //zip?
         public void AddScores(IList<Match> matches, IList<FootballScoreViewModel> scorelist)
         {
-            for (var i = 0; i < matches.Count(); i++)
+            for (var i = 0; i < matches.Count; i++)
             {
                 matches[i].Score = scorelist[i].Score;
+                matches[i].PlayoffWinner = scorelist[i].PlayoffWinner;
             }
             _context.SaveChanges();
         }

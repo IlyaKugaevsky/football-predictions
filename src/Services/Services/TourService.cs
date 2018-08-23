@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Core.Models;
 using Core.Models.Dtos;
@@ -23,6 +24,13 @@ namespace Services.Services
         public TourDto GetTourDto(int tourId)
         {
             return _context.Tours.Single(t => t.TourId == tourId).GetDto();
+        }
+
+        public bool IsPlayoff(int tourId)
+        {
+            var tour = _context.Tours.Find(tourId);
+            Debug.Assert(tour != null, nameof(tour) + " != null");
+            return tour.IsPlayoff;
         }
 
         //tourNumber?

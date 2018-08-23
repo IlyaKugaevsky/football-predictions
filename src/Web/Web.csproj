@@ -255,81 +255,17 @@
     <Compile Include="Helpers\CustomAttributes.cs" />
     <Compile Include="Helpers\HtmlHelpers.cs" />
     <Compile Include="Helpers\RegexExtensions.cs" />
-    <Compile Include="Migrations\201609152253279_Tour IsClosed.cs" />
-    <Compile Include="Migrations\201609152253279_Tour IsClosed.Designer.cs">
-      <DependentUpon>201609152253279_Tour IsClosed.cs</DependentUpon>
+    <Compile Include="Migrations\201807071233545_Restart.cs" />
+    <Compile Include="Migrations\201807071233545_Restart.Designer.cs">
+      <DependentUpon>201807071233545_Restart.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201706141020212_TeamForeignKeys.cs" />
-    <Compile Include="Migrations\201706141020212_TeamForeignKeys.Designer.cs">
-      <DependentUpon>201706141020212_TeamForeignKeys.cs</DependentUpon>
+    <Compile Include="Migrations\201807071239181_Playoff.cs" />
+    <Compile Include="Migrations\201807071239181_Playoff.Designer.cs">
+      <DependentUpon>201807071239181_Playoff.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201706142025499_AddTournament.cs" />
-    <Compile Include="Migrations\201706142025499_AddTournament.Designer.cs">
-      <DependentUpon>201706142025499_AddTournament.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706142055487_TourTournamentFix.cs" />
-    <Compile Include="Migrations\201706142055487_TourTournamentFix.Designer.cs">
-      <DependentUpon>201706142055487_TourTournamentFix.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706142118124_TourDeleteNullable.cs" />
-    <Compile Include="Migrations\201706142118124_TourDeleteNullable.Designer.cs">
-      <DependentUpon>201706142118124_TourDeleteNullable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706142354100_TourIdGeneration.cs" />
-    <Compile Include="Migrations\201706142354100_TourIdGeneration.Designer.cs">
-      <DependentUpon>201706142354100_TourIdGeneration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706181549326_TourId autogenerate.cs" />
-    <Compile Include="Migrations\201706181549326_TourId autogenerate.Designer.cs">
-      <DependentUpon>201706181549326_TourId autogenerate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706181612466_TourId computed.cs" />
-    <Compile Include="Migrations\201706181612466_TourId computed.Designer.cs">
-      <DependentUpon>201706181612466_TourId computed.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706181615517_TourId identity.cs" />
-    <Compile Include="Migrations\201706181615517_TourId identity.Designer.cs">
-      <DependentUpon>201706181615517_TourId identity.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706182047095_NewTour.cs" />
-    <Compile Include="Migrations\201706182047095_NewTour.Designer.cs">
-      <DependentUpon>201706182047095_NewTour.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706182109212_NewTour relations.cs" />
-    <Compile Include="Migrations\201706182109212_NewTour relations.Designer.cs">
-      <DependentUpon>201706182109212_NewTour relations.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706182132300_wtf.cs" />
-    <Compile Include="Migrations\201706182132300_wtf.Designer.cs">
-      <DependentUpon>201706182132300_wtf.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706182345502_delete Tournament.Tours property.cs" />
-    <Compile Include="Migrations\201706182345502_delete Tournament.Tours property.Designer.cs">
-      <DependentUpon>201706182345502_delete Tournament.Tours property.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706190024019_not-nullable Match-NewTourId.cs" />
-    <Compile Include="Migrations\201706190024019_not-nullable Match-NewTourId.Designer.cs">
-      <DependentUpon>201706190024019_not-nullable Match-NewTourId.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706190057577_delete Match-Tour relation.cs" />
-    <Compile Include="Migrations\201706190057577_delete Match-Tour relation.Designer.cs">
-      <DependentUpon>201706190057577_delete Match-Tour relation.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706191334538_rename Tour.cs" />
-    <Compile Include="Migrations\201706191334538_rename Tour.Designer.cs">
-      <DependentUpon>201706191334538_rename Tour.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706191347346_rename NewTour.cs" />
-    <Compile Include="Migrations\201706191347346_rename NewTour.Designer.cs">
-      <DependentUpon>201706191347346_rename NewTour.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706191416141_rename NewTourId.cs" />
-    <Compile Include="Migrations\201706191416141_rename NewTourId.Designer.cs">
-      <DependentUpon>201706191416141_rename NewTourId.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706191442057_rename new mapping.cs" />
-    <Compile Include="Migrations\201706191442057_rename new mapping.Designer.cs">
-      <DependentUpon>201706191442057_rename new mapping.cs</DependentUpon>
+    <Compile Include="Migrations\201807082102104_PlayoffTour.cs" />
+    <Compile Include="Migrations\201807082102104_PlayoffTour.Designer.cs">
+      <DependentUpon>201807082102104_PlayoffTour.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Windsor\Installers\AutomapperInstaller.cs" />
@@ -666,65 +602,6 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201609152253279_Tour IsClosed.resx">
-      <DependentUpon>201609152253279_Tour IsClosed.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706141020212_TeamForeignKeys.resx">
-      <DependentUpon>201706141020212_TeamForeignKeys.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706142025499_AddTournament.resx">
-      <DependentUpon>201706142025499_AddTournament.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706142055487_TourTournamentFix.resx">
-      <DependentUpon>201706142055487_TourTournamentFix.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706142118124_TourDeleteNullable.resx">
-      <DependentUpon>201706142118124_TourDeleteNullable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706142354100_TourIdGeneration.resx">
-      <DependentUpon>201706142354100_TourIdGeneration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706181549326_TourId autogenerate.resx">
-      <DependentUpon>201706181549326_TourId autogenerate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706181612466_TourId computed.resx">
-      <DependentUpon>201706181612466_TourId computed.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706181615517_TourId identity.resx">
-      <DependentUpon>201706181615517_TourId identity.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706182047095_NewTour.resx">
-      <DependentUpon>201706182047095_NewTour.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706182109212_NewTour relations.resx">
-      <DependentUpon>201706182109212_NewTour relations.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706182132300_wtf.resx">
-      <DependentUpon>201706182132300_wtf.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706182345502_delete Tournament.Tours property.resx">
-      <DependentUpon>201706182345502_delete Tournament.Tours property.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706190024019_not-nullable Match-NewTourId.resx">
-      <DependentUpon>201706190024019_not-nullable Match-NewTourId.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706190057577_delete Match-Tour relation.resx">
-      <DependentUpon>201706190057577_delete Match-Tour relation.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706191334538_rename Tour.resx">
-      <DependentUpon>201706191334538_rename Tour.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706191347346_rename NewTour.resx">
-      <DependentUpon>201706191347346_rename NewTour.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706191416141_rename NewTourId.resx">
-      <DependentUpon>201706191416141_rename NewTourId.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706191442057_rename new mapping.resx">
-      <DependentUpon>201706191442057_rename new mapping.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{a63a536f-2024-4d03-baba-c1daea4a4c20}</Project>
       <Name>Core</Name>
@@ -737,6 +614,17 @@
       <Project>{b73d8d94-c934-4342-8a30-294e8c20dad8}</Project>
       <Name>Services</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201807071233545_Restart.resx">
+      <DependentUpon>201807071233545_Restart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807071239181_Playoff.resx">
+      <DependentUpon>201807071239181_Playoff.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807082102104_PlayoffTour.resx">
+      <DependentUpon>201807082102104_PlayoffTour.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

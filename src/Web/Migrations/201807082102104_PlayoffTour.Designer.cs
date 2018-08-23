@@ -7,13 +7,13 @@ namespace Web.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class TourIdidentity : IMigrationMetadata
+    public sealed partial class PlayoffTour : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(TourIdidentity));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(PlayoffTour));
         
         string IMigrationMetadata.Id
         {
-            get { return "201706181615517_TourId identity"; }
+            get { return "201807082102104_PlayoffTour"; }
         }
         
         string IMigrationMetadata.Source

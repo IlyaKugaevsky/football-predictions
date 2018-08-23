@@ -9,10 +9,12 @@ namespace Core.Models
     public class Match
     {
         public int MatchId { get; set; }
+
         public string Title { get; set; }
         public string Score { get; set; } = string.Empty;
 
-        //[DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:dd.MM.yyyy | HH:mm}")]
+        public int? PlayoffWinner { get; set; } = null;
+
         [Column(TypeName = "DateTime2")]
         public DateTime Date { get; set; }
 
@@ -35,15 +37,9 @@ namespace Core.Models
 
         public Match(DateTime date, Team homeTeam, Team awayTeam, Tour tour)
         {
-            if (homeTeam == null)
-                throw new ArgumentNullException("HomeTeam");
-
-            if (awayTeam == null)
-                throw new ArgumentNullException("AwayTeam");
-
             Date = date;
-            HomeTeam = homeTeam;
-            AwayTeam = awayTeam;
+            HomeTeam = homeTeam ?? throw new ArgumentNullException("HomeTeam");
+            AwayTeam = awayTeam ?? throw new ArgumentNullException("AwayTeam");
             Tour = tour;
             Score = string.Empty;
         }
@@ -103,7 +99,7 @@ namespace Core.Models
 
         public FootballScore GetFootballScore()
         {
-            return new FootballScore(Score);
+            return new FootballScore(Score, PlayoffWinner);
         }
 
         public int GetPredictionsSum()

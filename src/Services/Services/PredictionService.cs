@@ -131,7 +131,7 @@ namespace Services.Services
         
         //decompose
         //why Football score? mb strings?
-        public void AddExpertPredictions(int expertId, int tourId, IList<string> scorelist)
+        public void AddExpertPredictions(int expertId, int tourId, IList<string> scorelist, IList<int?> winnerList, bool isPlayoff)
         {
             var tour = _context.Tours
                 .Include(t => t.Matches.Select(m => m.Predictions)).Single(t => t.TourId == tourId);
@@ -147,35 +147,60 @@ namespace Services.Services
             var createdPredictions = new List<Prediction>();
             for (var i = 0; i < mpList.Count(); i++)
             {
-                if (mpList[i].Prediction == null) createdPredictions.Add(new Prediction(expertId, mpList[i].Match.MatchId, scorelist[i]));
+                int? winner = null;
+                if (winnerList != null) winner = winnerList[i];
+
+                if (mpList[i].Prediction == null) createdPredictions.Add(new Prediction(expertId, mpList[i].Match.MatchId, scorelist[i], winner, isPlayoff));
                 else mpList[i].Prediction.Value = scorelist[i];
             }
+
             _context.Predictions.AddRange(createdPredictions);
             _context.SaveChanges();
         }
 
-        public void AddBotPredictions(int tourId)
+        public void AddBotPredictions(int tourId, bool isPlayoff)
         {
             var tour = _context.Tours
                 .Include(t => t.Matches.Select(m => m.Predictions)).AsNoTracking().Single(t => t.TourId == tourId);
 
             var matches = tour.Matches;
 
-            var meanScores = GenerateMeanPredictions(tourId);
-            AddExpertPredictions(25, tourId, meanScores.ToList());
 
-            //ORDER!
-            var slavaScores = GenerateVenceslavaPredictions(matches.Count);
-            var randomScores = GenerateRandomizerPredictions(matches.Count);
+            if (!isPlayoff)
+            {
+                var meanScores = GenerateMeanPredictions(tourId);
+                AddExpertPredictions(25, tourId, meanScores.ToList(), null, false);
 
-            AddExpertPredictions(16, tourId, slavaScores.ToList());
-            if(matches.First().Predictions.Where(m => m.ExpertId == 24).IsNullOrEmpty()) AddExpertPredictions(24, tourId, randomScores.ToList());
+                //ORDER!
+                var slavaScores = GenerateVenceslavaPredictions(matches.Count);
+                var randomScores = GenerateRandomizerPredictions(matches.Count);
+
+                AddExpertPredictions(16, tourId, slavaScores.ToList(), null, false);
+                if (matches.First().Predictions.Where(m => m.ExpertId == 24).IsNullOrEmpty()) AddExpertPredictions(24, tourId, randomScores.ToList(), null, false);
+            }
+            else
+            {
+                var meanScores = GenerateMeanPredictionsAndWinners(tourId).Select(ms => ms.Item1).ToList();
+                var meanWinners = GenerateMeanPredictionsAndWinners(tourId).Select(ms => ms.Item2).ToList();
+                AddExpertPredictions(25, tourId, meanScores, meanWinners, true);
+
+                var slavaScores = GenerateVenceslavaPredictionsAndWinners(tourId).Select(vs => vs.Item1).ToList();
+                var slavaWinners = GenerateVenceslavaPredictionsAndWinners(tourId).Select(vs => vs.Item2).ToList();
+
+                var randomScores = GenerateRandomizerPredictionsAndWinners(tourId).Select(rs => rs.Item1).ToList();
+                var randomWinners = GenerateRandomizerPredictionsAndWinners(tourId).Select(rs => rs.Item2).ToList();
+
+                AddExpertPredictions(16, tourId, slavaScores, slavaWinners, true);
+                if (matches.First().Predictions.Where(m => m.ExpertId == 24).IsNullOrEmpty()) AddExpertPredictions(24, tourId, randomScores, randomWinners, true);
+            }
         }
 
         //mb needs IPredictionEvaluator
-        private void SubmitPrediction (Prediction prediction)
+        private void SubmitPrediction (Prediction prediction, bool isPlayoff)
         {
-            var predictionResults = PredictionEvaluator.GetPredictionResults(prediction.Value, prediction.Match.Score);
+            var guessedWinner = prediction.PlayoffWinner;
+            var actualWinner = prediction.Match.PlayoffWinner;
+            var predictionResults = PredictionEvaluator.GetPredictionResults(prediction.Value, prediction.Match.Score, isPlayoff, guessedWinner, actualWinner);
 
             prediction.Sum = predictionResults.Sum;
             prediction.Score = predictionResults.Score;
@@ -202,7 +227,7 @@ namespace Services.Services
                 var predictions = m.Predictions.ToList();
                 foreach(var p in predictions)
                 {
-                    if (!p.IsClosed) SubmitPrediction(p);
+                    if (!p.IsClosed) SubmitPrediction(p, tour.IsPlayoff);
                 }
             }
             tour.IsClosed = true;
@@ -250,7 +275,18 @@ namespace Services.Services
             }
 
             return scores;
+        }
 
+        public IReadOnlyList<Tuple<string, int?>> GenerateVenceslavaPredictionsAndWinners(int matchNumber)
+        {
+            var scores = new List<Tuple<string, int?>>();
+
+            for (var i = 1; i <= matchNumber; i++)
+            {
+                var pair = new Tuple<string, int?>("0:0", 1);
+                scores.Add(pair);
+            }
+            return scores;
         }
 
         public IReadOnlyList<string> GenerateRandomizerPredictions(int matchNumber)
@@ -263,7 +299,26 @@ namespace Services.Services
             }
 
             return scores;
+        }
 
+        public IReadOnlyList<Tuple<string, int?>> GenerateRandomizerPredictionsAndWinners(int matchNumber)
+        {
+            var scoresWithWinners = new List<Tuple<string, int?>>();
+            var r = new Random();
+            for (var i = 1; i <= matchNumber; i++)
+            {
+                var score = r.Next(0, 4).ToString() + ":" + r.Next(0, 4).ToString();
+
+                int? winner = null;
+                if (PredictionEvaluator.GetDifference(score) == 0)
+                {
+                    winner = r.Next(1, 3);
+                }
+
+                scoresWithWinners.Add(new Tuple<string, int?>(score, winner));
+            }
+
+            return scoresWithWinners;
         }
 
         public IReadOnlyList<string> GenerateMeanPredictions(int tourId)
@@ -285,6 +340,54 @@ namespace Services.Services
             return scores;
         }
 
+        public IReadOnlyList<Tuple<string, int?>> GenerateMeanPredictionsAndWinners(int tourId)
+        {
+            var fetchStrategies = new IFetchStrategy<Tour>[]
+            {
+                new FetchMatchesWithPredictions()
+            };
+            var tour = _context.GetTours(fetchStrategies).AsNoTracking().Single(t => t.TourId == tourId);
+            var matches = tour.Matches;
+            var scoresAndWinners = new List<Tuple<string, int?>>();
+
+            foreach (var match in matches)
+            {
+                var predictionValues = match.Predictions.Select(p => p.Value);
+                var winners = match.Predictions.Select(p => p.PlayoffWinner);
+
+                var meanScore = CalculateMeanScore(predictionValues);
+                var meanWinner = CalculateMeanPlayoffWinner(winners);
+
+                if (PredictionEvaluator.GetDifference(meanScore) != 0) meanWinner = null;
+                else if (meanWinner == null) meanWinner = 1;
+
+                scoresAndWinners.Add(new Tuple<string, int?>(meanScore, meanWinner));
+            }
+
+            return scoresAndWinners;
+        }
+
+        public IReadOnlyList<int?> GenerateMeanPlayoffWinners(int tourId)
+        {
+            var fetchStrategies = new IFetchStrategy<Tour>[]
+            {
+                new FetchMatchesWithPredictions()
+            };
+            var tour = _context.GetTours(fetchStrategies).AsNoTracking().Single(t => t.TourId == tourId);
+            var matches = tour.Matches;
+            var winners = new List<int?>();
+
+            foreach (var match in matches)
+            {
+                var predictionValues = match.Predictions.Select(p => p.PlayoffWinner);
+                winners.Add(CalculateMeanPlayoffWinner(predictionValues));
+            }
+
+            return winners;
+        }
+
+
+
         public string CalculateMeanScore(IEnumerable<string> scores)
         {
             var homeSum = 0;
@@ -302,6 +405,34 @@ namespace Services.Services
             var awayMean = awaySum / scoreList.Count;
 
             return homeMean + ":" + awayMean;
+        }
+
+
+        public int? CalculateMeanPlayoffWinner(IEnumerable<int?> winners)
+        {
+            var noWinnerCount = 0;
+            var firstWinnerCount = 0;
+            var secondWinnerCount = 0;
+
+            foreach (var winner in winners)
+            {
+                switch (winner)
+                {
+                    case null:
+                        noWinnerCount++;
+                        break;
+                    case 1:
+                        firstWinnerCount++;
+                        break;
+                    case 2:
+                        secondWinnerCount++;
+                        break;
+                }
+            }
+
+            if ((firstWinnerCount > secondWinnerCount) && (firstWinnerCount > noWinnerCount)) return 1;
+            else if ((secondWinnerCount > firstWinnerCount) && (secondWinnerCount > noWinnerCount)) return 2;
+            else return null;
         }
 
     }

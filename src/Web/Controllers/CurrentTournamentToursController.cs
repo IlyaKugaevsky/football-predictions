@@ -53,67 +53,37 @@ namespace Web.Controllers
 
         public ActionResult Index()
         {
-            //_context.Experts.Add(new Expert() {Nickname = "Jonny Vodka" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Россия" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Сауд. Аравия" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Египет" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Уругвай" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Марокко" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Иран" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Португалия" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Испания" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Франция" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Австралия" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Перу" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Дания" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Аргентина" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Исландия" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Хорватия" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Нигерия" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Коста-Рика" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Сербия" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Бразилия" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Швейцария" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Германия" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Мексика" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Швеция" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Южная Корея" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Бельгия" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Панама" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Тунис" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Англия" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Колумбия" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Япония" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Польша" });
-            //_context.Teams.AddOrUpdate(t => t.Title, new Team() { Title = "Сенегал" });
 
             //var tours = new List<Tour>()
             //{
             //    new Tour()
             //    {
+            //        TournamentId = 5,
             //        IsClosed = false,
-            //        TourNumber = 1,
-            //        StartDate = new DateTime(2018, 6, 14, 18, 0, 0),
-            //        EndDate = new DateTime(2018, 6, 19, 20, 0, 0)
+            //        TourNumber = 4,
+            //        StartDate = new DateTime(2018, 6, 30, 17, 0, 0),
+            //        EndDate = new DateTime(2018, 7, 4, 0, 0, 0)
             //    },
             //    new Tour()
             //    {
+            //        TournamentId = 5,
             //        IsClosed = false,
-            //        TourNumber = 2,
-            //        StartDate = new DateTime(2018, 6, 19, 21, 0, 0),
-            //        EndDate = new DateTime(2018, 6, 24, 23, 0, 0)
+            //        TourNumber = 5,
+            //        StartDate = new DateTime(2018, 7, 6, 17, 0, 0),
+            //        EndDate = new DateTime(2018, 7, 8, 0, 0, 0)
             //    },
             //    new Tour()
             //    {
+            //        TournamentId = 5,
             //        IsClosed = false,
-            //        TourNumber = 3,
-            //        StartDate = new DateTime(2018, 6, 25, 17, 0, 0),
-            //        EndDate = new DateTime(2018, 6, 28, 19, 0, 0)
+            //        TourNumber = 6,
+            //        StartDate = new DateTime(2018, 7, 10, 21, 0, 0),
+            //        EndDate = new DateTime(2018, 7, 15, 21, 0, 0)
             //    },
-
-
-
             //};
+
+            //_context.Tours.AddRange(tours);
+            //_context.SaveChanges();
 
             //_context.Tournaments.Add(new Tournament()
             //{
@@ -133,6 +103,8 @@ namespace Web.Controllers
 
             //_context.Experts.Add(new Expert() {Nickname = "Авоська"});
             //_context.Experts.Add(new Expert() { Nickname = "Глас народа" });
+
+            //var matches = _context.Matches.OrderByDescending(m => m.MatchId).Take(4).ToList();
 
             //_context.SaveChanges();
 
@@ -232,7 +204,9 @@ namespace Web.Controllers
             _predictionService.AddExpertPredictions(
                 viewModel.SelectedExpertId, 
                 viewModel.TourDto.TourId, 
-                viewModel.MatchTable.Scorelist.Select(s => s.Score).ToList());
+                viewModel.MatchTable.Scorelist.Select(s => s.Score).ToList(),
+                null,
+                _tourService.IsPlayoff(viewModel.TourDto.TourId));
             return RedirectToAction(
                 "EditPredictions", 
                 new
@@ -250,7 +224,11 @@ namespace Web.Controllers
             var teamlist = _teamService.GenerateOrderedTeamTitlelist(viewModel.SubmitTextArea.TourId);
             var scorelist = _fileService.ParseExpertPredictions(viewModel.SubmitTextArea.InputText, teamlist);
             if (!scorelist.IsNullOrEmpty())
-                _predictionService.AddExpertPredictions(viewModel.SelectedExpertId, viewModel.SubmitTextArea.TourId, scorelist.Select(s => s.Score).ToList());
+                _predictionService.AddExpertPredictions(viewModel.SelectedExpertId, 
+                    viewModel.SubmitTextArea.TourId, 
+                    scorelist.Select(s => s.Score).ToList(), 
+                    scorelist.Select(s => s.PlayoffWinner).ToList(),
+                    _tourService.IsPlayoff(viewModel.SubmitTextArea.TourId));
 
             return RedirectToAction(
                 "EditPredictions",
@@ -258,7 +236,7 @@ namespace Web.Controllers
                 {
                     tourId = viewModel.SubmitTextArea.TourId,
                     expertId = viewModel.SelectedExpertId,
-                    addPredictionSuccess = !GenericsHelper.IsNullOrEmpty(scorelist)
+                    addPredictionSuccess = !scorelist.IsNullOrEmpty()
                 });
         }
 
@@ -267,10 +245,12 @@ namespace Web.Controllers
         {
             //var matches = _matchService.GetLastTournamentMatchesByTourId(tourId).Select(m => m.GetDto()).ToList();
             var tourNumber = _tourService.GetTourDto(tourId).TourNumber;
+            var isPlayoff = _tourService.GetTourDto(tourId).IsPlayoff;
+
             var matches = _matchService.GetTourSchedule(tourId).Select(m => m.GetDto()).ToList();
 
             var scorelist = _matchService.GenerateScorelist(tourId, true);
-            return View(new AddScoresViewModel(tourId, tourNumber, matches, scorelist));
+            return View(new AddScoresViewModel(tourId, tourNumber, matches, scorelist, isPlayoff));
         }
 
         [HttpPost]
@@ -293,15 +273,7 @@ namespace Web.Controllers
 
         public ActionResult SubmitTourPredictions(int tourId)
         {
-            //var meanScores = _expertService.GenerateMeanPredictions(tourId);
-            //var randomScores = _expertService.GenerateRandomizerPredictions(meanScores.Count);
-            //var slavaScores = _expertService.GenerateVenceslavaPredictions(meanScores.Count);
-
-            //_predictionService.AddExpertPredictions(16, tourId, slavaScores.ToList());
-            //_predictionService.AddExpertPredictions(24, tourId, randomScores.ToList());
-            //_predictionService.AddExpertPredictions(25, tourId, meanScores.ToList());
-
-            _predictionService.AddBotPredictions(tourId);
+            _predictionService.AddBotPredictions(tourId, _tourService.IsPlayoff(tourId));
 
             _predictionService.SubmitTourPredictions(tourId);
             return RedirectToAction("Index");

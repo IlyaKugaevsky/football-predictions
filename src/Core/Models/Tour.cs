@@ -30,6 +30,7 @@ namespace Core.Models
         public int TourNumber { get; set; }
 
         public bool IsClosed { get; set; }
+        public bool IsPlayoff { get; set; }
 
         [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:dd.MM.yyyy HH:mm}")]
         [Column(TypeName = "DateTime2")]
@@ -44,7 +45,7 @@ namespace Core.Models
 
         public TourDto GetDto()
         {
-            return new TourDto(TourId, TourNumber, StartDate, EndDate);
+            return new TourDto(TourId, TourNumber, StartDate, EndDate, IsPlayoff);
         }
     }
 }

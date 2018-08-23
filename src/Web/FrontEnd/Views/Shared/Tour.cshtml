@@ -25,6 +25,10 @@
                                 <td>@Model.Matches[i].HomeTeam.Title</td>
                                 <td>@Model.Matches[i].AwayTeam.Title</td>
                                 <td>@Model.Matches[i].Score</td>
+                                @if (@Model.Matches[i].PlayoffWinner != null)
+                                {
+                                    <td>@Model.Matches[i].PlayoffWinner</td>
+                                }
                             </tr>
                         }
                     </tbody>

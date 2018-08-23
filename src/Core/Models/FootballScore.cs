@@ -12,19 +12,21 @@ namespace Core.Models
     public class FootballScore
     {
         private readonly string _score;
+        private readonly int? _playoffWinner;
 
         public FootballScore()
         {
             _score = string.Empty;
         }
 
-        public FootballScore(string input)
+        public FootballScore(string input, int? playoffWinner)
         {
             var rgx = new Regex(Pattern);
 
             if (rgx.IsMatch(input))
             {
                 _score = input;
+                _playoffWinner = playoffWinner;
             }
             else
             {
@@ -35,7 +37,7 @@ namespace Core.Models
         public FootballScoreViewModel GenerateViewModel(bool editable, string editableEmptySign = "",
             string uneditableEmptySign = "-")
         {
-            return new FootballScoreViewModel(_score, editable, editableEmptySign, uneditableEmptySign);
+            return new FootballScoreViewModel(_score, editable, editableEmptySign, uneditableEmptySign, _playoffWinner);
         }
 
         public override string ToString()

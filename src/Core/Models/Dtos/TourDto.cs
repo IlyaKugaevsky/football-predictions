@@ -8,12 +8,13 @@ namespace Core.Models.Dtos
         public TourDto()
         { }
 
-        public TourDto(int id, int number, DateTime startDate, DateTime endDate)
+        public TourDto(int id, int number, DateTime startDate, DateTime endDate, bool isPlayoff)
         {
             TourId = id;
             TourNumber = number;
             StartDate = startDate;
             EndDate = endDate;
+            IsPlayoff = isPlayoff;
         }
 
         public int TourId { get; set; }
@@ -24,5 +25,7 @@ namespace Core.Models.Dtos
 
         [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:dd.MM.yyyy | HH:mm}")]
         public DateTime EndDate { get; set; }
+
+        public bool IsPlayoff { get; set; }
     }
 }

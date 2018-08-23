@@ -40,14 +40,25 @@
                     @if (Model.Scorelist.Any())
                     {
                         <td>
-                        @if(Model.Scorelist[i].Editable)
-                        {
-                            @Html.TextBoxFor(model => model.Scorelist[i].Score, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Scorelist[i].Score)
-                        }
-                        else
-                        { @Html.DisplayFor(model => model.Scorelist[i].Score)}
-                    </td>
+                            @if(Model.Scorelist[i].Editable)
+                            {
+                                @Html.TextBoxFor(model => model.Scorelist[i].Score, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Scorelist[i].Score)
+                            }
+                            else
+                            { @Html.DisplayFor(model => model.Scorelist[i].Score)}
+                              </td>
+                        @*<td>
+                            @if(Model.IsPlayoff && Model.Scorelist[i].Editable)
+                            {
+                                @Html.TextBoxFor(model => model.Scorelist[i].PlayoffWinner, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Scorelist[i].PlayoffWinner)
+                            }
+                            else if (Model.IsPlayoff)
+                            {
+                                { @Html.DisplayFor(model => model.Scorelist[i].PlayoffWinner)}
+                            }
+                        </td>*@
                     }
 
                     @if (!@Model.ActionLinklist.IsNullOrEmpty())

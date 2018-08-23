@@ -36,6 +36,7 @@ namespace Web.ViewModels
         public IList<ActionLinkParams> ActionLinklist { get; set; }
 
         public bool IsEditable { get; set; }
+        public bool IsPlayoff { get; set; }
         public string EmptyScoreSymbol { get; set; }
 
     }

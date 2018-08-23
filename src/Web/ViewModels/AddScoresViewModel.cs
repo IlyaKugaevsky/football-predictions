@@ -12,11 +12,12 @@ namespace Web.ViewModels
         public AddScoresViewModel()
         { }
 
-        public AddScoresViewModel(int currentTourId, int currentTourNumber, List<MatchDto> matches, IList<FootballScoreViewModel> scorelist)
+        public AddScoresViewModel(int currentTourId, int currentTourNumber, List<MatchDto> matches, IList<FootballScoreViewModel> scorelist, bool isPlayoff)
         {
             CurrentTourId = currentTourId;
             CurrentTourNumber = currentTourNumber;
             MatchTable = GenerateMatchTable(matches, scorelist);
+            if (isPlayoff) MatchTable.IsPlayoff = true;
         }
 
         public int CurrentTourId { get; set; }

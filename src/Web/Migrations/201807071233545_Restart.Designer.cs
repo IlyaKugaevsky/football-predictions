@@ -7,13 +7,13 @@ namespace Web.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class renameNewTourId : IMigrationMetadata
+    public sealed partial class Restart : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(renameNewTourId));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Restart));
         
         string IMigrationMetadata.Id
         {
-            get { return "201706191416141_rename NewTourId"; }
+            get { return "201807071233545_Restart"; }
         }
         
         string IMigrationMetadata.Source

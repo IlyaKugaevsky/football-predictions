@@ -15,7 +15,10 @@ namespace Services.Services
                             + @"(?<awayTeam>((\w+\.?)|((\w+)-(\w+)))(\s\w*)?)$";
 
         public readonly string PredictionPattern = @"^(?<homeTeam>((\w+\.?)|((\w+)-(\w+)))(\s\w+)?)" + @"\s-\s"
-                                                + @"(?<awayTeam>((\w+\.?)|((\w+)-(\w+)))(\s\w*)?)" + @"\s" + @"(?<score>\d\d?:\d\d?)" + @"(?<spaces>\s*)$";
+                                                + @"(?<awayTeam>((\w+\.?)|((\w+)-(\w+)))(\s\w*)?)" + @"\s" 
+                                                + @"(?<score>\d\d?:\d\d?)" 
+                                                + @"(\s(?<winner>П[1,2]))?"
+                                                + @"(?<spaces>\s*)$";
 
         /*public List<ParsingMatchInfo> ReadTourMatches(string localFilePath = "")
         {
@@ -64,7 +67,7 @@ namespace Services.Services
 
             var lines = input.Split(new string[] { Environment.NewLine }, StringSplitOptions.None).ToList();
             lines = lines.Where(l => !string.IsNullOrWhiteSpace(l)).Distinct().ToList();
-            if (2 * lines.Count() != orderedTeamTitlelist.Count()) isCorrect = false;
+            if (2 * lines.Count != orderedTeamTitlelist.Count) isCorrect = false;
 
             var predictionlist = new List<FootballScoreViewModel>();
             var i = 0;
@@ -72,28 +75,23 @@ namespace Services.Services
             foreach (var line in lines)
             {
                 var match = System.Text.RegularExpressions.Regex.Match(line, PredictionPattern);
-                var teamplateCorrect = match.Success;
+                var templateCorrect = match.Success;
                 var homeTeamCorrect = match.Groups["homeTeam"].Value.Equals(orderedTeamTitlelist[i]);
                 var awayTeamCorerct = match.Groups["awayTeam"].Value.Equals(orderedTeamTitlelist[i + 1]);
 
-                if (!match.Success || !homeTeamCorrect || !awayTeamCorerct)
+                int? playoffWinner = null;
+                if (match.Groups["winner"].Value != "") playoffWinner = int.Parse(match.Groups["winner"].Value.Substring(1));
+
+                if (!templateCorrect || !homeTeamCorrect || !awayTeamCorerct)
                 {
                     isCorrect = false;
                     break;
                 }
                 
-                predictionlist.Add(new FootballScoreViewModel(match.Groups["score"].Value));
+                predictionlist.Add(new FootballScoreViewModel(match.Groups["score"].Value, false, playoffWinner));
                 i += 2;
             }
             return isCorrect ? predictionlist : new List<FootballScoreViewModel>();
         }
-
-        /*public void TestWriteFile(string fileName)
-        {
-            var filePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath(_defaultFolder), fileName);
-            var hello = "Hello!";
-            var lines = new List<string> {hello};
-            File.WriteAllLines(filePath, lines);
-        }*/
     }
 }
