@@ -81,6 +81,25 @@ namespace Web.Controllers
 
             //return string.Join("||", lines);
 
+            //var ars = _context.Predictions.Find(4637);
+            //var ural = _context.Predictions.Find(4638);
+
+            //var rub = _context.Predictions.Find(4639);
+            //var spar = _context.Predictions.Find(4640);
+
+            //var oren = _context.Predictions.Find(4641);
+            //var ufa = _context.Predictions.Find(4642);
+
+            //var loco = _context.Predictions.Find(4643);
+            //var eni = _context.Predictions.Find(4644);
+
+            //var toDelete = new List<Prediction>() { ars, ural, rub, spar, oren, ufa, loco, eni };
+
+            //_context.Predictions.RemoveRange(toDelete);
+            //_context.SaveChanges();
+
+
+
             return "done";
         }
     }

@@ -267,6 +267,10 @@
     <Compile Include="Migrations\201807082102104_PlayoffTour.Designer.cs">
       <DependentUpon>201807082102104_PlayoffTour.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808251839396_HeadToHead.cs" />
+    <Compile Include="Migrations\201808251839396_HeadToHead.Designer.cs">
+      <DependentUpon>201808251839396_HeadToHead.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Windsor\Installers\AutomapperInstaller.cs" />
     <Compile Include="Windsor\Installers\ControllerInstaller.cs" />
@@ -624,6 +628,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201807082102104_PlayoffTour.resx">
       <DependentUpon>201807082102104_PlayoffTour.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808251839396_HeadToHead.resx">
+      <DependentUpon>201808251839396_HeadToHead.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

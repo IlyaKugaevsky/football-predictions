@@ -18,6 +18,10 @@ namespace Persistence.DAL
         public virtual DbSet<Prediction> Predictions { get; set; }
         public virtual DbSet<OldTour> OldTours { get; set; }
 
+        public virtual DbSet<HeadToHeadTournament> HeadToHeadTournaments { get; set; }
+        public virtual DbSet<HeadToHeadTour> HeadToHeadTours { get; set; }
+        public virtual DbSet<HeadToHeadMatch> HeadToHeadMatches { get; set; }
+
         public virtual DbSet<Tour> Tours { get; set; }
 
 
