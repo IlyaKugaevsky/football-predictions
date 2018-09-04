@@ -64,6 +64,7 @@
     <Compile Include="Models\HeadToHeadMatch.cs" />
     <Compile Include="Models\HeadToHeadTour.cs" />
     <Compile Include="Models\HeadToHeadTournament.cs" />
+    <Compile Include="Models\LeagueTable.cs" />
     <Compile Include="Models\Match.cs" />
     <Compile Include="Models\OldTour.cs" />
     <Compile Include="Models\Prediction.cs" />

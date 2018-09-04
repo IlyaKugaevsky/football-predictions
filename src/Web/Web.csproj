@@ -271,6 +271,10 @@
     <Compile Include="Migrations\201808251839396_HeadToHead.Designer.cs">
       <DependentUpon>201808251839396_HeadToHead.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808282029013_HeadToHeadFix.cs" />
+    <Compile Include="Migrations\201808282029013_HeadToHeadFix.Designer.cs">
+      <DependentUpon>201808282029013_HeadToHeadFix.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Windsor\Installers\AutomapperInstaller.cs" />
     <Compile Include="Windsor\Installers\ControllerInstaller.cs" />
@@ -631,6 +635,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808251839396_HeadToHead.resx">
       <DependentUpon>201808251839396_HeadToHead.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808282029013_HeadToHeadFix.resx">
+      <DependentUpon>201808282029013_HeadToHeadFix.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

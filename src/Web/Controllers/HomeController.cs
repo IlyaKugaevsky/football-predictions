@@ -7,6 +7,9 @@ using Core.Models;
 using Persistence.DAL;
 using Persistence.DAL.EntityFrameworkExtensions;
 using System.Data.Entity;
+using Persistence.DAL.FetchStrategies;
+using Persistence.DAL.FetchStrategies.TournamentsFetchStrategies;
+using Services.Services;
 
 namespace Web.Controllers
 {
@@ -98,9 +101,54 @@ namespace Web.Controllers
             //_context.Predictions.RemoveRange(toDelete);
             //_context.SaveChanges();
 
+            //var HeadToHeadRpl = new HeadToHeadTournament() {ParentTournamentId = 6};
+
+            //_context.HeadToHeadTournaments.Add(HeadToHeadRpl);
+            //_context.SaveChanges();
+
+            //var chester = _context.Experts.Find(5);
+            //var mary = _context.Experts.Find(22);
+
+            //var cherocky = _context.Experts.Find(1);
+            //var andrea = _context.Experts.Find(7);
+
+            //var ibra = _context.Experts.Find(11);
+            //var polidevk = _context.Experts.Find(6);
+
+            //var iva = _context.Experts.Find(10);
+            //var avos = _context.Experts.Find(24);
+
+            //var expertGenerator = new ScheduleService<Expert>( new List<Expert>() {chester, mary, cherocky, andrea, ibra, polidevk, iva, avos});
+
+            var lines = new List<string>();
+
+            var h2hService = new HeadToHeadService(_context);
+
+            ////h2hService.EvaluateTour(4);
+            ////h2hService.EvaluateTour(5);
+            h2hService.EvaluateTour(6);
+
+            var table = h2hService.EvaluateTable(1, 6);
+
+            foreach (var expert in table.Keys)
+            {
+                lines.Add($"{expert} - {table[expert].Wins} {table[expert].Draws} {table[expert].Looses} {table[expert].ScoredGoals}-{table[expert].ConcededGoals} {table[expert].Points} {Environment.NewLine}");
+            }
 
 
-            return "done";
+            //var matches = _context.HeadToHeadMatches.Include(m => m.HomeExpert).Include(m => m.AwayExpert).ToList().Skip(20).Take(4);
+
+            //foreach (var match in matches)
+            //{
+            //    lines.Add($"{match.HomeExpert.Nickname} {match.HomeGoals} - {match.AwayGoals} {match.AwayExpert.Nickname}");
+            //}
+
+
+            var result = string.Join($"|| {Environment.NewLine}", lines);
+
+
+
+            return result;
         }
     }
 }

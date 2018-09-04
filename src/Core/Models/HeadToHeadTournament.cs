@@ -13,6 +13,6 @@ namespace Core.Models
         public int ParentTournamentId { get; set; }
         public Tournament ParentTournament { get; set; }
 
-        public virtual List<HeadToHeadMatch> Matches { get; set; }
+        public virtual List<HeadToHeadTour> Tours { get; set; }
     }
 }

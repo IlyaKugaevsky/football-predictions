@@ -10,6 +10,9 @@ namespace Persistence.DAL
 {
     public interface IPredictionsContext
     {
+        DbSet<HeadToHeadTour> HeadToHeadTours { get; set; }
+        DbSet<HeadToHeadMatch> HeadToHeadMatches { get; set; }
+        DbSet<HeadToHeadTournament> HeadToHeadTournaments { get; set; }
         DbSet<Tournament> Tournaments { get; set; }
         DbSet<Expert> Experts { get; set; }
         DbSet<Team> Teams { get; set; }
