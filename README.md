@@ -30,3 +30,6 @@ Web application for organizing score prediction games and handling football stat
 - Using xUnit and Moq frameworks
 - Unit tests for each layer (in progress)
 - Testing database operations by mocking DbContext
+
+## Frontend components examples
+<img src="src/Web/App_Data/TextFiles/Predictions.png">
